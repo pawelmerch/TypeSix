@@ -1,0 +1,18 @@
+version: '3.4'
+
+services:
+  type-1-database:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: ${TYPE6_DATABASE_USER}
+      POSTGRES_PASSWORD: ${TYPE6_DATABASE_PASSWORD}
+      POSTGRES_PORT: ${TYPE6_POSTGRES_PORT}
+      POSTGRES_IP: ${TYPE6_POSTGRES_IP}
+    ports:
+      - "${TYPE6_POSTGRES_PORT}:${TYPE6_POSTGRES_PORT}"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "-d", "db_prod" ]
+      interval: 1s
+      timeout: 1s
+      retries: 100
+    user: postgres

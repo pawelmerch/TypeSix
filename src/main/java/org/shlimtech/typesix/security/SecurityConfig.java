@@ -4,7 +4,7 @@ import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.shlimtech.typesix.utils.JwkUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -19,15 +19,44 @@ import org.springframework.security.oauth2.server.authorization.client.InMemoryR
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
+import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
 import java.util.UUID;
 
 @EnableWebSecurity
-@RequiredArgsConstructor
 @Configuration(proxyBeanMethods = false)
+@Log
 public class SecurityConfig {
+
+    public SecurityConfig(
+            @Value("${spring.security.oauth2.client.registration.github.clientId}") String githubClientId,
+            @Value("${spring.security.oauth2.client.registration.github.clientSecret}") String githubClientSecret,
+            @Value("${spring.security.oauth2.client.registration.yandex.clientId}") String yandexClientId,
+            @Value("${spring.security.oauth2.client.registration.yandex.clientSecret}") String yandexClientSecret,
+            @Value("${type-6.issuer}") String issuer,
+            @Value("${type-6.client-id}") String clientId,
+            @Value("${type-6.client-secret}") String clientSecret,
+            @Value("${type-6.client-cors-allowed-origin}") String corsOrigin,
+            @Value("${type-6.client-redirect-uri}") String redirectUri,
+            @Value("${spring.datasource.url}") String databaseUrl,
+            @Value("${spring.datasource.username}") String databaseUserName,
+            @Value("${spring.datasource.password}") String databasePassword
+    ) {
+        log.info("githubClientId: [" + githubClientId + "]");
+        log.info("githubClientSecret: [" + githubClientSecret + "]");
+        log.info("yandexClientId: [" + yandexClientId + "]");
+        log.info("yandexClientSecret: [" + yandexClientSecret + "]");
+        log.info("issuer: [" + issuer + "]");
+        log.info("clientId: [" + clientId + "]");
+        log.info("clientSecret: [" + clientSecret + "]");
+        log.info("corsOrigin: [" + corsOrigin + "]");
+        log.info("redirectUri: [" + redirectUri + "]");
+        log.info("databaseUser: [" + databaseUserName + "]");
+        log.info("databasePassword: [" + databasePassword + "]");
+        log.info("databaseUrl: [" + databaseUrl + "]");
+    }
 
     @Bean
     @Order(1)
@@ -46,7 +75,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
                 // TODO handle login form input
                 //.formLogin(Customizer.withDefaults())
-                .oauth2Login(o -> o.userInfoEndpoint(Customizer.withDefaults())).build();
+                .oauth2Login(Customizer.withDefaults()).build();
+                // TODO customize login page
     }
 
     @Bean
@@ -65,6 +95,19 @@ public class SecurityConfig {
                         .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                         .build()
         );
+    }
+
+
+    @Bean
+    public AuthorizationServerSettings authorizationServerSettings(
+            @Value("${spring.security.oauth2.client.registration.github.clientId}") String githubClientId,
+            @Value("${spring.security.oauth2.client.registration.github.clientSecret}") String githubClientSecret,
+            @Value("${type-6.issuer}") String issuerIp
+            ) {
+        log.info("[" + githubClientId + "], [" + githubClientSecret + "], [" + issuerIp + "]");
+        return AuthorizationServerSettings.builder()
+                .issuer(issuerIp)
+                .build();
     }
 
     @Bean

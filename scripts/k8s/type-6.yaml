@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: type-6
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: type-6
+  template:
+    metadata:
+      labels:
+        app: type-6
+    spec:
+      containers:
+        - name: type-6
+          image: docker.io/timattt/type-6:latest
+          imagePullPolicy: Always
+          env:
+            - name: TYPE6_DATABASE_USER
+              value: default-user
+            - name: TYPE6_SELF_IP
+              value: https://shlim-tech.ru
+            - name: TYPE6_CLIENT_REDIRECT_URI
+              value: https://netmapa.ru/code
+            - name: TYPE6_CLIENT_CORS_ALLOWED_ORIGIN
+              value: https://netmapa.ru
+            - name: TYPE6_DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: type-6-basic-secrets
+                  key: type_6_database_url
+            - name: TYPE6_DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: type-6-basic-secrets
+                  key: type_6_database_password
+            - name: TYPE6_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: type-6-basic-secrets
+                  key: type_6_client_id
+            - name: TYPE6_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: type-6-basic-secrets
+                  key: type_6_client_secret
+            - name: TYPE6_GITHUB_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: type-6-basic-secrets
+                  key: type_6_github_client_id
+            - name: TYPE6_GITHUB_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: type-6-basic-secrets
+                  key: type_6_github_client_secret
+            - name: TYPE6_YANDEX_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: type-6-basic-secrets
+                  key: type_6_yandex_client_id
+            - name: TYPE6_YANDEX_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: type-6-basic-secrets
+                  key: type_6_yandex_client_secret
+          volumeMounts:
+            - name: secret-volume
+              mountPath: /etc/secrets
+              readOnly: true
+      volumes:
+        - name: secret-volume
+          secret:
+            secretName: type-6-basic-secret-files

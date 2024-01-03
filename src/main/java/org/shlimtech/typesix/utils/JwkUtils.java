@@ -1,6 +1,7 @@
 package org.shlimtech.typesix.utils;
 
 import com.nimbusds.jose.jwk.RSAKey;
+import lombok.SneakyThrows;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -20,15 +21,10 @@ public class JwkUtils {
                 .build();
     }
 
+    @SneakyThrows
     public static KeyPair generateRsaKey() {
-        KeyPair keyPair;
-        try {
-            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-            keyPairGenerator.initialize(2048);
-            keyPair = keyPairGenerator.generateKeyPair();
-        } catch (Exception ex) {
-            throw new IllegalStateException(ex);
-        }
-        return keyPair;
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+        keyPairGenerator.initialize(2048);
+        return keyPairGenerator.generateKeyPair();
     }
 }

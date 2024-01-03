@@ -1,5 +1,8 @@
 package org.shlimtech.typesix.security;
 
+import lombok.RequiredArgsConstructor;
+import org.shlimtech.typesix.dto.UserDTO;
+import org.shlimtech.typesix.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -8,16 +11,19 @@ import org.springframework.security.oauth2.server.authorization.token.JwtEncodin
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 
 @Configuration
+@RequiredArgsConstructor
 public class CustomTokenGenerator {
+
+    private final UserService userService;
 
     @Bean
     public OAuth2TokenCustomizer<JwtEncodingContext> tokenCustomizer() {
         return (context) -> {
-            // TODO retrieve user id from user name here, then save it into token claims
             OAuth2AuthenticationToken token = context.getPrincipal();
             OAuth2User user = token.getPrincipal();
             String email = user.getName();
-            context.getClaims().claim("email", email);
+            UserDTO userDTO = userService.loadUser(email);
+            context.getClaims().claim("email", userDTO.getEmail()).claim("id", userDTO.getId());
         };
     }
 
