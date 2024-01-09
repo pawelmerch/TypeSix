@@ -5,6 +5,7 @@ import org.shlimtech.typesix.dto.UserDTO;
 import org.shlimtech.typesix.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
@@ -17,6 +18,7 @@ public class CustomTokenGenerator {
     private final UserService userService;
 
     @Bean
+    @Profile("release")
     public OAuth2TokenCustomizer<JwtEncodingContext> tokenCustomizer() {
         return (context) -> {
             OAuth2AuthenticationToken token = context.getPrincipal();

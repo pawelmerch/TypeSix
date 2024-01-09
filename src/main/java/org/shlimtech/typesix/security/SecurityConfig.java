@@ -69,14 +69,19 @@ public class SecurityConfig {
 
     @Bean
     @Order(2)
-    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        return http
+    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http,
+            @Value("${spring.profiles.active}") String activeProfile) throws Exception {
+        HttpSecurity sec = http
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
-                .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
-                // TODO handle login form input
-                //.formLogin(Customizer.withDefaults())
-                .oauth2Login(Customizer.withDefaults()).build();
-                // TODO customize login page
+                .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated());
+
+        if (activeProfile.equals("debug")) {
+            sec.formLogin(Customizer.withDefaults()); // TODO make login via creds not only in debug
+        } else {
+            sec.oauth2Login(Customizer.withDefaults()); // TODO customize login page
+        }
+
+        return sec.build();
     }
 
     @Bean
