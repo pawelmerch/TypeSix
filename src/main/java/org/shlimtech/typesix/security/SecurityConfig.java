@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,13 +24,22 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.UUID;
 
 @EnableWebSecurity
 @Configuration(proxyBeanMethods = false)
 @Log
+@EnableScheduling
 public class SecurityConfig {
+
+    @Scheduled(fixedRate = 1000)
+    public void testType6d() {
+        log.info("Testing...");
+        RestTemplate restTemplate = new RestTemplate();
+        log.info(restTemplate.getForEntity("http://10.96.169.230:443/task", String.class).toString());
+    }
 
     public SecurityConfig(
             @Value("${spring.security.oauth2.client.registration.github.clientId}") String githubClientId,
