@@ -20,7 +20,7 @@ public class VkParserService {
     public void parseVk(int id) {
         log.info("Parsing vk user with id: " + id + " using url: " + type6dUrl);
         RestTemplate restTemplate = new RestTemplate();
-        log.info(restTemplate.getForEntity(type6dUrl + "/task", String.class, id).toString());
+        log.info(restTemplate.getForEntity(type6dUrl + "/task?id=" + id, String.class).toString());
     }
 
     @Scheduled(fixedRate = 10000)
