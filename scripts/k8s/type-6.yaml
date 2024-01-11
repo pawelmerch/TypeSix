@@ -33,7 +33,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: type-6-basic-secrets
-                  key: type_6_database_url
+                  key: type_6_database_jdbc_url
             - name: TYPE6_DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
