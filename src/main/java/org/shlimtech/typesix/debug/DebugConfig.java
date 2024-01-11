@@ -43,6 +43,7 @@ public class DebugConfig {
 
     @Scheduled(fixedRate = 1000)
     public void testType6d() {
+        log.info("Testing...");
         RestTemplate restTemplate = new RestTemplate();
         log.info(restTemplate.getForEntity("http://10.96.169.230:443/task", String.class).toString());
     }
