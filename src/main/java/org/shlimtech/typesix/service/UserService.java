@@ -8,6 +8,8 @@ import org.shlimtech.typesix.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -47,6 +49,18 @@ public class UserService {
     public UserDTO loadUser(int id) {
         User user = userRepository.getReferenceById(id);
         return modelMapper.map(user, UserDTO.class);
+    }
+
+    @Transactional
+    public UserDTO getRandomUser() {
+        List<User> users = userRepository.findAll();
+        UserDTO userDTO = null;
+
+        if (!users.isEmpty()) {
+            userDTO = modelMapper.map(users.get((int) (users.size() * Math.random())), UserDTO.class);
+        }
+
+        return userDTO;
     }
 
 }
