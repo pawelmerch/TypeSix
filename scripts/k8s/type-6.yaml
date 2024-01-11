@@ -18,7 +18,7 @@ spec:
           imagePullPolicy: Always
           env:
             - name: TYPE6_ENABLE_SSL
-              value: "false"
+              value: "true"
             - name: TYPE6_ACTIVE_PROFILE
               value: "release"
             - name: TYPE6_DATABASE_USER
