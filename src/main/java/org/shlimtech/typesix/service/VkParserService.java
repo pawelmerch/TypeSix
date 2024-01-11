@@ -27,6 +27,8 @@ public class VkParserService {
     public void regularParsingRunner() {
         UserDTO user = userService.getRandomUser();
 
+        // TODO replace this with something more accurate
+
         if (user != null) {
             parseVk(user.getId());
         }
