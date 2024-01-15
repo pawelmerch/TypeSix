@@ -26,9 +26,9 @@ spec:
             - name: TYPE6_SELF_IP
               value: https://shlim-tech.ru
             - name: TYPE6_CLIENT_REDIRECT_URI
-              value: https://netmapa.ru/code
+              value: https://netmapa.online/code
             - name: TYPE6_CLIENT_CORS_ALLOWED_ORIGIN
-              value: https://netmapa.ru
+              value: https://netmapa.online
             - name: TYPE6_DATABASE_URL
               valueFrom:
                 secretKeyRef:
