@@ -7,10 +7,12 @@
 
 * KUBERNETES_URL (github action secret)
 * KUBERNETES_SECRET (github action secret)
-* TYPE6_DATABASE_URL (k8s yaml)
-* TYPE6_SELF_IP (k8s yaml)
 
 ## Переменные окружения, необходимые для запуска микросервиса
+
+### SSL
+
+* TYPE6_ENABLE_SSL
 
 ### Клиент
 
@@ -39,3 +41,4 @@
 
 * TYPE6_SELF_IP
 * TYPE6_PORT
+* TYPE6_ACTIVE_PROFILE
