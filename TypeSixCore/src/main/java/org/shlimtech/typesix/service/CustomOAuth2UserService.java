@@ -1,7 +1,8 @@
 package org.shlimtech.typesix.service;
 
 import lombok.RequiredArgsConstructor;
-import org.shlimtech.typesix.dto.UserDTO;
+import org.shlimtech.typesixdatabasecommon.dto.UserDTO;
+import org.shlimtech.typesixdatabasecommon.service.UserService;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;

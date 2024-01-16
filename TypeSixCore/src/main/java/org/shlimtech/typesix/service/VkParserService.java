@@ -2,7 +2,8 @@ package org.shlimtech.typesix.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
-import org.shlimtech.typesix.dto.UserDTO;
+import org.shlimtech.typesixdatabasecommon.dto.UserDTO;
+import org.shlimtech.typesixdatabasecommon.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;

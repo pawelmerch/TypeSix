@@ -1,8 +1,8 @@
 package org.shlimtech.typesix.security;
 
 import lombok.RequiredArgsConstructor;
-import org.shlimtech.typesix.dto.UserDTO;
-import org.shlimtech.typesix.service.UserService;
+import org.shlimtech.typesixdatabasecommon.dto.UserDTO;
+import org.shlimtech.typesixdatabasecommon.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
