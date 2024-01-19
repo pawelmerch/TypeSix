@@ -100,6 +100,10 @@ public class SecurityConfig {
                         .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                         .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                         .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+                        // TODO set to debug profile
+                        //.tokenSettings(TokenSettings.builder()
+                        //        .accessTokenTimeToLive(Duration.of(5, ChronoUnit.SECONDS))
+                        //        .build())
                         .build()
         );
     }
