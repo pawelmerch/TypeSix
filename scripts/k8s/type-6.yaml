@@ -24,11 +24,11 @@ spec:
             - name: TYPE6_DATABASE_USER
               value: default-user
             - name: TYPE6_SELF_IP
-              value: https://shlim-tech.ru
+              value: https://auth-mipt-match.ru
             - name: TYPE6_CLIENT_REDIRECT_URI
-              value: https://netmapa.online/code
+              value: https://mipt-match.ru/code
             - name: TYPE6_CLIENT_CORS_ALLOWED_ORIGIN
-              value: https://netmapa.online
+              value: https://mipt-match.ru
             - name: TYPE6_DATABASE_URL
               valueFrom:
                 secretKeyRef:
