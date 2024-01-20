@@ -25,7 +25,7 @@ public class DebugConfig {
 
     @PostConstruct
     public void initDb() {
-        userService.createOrComplementUser(new UserDTO(-1, "test@gmail.com", "admin", "TestName", "TestLastName", "TestBio", "", "", "", "", null));
+        userService.createOrComplementUser(new UserDTO(-1, "test@gmail.com", "admin", "TestName", "TestLastName", "TestBio", "", "", "", ""));
     }
 
     @Bean
