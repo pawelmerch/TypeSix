@@ -75,12 +75,12 @@ public class SecurityConfig {
             @Value("${spring.profiles.active}") String activeProfile) throws Exception {
         HttpSecurity sec = http
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
-                .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated());
+                .authorizeHttpRequests(authorize -> authorize.requestMatchers("/login").permitAll().anyRequest().authenticated());
 
         if (activeProfile.equals("debug")) {
             sec.formLogin(Customizer.withDefaults()); // TODO make login via creds not only in debug
         } else {
-            sec.oauth2Login(Customizer.withDefaults()); // TODO customize login page
+            sec.oauth2Login(c -> c.loginPage("/login")); // TODO customize login page
         }
 
         return sec.build();
