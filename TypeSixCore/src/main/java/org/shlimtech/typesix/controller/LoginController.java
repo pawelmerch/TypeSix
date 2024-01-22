@@ -10,7 +10,7 @@ public class LoginController  {
 
     @GetMapping
     public String index() {
-        return "login";
+        return "redirect://oauth2/authorization/yandex";
     }
 
 }
