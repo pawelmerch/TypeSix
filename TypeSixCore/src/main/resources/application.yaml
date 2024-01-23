@@ -5,4 +5,4 @@ type-6:
       client-secret: ${TYPE6_CLIENT_SECRET}
       client-redirect-uri: ${TYPE6_CLIENT_REDIRECT_URI}
       client-cors-allowed-origin: ${TYPE6_CLIENT_CORS_ALLOWED_ORIGIN}
-      auth-method: all
+      auth-method: yandex
