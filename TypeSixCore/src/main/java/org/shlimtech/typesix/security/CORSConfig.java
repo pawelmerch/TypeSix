@@ -19,7 +19,7 @@ public class CORSConfig implements WebMvcConfigurer {
                 .getClients()
                 .values()
                 .stream()
-                .map(Type6Oauth2ClientProperties.Type6Oauth2Client::getClientCorsAllowedOrigin)
+                .map(Type6Oauth2ClientProperties.Type6Oauth2Client::getClientHostname)
                 .toArray(String[]::new));
     }
 

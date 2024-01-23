@@ -25,9 +25,9 @@ spec:
               value: default-user
             - name: TYPE6_SELF_IP
               value: https://auth-mipt-match.ru
-            - name: TYPE6_CLIENT_REDIRECT_URI
+            - name: TYPE7_CLIENT_REDIRECT_URI
               value: https://mipt-match.ru/code
-            - name: TYPE6_CLIENT_CORS_ALLOWED_ORIGIN
+            - name: TYPE7_HOSTNAME
               value: https://mipt-match.ru
             - name: TYPE6_DATABASE_URL
               valueFrom:
@@ -39,12 +39,12 @@ spec:
                 secretKeyRef:
                   name: type-6-basic-secrets
                   key: type_6_database_password
-            - name: TYPE6_CLIENT_ID
+            - name: TYPE7_CLIENT_ID
               valueFrom:
                 secretKeyRef:
                   name: type-6-basic-secrets
                   key: type_6_client_id
-            - name: TYPE6_CLIENT_SECRET
+            - name: TYPE7_CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: type-6-basic-secrets

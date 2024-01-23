@@ -17,7 +17,7 @@ public class Type6Oauth2ClientProperties {
         private String clientId;
         private String clientSecret;
         private String clientRedirectUri;
-        private String clientCorsAllowedOrigin;
+        private String clientHostname;
         private AuthMethod authMethod;
     }
 

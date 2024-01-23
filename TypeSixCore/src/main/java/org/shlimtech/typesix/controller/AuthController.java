@@ -55,7 +55,7 @@ public class AuthController {
         if (authentication != null) {
             request.getSession().invalidate();
         }
-        return "redirect:" + client.getClientCorsAllowedOrigin();
+        return "redirect:" + client.getClientHostname();
     }
 
 }
