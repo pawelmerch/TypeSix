@@ -14,6 +14,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
@@ -25,40 +26,13 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @EnableWebSecurity
-@Configuration(proxyBeanMethods = false)
+@Configuration
 @Log
 @EnableScheduling
 public class SecurityConfig {
-
-    public SecurityConfig(
-            @Value("${spring.security.oauth2.client.registration.github.clientId}") String githubClientId,
-            @Value("${spring.security.oauth2.client.registration.github.clientSecret}") String githubClientSecret,
-            @Value("${spring.security.oauth2.client.registration.yandex.clientId}") String yandexClientId,
-            @Value("${spring.security.oauth2.client.registration.yandex.clientSecret}") String yandexClientSecret,
-            @Value("${type-6.issuer}") String issuer,
-            @Value("${type-6.client-id}") String clientId,
-            @Value("${type-6.client-secret}") String clientSecret,
-            @Value("${type-6.client-cors-allowed-origin}") String corsOrigin,
-            @Value("${type-6.client-redirect-uri}") String redirectUri,
-            @Value("${spring.datasource.url}") String databaseUrl,
-            @Value("${spring.datasource.username}") String databaseUserName,
-            @Value("${spring.datasource.password}") String databasePassword
-    ) {
-        log.info("githubClientId: [" + githubClientId + "]");
-        log.info("githubClientSecret: [" + githubClientSecret + "]");
-        log.info("yandexClientId: [" + yandexClientId + "]");
-        log.info("yandexClientSecret: [" + yandexClientSecret + "]");
-        log.info("issuer: [" + issuer + "]");
-        log.info("clientId: [" + clientId + "]");
-        log.info("clientSecret: [" + clientSecret + "]");
-        log.info("corsOrigin: [" + corsOrigin + "]");
-        log.info("redirectUri: [" + redirectUri + "]");
-        log.info("databaseUser: [" + databaseUserName + "]");
-        log.info("databasePassword: [" + databasePassword + "]");
-        log.info("databaseUrl: [" + databaseUrl + "]");
-    }
 
     @Bean
     @Order(1)
@@ -78,34 +52,35 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize.requestMatchers("/login").permitAll().anyRequest().authenticated());
 
         if (activeProfile.equals("debug")) {
-            sec.formLogin(Customizer.withDefaults()); // TODO make login via creds not only in debug
+            sec.formLogin(Customizer.withDefaults()).logout(AbstractHttpConfigurer::disable); // TODO make login via creds not only in debug
         } else {
-            sec.oauth2Login(c -> c.loginPage("/login")); // TODO customize login page
+            sec.oauth2Login(c -> c.loginPage("/login")).logout(AbstractHttpConfigurer::disable); // TODO customize login page
         }
 
         return sec.build();
     }
 
     @Bean
-    public RegisteredClientRepository registeredClientRepository(
-            @Value("${type-6.client-id}") String clientId,
-            @Value("${type-6.client-secret}") String clientSecret,
-            @Value("${type-6.client-redirect-uri}") String clientRedirectUri
-    ) {
-        return new InMemoryRegisteredClientRepository(
-                RegisteredClient.withId(UUID.randomUUID().toString())
-                        .clientId(clientId)
-                        .clientSecret("{noop}" + clientSecret) // TODO set encoding
-                        .redirectUri(clientRedirectUri)
-                        .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                        .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                        .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                        // TODO set to debug profile
-                        //.tokenSettings(TokenSettings.builder()
-                        //        .accessTokenTimeToLive(Duration.of(5, ChronoUnit.SECONDS))
-                        //        .build())
-                        .build()
-        );
+    public RegisteredClientRepository registeredClientRepository(Type6Oauth2ClientProperties clientProperties) {
+        return new InMemoryRegisteredClientRepository(clientProperties
+                .getClients()
+                .values()
+                .stream()
+                .map(client ->
+                        RegisteredClient
+                                .withId(UUID.randomUUID().toString())
+                                .clientId(client.getClientId())
+                                .clientSecret("{noop}" + client.getClientSecret()) // TODO set encoding
+                                .redirectUri(client.getClientRedirectUri())
+                                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+                                // TODO set to debug profile
+                                //.tokenSettings(TokenSettings.builder()
+                                //        .accessTokenTimeToLive(Duration.of(5, ChronoUnit.SECONDS))
+                                //        .build())
+                                .build()
+        ).collect(Collectors.toList()));
     }
 
 
