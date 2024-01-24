@@ -23,23 +23,30 @@ public class AuthController {
     private String getOauth2RedirectUri(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         DefaultSavedRequest savedRequest = (DefaultSavedRequest) session.getAttribute("SPRING_SECURITY_SAVED_REQUEST");
-        return savedRequest.getParameterValues("redirect_uri")[0];
+        var uri = savedRequest.getParameterValues("redirect_uri");
+        return uri == null ? null : uri[0];
     }
 
     private Type6Oauth2ClientProperties.Type6Oauth2Client getOauth2Client(HttpServletRequest request) {
         String redirectUri = getOauth2RedirectUri(request);
-        Optional<Type6Oauth2ClientProperties.Type6Oauth2Client> clientOptional = clientProperties.getClients().values().stream().filter(type6Oauth2Client -> type6Oauth2Client.getClientRedirectUri().equals(redirectUri)).findAny();
 
-        if (clientOptional.isEmpty()) {
-            throw new RuntimeException("no such client");
+        if (redirectUri == null) {
+            return null;
         }
 
-        return clientOptional.get();
+        Optional<Type6Oauth2ClientProperties.Type6Oauth2Client> clientOptional = clientProperties.getClients().values().stream().filter(type6Oauth2Client -> type6Oauth2Client.getClientRedirectUri().equals(redirectUri)).findAny();
+
+        return clientOptional.orElse(null);
+
     }
 
     @GetMapping("/login")
     public String login(HttpServletRequest request) {
         Type6Oauth2ClientProperties.Type6Oauth2Client client = getOauth2Client(request);
+
+        if (client == null) {
+            return "login";
+        }
 
         return switch (client.getAuthMethod()) {
             case github -> "redirect:/oauth2/authorization/github";
