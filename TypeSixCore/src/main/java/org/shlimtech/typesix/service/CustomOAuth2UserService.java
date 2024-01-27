@@ -1,8 +1,9 @@
 package org.shlimtech.typesix.service;
 
-import lombok.RequiredArgsConstructor;
+import io.micrometer.core.instrument.Counter;
 import org.shlimtech.typesixdatabasecommon.dto.UserDTO;
 import org.shlimtech.typesixdatabasecommon.service.UserService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -13,10 +14,15 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 @Service
-@RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserService userService;
+    private final Counter registrationCounter;
+
+    public CustomOAuth2UserService(UserService userService, @Qualifier("registration_counter") Counter registrationCounter) {
+        this.userService = userService;
+        this.registrationCounter = registrationCounter;
+    }
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -30,6 +36,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         analyzeGithub(userDTO, attributes);
         analyzeYandex(userDTO, attributes);
         analyzeVK(userDTO, attributes);
+
+        if (!userService.containsUser(email)) {
+            registrationCounter.increment();
+        }
 
         userService.createOrComplementUser(userDTO);
         return user;
