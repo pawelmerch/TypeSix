@@ -49,6 +49,20 @@ spec:
                 secretKeyRef:
                   name: type-6-basic-secrets
                   key: type_6_client_secret
+            - name: TYPE8_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: type-6-basic-secrets
+                  key: type_8_client_id
+            - name: TYPE8_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: type-6-basic-secrets
+                  key: type_8_client_secret
+            - name: TYPE8_HOSTNAME
+              value: "https://mipt-study.ru"
+            - name: TYPE8_CLIENT_REDIRECT_URI
+              value: "https://mipt-study.ru/code"
             - name: TYPE6_GITHUB_CLIENT_ID
               valueFrom:
                 secretKeyRef:
