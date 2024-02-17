@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -35,12 +34,6 @@ import java.util.stream.Collectors;
 @Log
 @EnableScheduling
 public class SecurityConfig {
-
-    @Scheduled(fixedRate = 1000)
-    public void heartBeat() {
-        log.info("Heartbeat");
-    }
-
     @Bean
     @Order(1)
     public SecurityFilterChain authServerSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -97,12 +90,7 @@ public class SecurityConfig {
 
 
     @Bean
-    public AuthorizationServerSettings authorizationServerSettings(
-            @Value("${spring.security.oauth2.client.registration.github.clientId}") String githubClientId,
-            @Value("${spring.security.oauth2.client.registration.github.clientSecret}") String githubClientSecret,
-            @Value("${type-6.issuer}") String issuerIp
-            ) {
-        log.info("[" + githubClientId + "], [" + githubClientSecret + "], [" + issuerIp + "]");
+    public AuthorizationServerSettings authorizationServerSettings(@Value("${type-6.issuer}") String issuerIp) {
         return AuthorizationServerSettings.builder()
                 .issuer(issuerIp)
                 .build();
