@@ -24,7 +24,7 @@ spec:
             - name: TYPE6_DATABASE_USER
               value: default-user
             - name: TYPE6_SELF_IP
-              value: https://auth-mipt-match.ru
+              value: https://service-shlim-tech.ru
             - name: TYPE7_CLIENT_REDIRECT_URI
               value: https://mipt-match.ru/code
             - name: TYPE7_HOSTNAME
