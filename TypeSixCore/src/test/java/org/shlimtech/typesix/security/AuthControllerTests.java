@@ -4,6 +4,7 @@ import lombok.SneakyThrows;
 import lombok.extern.java.Log;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.shlimtech.typesix.controller.AuthController;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
@@ -27,12 +28,6 @@ public class AuthControllerTests extends BaseTest {
     @Value("${type6.clients.type-8.client-redirect-uri}")
     private String type8RedirectUrl;
 
-    @Value("${spring.security.oauth2.client.registration.yandex.redirect-uri}")
-    private String yandexRedirectUrl;
-
-    @Value("${spring.security.oauth2.client.registration.github.redirect-uri}")
-    private String githubRedirectUrl;
-
     @BeforeEach
     @SneakyThrows
     public void setup() {
@@ -48,12 +43,12 @@ public class AuthControllerTests extends BaseTest {
 
     @Test
     public void type7ClientTest() {
-        checkClientRedirection(type7RedirectUrl, yandexRedirectUrl);
+        checkClientRedirection(type7RedirectUrl, AuthController.yandexAuthUrl);
     }
 
     @Test
     public void type8ClientTest() {
-        checkClientRedirection(type8RedirectUrl, githubRedirectUrl);
+        checkClientRedirection(type8RedirectUrl, AuthController.githubAuthUrl);
     }
 
     @SneakyThrows

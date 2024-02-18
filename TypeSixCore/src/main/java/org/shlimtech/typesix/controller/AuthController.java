@@ -5,7 +5,6 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.shlimtech.typesix.security.Type6Oauth2ClientProperties;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
@@ -17,13 +16,11 @@ import java.util.Optional;
 @Controller
 @RequiredArgsConstructor
 public class AuthController {
-    private static final String DEFAULT_SAVED_REQUEST_SESSION_ATTRIBUTE = "SPRING_SECURITY_SAVED_REQUEST";
-    private static final String SAVED_REQUEST_REDIRECT_URL_PARAMETER = "redirect_uri";
+    public static final String DEFAULT_SAVED_REQUEST_SESSION_ATTRIBUTE = "SPRING_SECURITY_SAVED_REQUEST";
+    public static final String SAVED_REQUEST_REDIRECT_URL_PARAMETER = "redirect_uri";
 
-    @Value("${spring.security.oauth2.client.registration.yandex.redirect-uri}")
-    private String yandexRedirectUrl;
-    @Value("${spring.security.oauth2.client.registration.github.redirect-uri}")
-    private String githubRedirectUrl;
+    public static final String yandexAuthUrl = "/oauth2/authorization/yandex";
+    public static final String githubAuthUrl = "/oauth2/authorization/github";
 
     private final Type6Oauth2ClientProperties clientProperties;
 
@@ -60,8 +57,8 @@ public class AuthController {
         }
 
         return switch (client.getAuthMethod()) {
-            case github -> "redirect:" + githubRedirectUrl;
-            case yandex -> "redirect:" + yandexRedirectUrl;
+            case github -> makeRedirect(githubAuthUrl);
+            case yandex -> makeRedirect(yandexAuthUrl);
             default -> "login";
         };
     }
