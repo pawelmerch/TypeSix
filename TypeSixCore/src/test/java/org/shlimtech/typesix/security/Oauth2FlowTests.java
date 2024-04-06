@@ -2,6 +2,7 @@ package org.shlimtech.typesix.security;
 
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
+import org.shlimtech.typesix.BaseTest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.Assert;
 

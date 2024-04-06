@@ -4,6 +4,7 @@ import lombok.SneakyThrows;
 import lombok.extern.java.Log;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.shlimtech.typesix.BaseTest;
 import org.shlimtech.typesix.controller.AuthController;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -57,7 +58,7 @@ public class AuthControllerTests extends BaseTest {
         final String requestAttr = "redirect_uri";
         final String headerName = "Location";
 
-        final DefaultSavedRequest savedRequest = new DefaultSavedRequest.Builder().setScheme("").setParameters(Map.of(requestAttr, new String[] {redirectUrl})).build();
+        final DefaultSavedRequest savedRequest = new DefaultSavedRequest.Builder().setScheme("").setParameters(Map.of(requestAttr, new String[]{redirectUrl})).build();
         var response = mockMvc.perform(get("/login").sessionAttr(sessionAttr, savedRequest))
                 .andExpect(status().is3xxRedirection())
                 .andReturn().getResponse();
