@@ -1,10 +1,9 @@
-package org.shlimtech.typesix.security;
+package org.shlimtech.typesix;
 
+import org.shlimtech.typesixdatabasecommon.TypeSixDatabaseCommon;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -47,9 +46,7 @@ import org.springframework.test.web.servlet.MockMvc;
         "type6.clients.type-8.client-hostname=type8.org",
         "type6.clients.type-8.auth-method=github",
 })
-@ComponentScan(basePackages = {"org.shlimtech"})
-@ComponentScan(basePackages = "org.shlimtech")
-@EntityScan(basePackages = "org.shlimtech")
+@TypeSixDatabaseCommon
 @AutoConfigureMockMvc
 public class BaseTest {
     @Autowired
