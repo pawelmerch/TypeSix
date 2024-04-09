@@ -23,9 +23,12 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
+import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -34,6 +37,13 @@ import java.util.stream.Collectors;
 @Log
 @EnableScheduling
 public class SecurityConfig {
+
+    private final boolean isDebug;
+
+    public SecurityConfig(@Value("${spring.profiles.active}") String activeProfile) {
+        isDebug = activeProfile.equals("debug");
+    }
+
     @Bean
     @Order(1)
     public SecurityFilterChain authServerSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -45,13 +55,12 @@ public class SecurityConfig {
 
     @Bean
     @Order(2)
-    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http,
-            @Value("${spring.profiles.active}") String activeProfile) throws Exception {
+    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         HttpSecurity sec = http
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                 .authorizeHttpRequests(authorize -> authorize.requestMatchers("/login").permitAll().anyRequest().authenticated());
 
-        if (activeProfile.equals("debug")) {
+        if (isDebug) {
             sec.formLogin(Customizer.withDefaults()).logout(AbstractHttpConfigurer::disable); // TODO make login via creds not only in debug
         } else {
             sec.oauth2Login(c -> c.loginPage("/login")).logout(AbstractHttpConfigurer::disable); // TODO customize login page
@@ -80,12 +89,9 @@ public class SecurityConfig {
                                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                                // TODO set to debug profile
-                                //.tokenSettings(TokenSettings.builder()
-                                //        .accessTokenTimeToLive(Duration.of(5, ChronoUnit.SECONDS))
-                                //        .build())
+                                .tokenSettings(createTokenSettings())
                                 .build()
-        ).collect(Collectors.toList()));
+                ).collect(Collectors.toList()));
     }
 
 
@@ -101,6 +107,16 @@ public class SecurityConfig {
         RSAKey rsaKey = JwkUtils.generateRsa();
         JWKSet jwkSet = new JWKSet(rsaKey);
         return (jwkSelector, securityContext) -> jwkSelector.select(jwkSet);
+    }
+
+    private TokenSettings createTokenSettings() {
+        var builder = TokenSettings.builder();
+
+        if (isDebug) {
+            builder.accessTokenTimeToLive(Duration.of(5, ChronoUnit.SECONDS));
+        }
+
+        return builder.build();
     }
 
 }
