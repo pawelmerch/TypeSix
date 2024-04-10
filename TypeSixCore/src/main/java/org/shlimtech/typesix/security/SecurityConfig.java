@@ -16,6 +16,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
@@ -75,7 +77,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public RegisteredClientRepository registeredClientRepository(Type6Oauth2ClientProperties clientProperties) {
+    public RegisteredClientRepository registeredClientRepository(Type6Oauth2ClientProperties clientProperties,
+                                                                 PasswordEncoder passwordEncoder) {
         return new InMemoryRegisteredClientRepository(clientProperties
                 .getClients()
                 .values()
@@ -84,7 +87,7 @@ public class SecurityConfig {
                         RegisteredClient
                                 .withId(UUID.randomUUID().toString())
                                 .clientId(client.getClientId())
-                                .clientSecret("{noop}" + client.getClientSecret()) // TODO set encoding
+                                .clientSecret(passwordEncoder.encode(client.getClientSecret()))
                                 .redirectUri(client.getClientRedirectUri())
                                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
@@ -93,7 +96,6 @@ public class SecurityConfig {
                                 .build()
                 ).collect(Collectors.toList()));
     }
-
 
     @Bean
     public AuthorizationServerSettings authorizationServerSettings(@Value("${type-6.issuer}") String issuerIp) {
@@ -107,6 +109,11 @@ public class SecurityConfig {
         RSAKey rsaKey = JwkUtils.generateRsa();
         JWKSet jwkSet = new JWKSet(rsaKey);
         return (jwkSelector, securityContext) -> jwkSelector.select(jwkSet);
+    }
+
+    @Bean
+    public PasswordEncoder getPasswordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     private TokenSettings createTokenSettings() {
