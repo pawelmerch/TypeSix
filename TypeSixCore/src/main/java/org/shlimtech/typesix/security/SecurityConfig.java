@@ -4,6 +4,8 @@ import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
 import lombok.extern.java.Log;
 import org.shlimtech.typesix.utils.JwkUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,11 +13,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -50,6 +52,7 @@ public class SecurityConfig {
     @Order(1)
     public SecurityFilterChain authServerSecurityFilterChain(HttpSecurity http) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
+        configureDebugAccessDeniedHandler(http);
         return http.exceptionHandling(exceptions ->
                 exceptions.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
         ).build();
@@ -58,17 +61,24 @@ public class SecurityConfig {
     @Bean
     @Order(2)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        HttpSecurity sec = http
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
-                .authorizeHttpRequests(authorize -> authorize.requestMatchers("/login").permitAll().anyRequest().authenticated());
-
-        if (isDebug) {
-            sec.formLogin(Customizer.withDefaults()).logout(AbstractHttpConfigurer::disable); // TODO make login via creds not only in debug
-        } else {
-            sec.oauth2Login(c -> c.loginPage("/login")).logout(AbstractHttpConfigurer::disable); // TODO customize login page
-        }
-
-        return sec.build();
+        configureDebugAccessDeniedHandler(http);
+        // security chain for ui purposes
+        return http
+                // TODO restore CSRF in login page
+                .csrf(AbstractHttpConfigurer::disable)
+                // indicates that this chain is used only with /login and /logout URLs
+                .securityMatcher("/login", "/logout", "/oauth2/authorization/**", "/login/oauth2/code/**")
+                // only /login and /logout URLs are permitted, all others are denied
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/login", "/logout").permitAll()
+                        .anyRequest().authenticated())
+                // form login authentication filter is enabled
+                .formLogin(c -> c.loginPage("/login"))
+                // oauth2 login authentication filter is enabled
+                .oauth2Login(c -> c.loginPage("/login"))
+                // default logout filter is disabled
+                .logout(LogoutConfigurer::disable)
+                .build();
     }
 
     @Bean
@@ -124,6 +134,16 @@ public class SecurityConfig {
         }
 
         return builder.build();
+    }
+
+    @SneakyThrows
+    private void configureDebugAccessDeniedHandler(HttpSecurity http) {
+        if (isDebug) {
+            http.exceptionHandling(exceptions -> exceptions.accessDeniedHandler((request, response, accessDeniedException) -> {
+                accessDeniedException.printStackTrace();
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            }));
+        }
     }
 
 }
