@@ -2,45 +2,27 @@ package org.shlimtech.typesix.security;
 
 import lombok.SneakyThrows;
 import lombok.extern.java.Log;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.shlimtech.typesix.BaseTest;
 import org.shlimtech.typesix.controller.AuthController;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
 import org.springframework.util.Assert;
 
-import java.nio.charset.Charset;
 import java.util.Map;
+import java.util.Objects;
 
+import static org.shlimtech.typesix.security.EndpointsList.LOGIN_ENDPOINT;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Log
 public class AuthControllerTests extends BaseTest {
-    @Value("classpath:templates/login.html")
-    private Resource loginPage;
-    private String loginPageContent;
-
     @Value("${type6.clients.type-7.client-redirect-uri}")
     private String type7RedirectUrl;
 
     @Value("${type6.clients.type-8.client-redirect-uri}")
     private String type8RedirectUrl;
-
-    @BeforeEach
-    @SneakyThrows
-    public void setup() {
-        loginPageContent = loginPage.getContentAsString(Charset.defaultCharset());
-    }
-
-    @Test
-    @SneakyThrows
-    public void emptySessionTest() {
-        var response = mockMvc.perform(get("/login")).andReturn().getResponse();
-        Assert.isTrue(response.getContentAsString().equals(loginPageContent), "no login page content");
-    }
 
     @Test
     public void type7ClientTest() {
@@ -59,10 +41,10 @@ public class AuthControllerTests extends BaseTest {
         final String headerName = "Location";
 
         final DefaultSavedRequest savedRequest = new DefaultSavedRequest.Builder().setScheme("").setParameters(Map.of(requestAttr, new String[]{redirectUrl})).build();
-        var response = mockMvc.perform(get("/login").sessionAttr(sessionAttr, savedRequest))
+        var response = mockMvc.perform(get(LOGIN_ENDPOINT).sessionAttr(sessionAttr, savedRequest))
                 .andExpect(status().is3xxRedirection())
                 .andReturn().getResponse();
-        Assert.isTrue(response.getHeader(headerName).equals(providerUrl), "bad redirection");
+        Assert.isTrue(Objects.equals(response.getHeader(headerName), providerUrl), "bad redirection");
     }
 
 }

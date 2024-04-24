@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
         "spring.profiles.active=release",
 
         // OTHER
-        "type-6.issuer=http://localhost:7777",
+        "type-6.selfUrl=http://localhost:7777",
         "server.ssl.enabled=false",
 
         // GITHUB OAUTH2 PROVIDER
