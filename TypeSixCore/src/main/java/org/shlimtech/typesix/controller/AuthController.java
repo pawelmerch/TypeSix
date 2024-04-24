@@ -57,6 +57,7 @@ public class AuthController {
         Type6Oauth2ClientProperties.Type6Oauth2Client client = getOauth2Client(request);
         
         Arrays.stream(Type6Oauth2ClientProperties.AuthMethod.values()).forEach(provider -> model.addAttribute(provider + "_auth_url", THIRD_PARTY_AUTHORIZATION_ENDPOINT + "/" + provider));
+        model.addAttribute("form_login_url", FORM_LOGIN_ENDPOINT);
 
         if (client == null) {
             return "login";
