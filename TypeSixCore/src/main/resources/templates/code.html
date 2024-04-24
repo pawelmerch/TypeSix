@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Code page</title>
+</head>
+<body>
+
+<form class="code-form" method="post" th:action="${code_page}">
+    <h2 class="form-code-heading">Please enter code</h2>
+    <p>
+        <label for="email" class="sr-only">Email</label>
+        <input type="text" id="email" name="email" class="form-control" placeholder="Email" th:value="${email}" required
+               autofocus readonly>
+    </p>
+    <p>
+        <label for="code" class="sr-only">Code</label>
+        <input type="text" id="code" name="code" class="form-control" placeholder="Code" required autofocus>
+    </p>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Confirm</button>
+</form>
+
+</body>
+</html>

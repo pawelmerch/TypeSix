@@ -74,4 +74,13 @@ public class EndpointsList {
      * Внешний провайдер по протоколу oauth2 возвращается сюда с кодом
      */
     public static final String THIRD_PARTY_CODE_ENDPOINT = PREFIX + "/login/oauth2/code";
+
+
+    //
+    // REGISTRATION FLOW ENDPOINTS
+    //
+    public static final String EMAIL_PAGE = PREFIX + "/email";
+    public static final String CODE_PAGE = PREFIX + "/emailcode";
+    public static final String PASSWORD_CHANGE_PAGE = PREFIX + "/passwordchange";
+    public static final String PASSWORD_SET_ENDPOINT = PREFIX + "/passwordset";
 }

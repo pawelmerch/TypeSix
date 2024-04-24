@@ -55,9 +55,10 @@ public class AuthController {
     @GetMapping(LOGIN_ENDPOINT)
     public String login(HttpServletRequest request, Model model) {
         Type6Oauth2ClientProperties.Type6Oauth2Client client = getOauth2Client(request);
-        
+
         Arrays.stream(Type6Oauth2ClientProperties.AuthMethod.values()).forEach(provider -> model.addAttribute(provider + "_auth_url", THIRD_PARTY_AUTHORIZATION_ENDPOINT + "/" + provider));
         model.addAttribute("form_login_url", FORM_LOGIN_ENDPOINT);
+        model.addAttribute("email_setup_url", EMAIL_PAGE);
 
         if (client == null) {
             return "login";
