@@ -20,7 +20,7 @@
     <properties>
         <revision>0.1</revision>
         <java.version>17</java.version>
-        <type-6.common.version>0.1</type-6.common.version>
+        <type-6.businessLogicLayer.version>0.1</type-6.businessLogicLayer.version>
         <modelmapper.version>3.2.0</modelmapper.version>
     </properties>
 
@@ -94,9 +94,9 @@
 
         <!--INTERNAL-->
         <dependency>
-            <groupId>org.shlimtech.type-6.common</groupId>
-            <artifactId>TypeSixDataBaseCommon</artifactId>
-            <version>${type-6.common.version}</version>
+            <groupId>org.shlimtech.type-6.businessLogicLayer</groupId>
+            <artifactId>TypeSixBusinessLogicLayer</artifactId>
+            <version>${type-6.businessLogicLayer.version}</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

@@ -17,7 +17,7 @@
 
     <modules>
         <module>TypeSixCore</module>
-        <module>TypeSixDataBaseCommon</module>
+        <module>TypeSixBusinessLogic</module>
     </modules>
 
 </project>
