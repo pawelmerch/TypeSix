@@ -9,9 +9,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.Arrays;
 import java.util.Optional;
+
+import static org.shlimtech.typesix.security.EndpointsList.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -19,8 +23,8 @@ public class AuthController {
     public static final String DEFAULT_SAVED_REQUEST_SESSION_ATTRIBUTE = "SPRING_SECURITY_SAVED_REQUEST";
     public static final String SAVED_REQUEST_REDIRECT_URL_PARAMETER = "redirect_uri";
 
-    public static final String yandexAuthUrl = "/oauth2/authorization/yandex";
-    public static final String githubAuthUrl = "/oauth2/authorization/github";
+    public static final String yandexAuthUrl = THIRD_PARTY_AUTHORIZATION_ENDPOINT + "/yandex";
+    public static final String githubAuthUrl = THIRD_PARTY_AUTHORIZATION_ENDPOINT + "/github";
 
     private final Type6Oauth2ClientProperties clientProperties;
 
@@ -48,9 +52,11 @@ public class AuthController {
 
     }
 
-    @GetMapping("/login")
-    public String login(HttpServletRequest request) {
+    @GetMapping(LOGIN_ENDPOINT)
+    public String login(HttpServletRequest request, Model model) {
         Type6Oauth2ClientProperties.Type6Oauth2Client client = getOauth2Client(request);
+        
+        Arrays.stream(Type6Oauth2ClientProperties.AuthMethod.values()).forEach(provider -> model.addAttribute(provider + "_auth_url", THIRD_PARTY_AUTHORIZATION_ENDPOINT + "/" + provider));
 
         if (client == null) {
             return "login";
@@ -63,7 +69,7 @@ public class AuthController {
         };
     }
 
-    @GetMapping("/logout")
+    @GetMapping(LOGOUT_ENDPOINT)
     public String logout(HttpServletRequest request) {
         Type6Oauth2ClientProperties.Type6Oauth2Client client = getOauth2Client(request);
 

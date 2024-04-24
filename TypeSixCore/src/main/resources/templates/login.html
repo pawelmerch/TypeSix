@@ -7,13 +7,13 @@
 <body>
 
 <tr>
-    <td><a href="/oauth2/authorization/github">GitHub</a></td>
+    <td><a th:href="${github_auth_url}">GitHub</a></td>
 </tr>
 <tr>
-    <td><a href="/oauth2/authorization/yandex">Yandex</a></td>
+    <td><a th:href="${yandex_auth_url}">Yandex</a></td>
 </tr>
 
-<form class="form-signin" method="post" action="/login">
+<form class="form-signin" method="post" action="/sso/formlogin">
     <h2 class="form-signin-heading">Please sign in</h2>
     <p>
         <label for="username" class="sr-only">Username</label>
