@@ -1,3 +1,3 @@
-[submodule "TypeSixDataBaseCommon"]
-	path = TypeSixDataBaseCommon
-	url = https://github.com/timattt/TypeSixDataBaseCommon.git
+[submodule "TypeSixBusinessLogic"]
+	path = TypeSixBusinessLogic
+	url = https://github.com/timattt/TypeSixBusinessLogic.git
