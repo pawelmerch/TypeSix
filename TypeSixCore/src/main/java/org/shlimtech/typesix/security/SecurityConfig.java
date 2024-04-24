@@ -4,7 +4,6 @@ import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.java.Log;
 import org.shlimtech.typesix.utils.JwkUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +26,9 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
-import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -44,19 +40,15 @@ import static org.shlimtech.typesix.security.EndpointsList.*;
 @EnableScheduling
 public class SecurityConfig {
 
-    private final boolean isDebug;
-
     public SecurityConfig(@Value("${spring.profiles.active}") String activeProfile,
                           @Value("${type-6.selfUrl}") String selfUrl,
                           @Autowired OAuth2ClientProperties oAuth2ClientProperties) {
-        isDebug = activeProfile.equals("debug");
         setRedirectUriToAllRegistrations(oAuth2ClientProperties, selfUrl);
     }
 
     @Bean
     @Order(1)
     public SecurityFilterChain authServerSecurityFilterChain(HttpSecurity http) throws Exception {
-        configureDebugAccessDeniedHandler(http);
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
                 new OAuth2AuthorizationServerConfigurer();
         return http
@@ -72,22 +64,30 @@ public class SecurityConfig {
     @Bean
     @Order(2)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        configureDebugAccessDeniedHandler(http);
         // security chain for ui purposes
         return http
                 // TODO restore CSRF in login page
                 .csrf(AbstractHttpConfigurer::disable)
                 // indicates that this chain is used only with /login and /logout URLs
-                .securityMatcher(LOGIN_ENDPOINT, LOGOUT_ENDPOINT, THIRD_PARTY_AUTHORIZATION_ENDPOINT + "/*", THIRD_PARTY_CODE_ENDPOINT + "/*", FORM_LOGIN_ENDPOINT)
+                .securityMatcher(
+                        LOGIN_ENDPOINT,
+                        LOGOUT_ENDPOINT,
+                        THIRD_PARTY_AUTHORIZATION_ENDPOINT + "/*",
+                        THIRD_PARTY_CODE_ENDPOINT + "/*",
+                        FORM_LOGIN_ENDPOINT,
+                        SUCCESS_LOGIN_PAGE,
+                        ERROR_PAGE
+                )
                 // only /login and /logout URLs are permitted, all others are denied
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(LOGIN_ENDPOINT, LOGOUT_ENDPOINT).permitAll()
+                        .requestMatchers(LOGIN_ENDPOINT, ERROR_PAGE).permitAll()
                         .anyRequest().authenticated())
                 // form login authentication filter is enabled
-                .formLogin(c -> c.loginPage(LOGIN_ENDPOINT).loginProcessingUrl(FORM_LOGIN_ENDPOINT))
+                .formLogin(c -> c.loginPage(LOGIN_ENDPOINT).loginProcessingUrl(FORM_LOGIN_ENDPOINT).successForwardUrl(SUCCESS_LOGIN_PAGE))
                 // oauth2 login authentication filter is enabled
                 .oauth2Login(c -> c
                         .loginPage(LOGIN_ENDPOINT)
+                        .defaultSuccessUrl(SUCCESS_LOGIN_PAGE)
                         .authorizationEndpoint(endpoint -> endpoint.baseUri(THIRD_PARTY_AUTHORIZATION_ENDPOINT))
                         .redirectionEndpoint(endpoint -> endpoint.baseUri(THIRD_PARTY_CODE_ENDPOINT + "/*"))
                 )
@@ -112,7 +112,6 @@ public class SecurityConfig {
                                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                                .tokenSettings(createTokenSettings())
                                 .build()
                 ).collect(Collectors.toList()));
     }
@@ -135,25 +134,6 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder getPasswordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
-
-    private TokenSettings createTokenSettings() {
-        var builder = TokenSettings.builder();
-
-        if (isDebug) {
-            builder.accessTokenTimeToLive(Duration.of(5, ChronoUnit.SECONDS));
-        }
-
-        return builder.build();
-    }
-
-    private void configureDebugAccessDeniedHandler(HttpSecurity http) throws Exception {
-        if (isDebug) {
-            http.exceptionHandling(exceptions -> exceptions.accessDeniedHandler((request, response, accessDeniedException) -> {
-                accessDeniedException.printStackTrace();
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-            }));
-        }
     }
 
     private void setRedirectUriToAllRegistrations(OAuth2ClientProperties oAuth2ClientProperties, String selfUrl) {

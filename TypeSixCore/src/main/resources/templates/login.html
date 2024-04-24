@@ -6,6 +6,7 @@
 </head>
 <body>
 
+<a>Authenticate via oauth2:</a>
 <tr>
     <td><a th:href="${github_auth_url}">GitHub</a></td>
 </tr>
@@ -13,8 +14,14 @@
     <td><a th:href="${yandex_auth_url}">Yandex</a></td>
 </tr>
 
-<form class="form-signin" method="post" action="${form_login_url}">
-    <h2 class="form-signin-heading">Please sign in</h2>
+<br/>
+<br/>
+
+<a>Authenticate via login and password:</a>
+
+<br/>
+
+<form class="form-signin" method="post" th:action="${form_login_url}">
     <p>
         <label for="username" class="sr-only">Username</label>
         <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
@@ -23,12 +30,26 @@
         <label for="password" class="sr-only">Password</label>
         <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
     </p>
+    <div th:if="${param.error}" class="alert alert-error">
+        <div>
+            Invalid username and password.
+        </div>
+        <br/>
+    </div>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
 </form>
+
+<br/>
+<br/>
 
 <tr>
     <td><a th:href="${email_setup_url}">Register</a></td>
 </tr>
+
+<br/>
+<br/>
+
+<p th:text="${clientMessage}"></p>
 
 </body>
 </html>

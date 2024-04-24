@@ -1,8 +1,13 @@
 package org.shlimtech.typesix.controller;
 
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
+import org.shlimtech.typesixdatabasecommon.service.core.RegistrationException;
+import org.shlimtech.typesixdatabasecommon.service.core.RegistrationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,7 +16,17 @@ import static org.shlimtech.typesix.security.EndpointsList.*;
 
 @Controller
 @Log
+@RequiredArgsConstructor
 public class RegistrationController {
+
+    private final RegistrationService registrationService;
+
+    @PostConstruct
+    public void setRabbitMQStub() {
+        registrationService.setCodeSender(code -> {
+            log.info("CODE: " + code); // TODO replace this with rabbitMQ adapter call
+        });
+    }
 
     //==========================================
 
@@ -24,7 +39,7 @@ public class RegistrationController {
 
     @PostMapping(EMAIL_PAGE)
     public String acceptEmailEndpoint(@RequestParam("email") String email) {
-        beginRegistrationFlowStub(email);
+        registrationService.beginRegistrationFlow(email);
         return "redirect:" + CODE_PAGE + "?email=" + email;
     }
 
@@ -40,7 +55,7 @@ public class RegistrationController {
 
     @PostMapping(CODE_PAGE)
     public String acceptCodeEndpoint(@RequestParam("code") String code, @RequestParam String email) {
-        checkValidCodeStub(email, code);
+        registrationService.checkValidCode(email, code);
         return "redirect:" + PASSWORD_CHANGE_PAGE + "?code=" + code + "&email=" + email;
     }
 
@@ -56,21 +71,19 @@ public class RegistrationController {
 
     @PostMapping(PASSWORD_SET_ENDPOINT)
     public String passwordSetupEndpoint(@RequestParam String code, @RequestParam String password, @RequestParam String email, Model model) {
-        endRegistrationFlowStub(email, code, password);
+        registrationService.endRegistrationFlow(email, code, password);
         return "redirect:" + LOGIN_ENDPOINT;
     }
 
     //==========================================
 
-    private void beginRegistrationFlowStub(String email) {
-        log.info("beginRegistrationFlowStub: email=" + email);
+    @ExceptionHandler
+    public String registrationExceptionHandler(RegistrationException registrationException) {
+        return "redirect:" + ERROR_PAGE + "?message=" + registrationException.getMessage();
     }
 
-    private void checkValidCodeStub(String email, String code) {
-        log.info("checkValidCodeStub: email=" + email + ", code=" + code);
-    }
-
-    private void endRegistrationFlowStub(String email, String code, String password) {
-        log.info("endRegistrationFlowStub: email=" + email + ", code=" + code + ", password=" + password);
+    @ExceptionHandler
+    public String unknownExceptionHandler(Exception exception) {
+        return "redirect:" + ERROR_PAGE + "?message=Unknown exception: " + exception.getMessage();
     }
 }

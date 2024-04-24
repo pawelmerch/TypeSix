@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Arrays;
@@ -35,6 +36,9 @@ public class AuthController {
             return null;
         }
         DefaultSavedRequest savedRequest = (DefaultSavedRequest) session.getAttribute(DEFAULT_SAVED_REQUEST_SESSION_ATTRIBUTE);
+        if (savedRequest == null) {
+            return null;
+        }
         var uri = savedRequest.getParameterValues(SAVED_REQUEST_REDIRECT_URL_PARAMETER);
         return uri == null ? null : uri[0];
     }
@@ -61,14 +65,17 @@ public class AuthController {
         model.addAttribute("email_setup_url", EMAIL_PAGE);
 
         if (client == null) {
+            model.addAttribute("clientMessage", "You are not bounded to any oauth2-client");
             return "login";
         }
 
-        return switch (client.getAuthMethod()) {
-            case github -> makeRedirect(githubAuthUrl);
-            case yandex -> makeRedirect(yandexAuthUrl);
-            default -> "login";
-        };
+        model.addAttribute("clientMessage", "You came from a client: " + client.getClientId());
+
+        if (client.getAuthMethod() == Type6Oauth2ClientProperties.AuthMethod.all) {
+            return "login";
+        }
+
+        return makeRedirect(THIRD_PARTY_AUTHORIZATION_ENDPOINT + "/" + client.getAuthMethod().toString());
     }
 
     @GetMapping(LOGOUT_ENDPOINT)
@@ -84,6 +91,16 @@ public class AuthController {
             request.getSession().invalidate();
         }
         return makeRedirect(client.getClientHostname());
+    }
+
+    @GetMapping(SUCCESS_LOGIN_PAGE)
+    public String success() {
+        return "success";
+    }
+
+    @ExceptionHandler
+    public String errorHandler(Exception exception) {
+        return "redirect:" + ERROR_PAGE + "?message=Unknown exception: " + exception.getMessage();
     }
 
     private String makeRedirect(String to) {

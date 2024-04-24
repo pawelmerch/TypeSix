@@ -1,12 +1,13 @@
 package org.shlimtech.typesix.security;
 
 import io.micrometer.core.instrument.Counter;
-import org.shlimtech.typesixdatabasecommon.dto.UserDTO;
-import org.shlimtech.typesixdatabasecommon.service.UserService;
+import org.shlimtech.typesix.security.user.CustomUserPrinciple;
+import org.shlimtech.typesixdatabasecommon.service.core.AuthenticationService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
@@ -15,26 +16,36 @@ import org.springframework.security.oauth2.server.authorization.token.OAuth2Toke
 @Configuration
 public class CustomTokenGenerator {
 
-    private final UserService userService;
+    private final AuthenticationService authenticationService;
     private final Counter loginCounter;
 
-    public CustomTokenGenerator(UserService userService, @Qualifier("login_counter") Counter loginCounter) {
-        this.userService = userService;
+    public CustomTokenGenerator(AuthenticationService authenticationService, @Qualifier("login_counter") Counter loginCounter) {
+        this.authenticationService = authenticationService;
         this.loginCounter = loginCounter;
     }
 
-
     @Bean
-    @Profile("release")
     public OAuth2TokenCustomizer<JwtEncodingContext> tokenCustomizer() {
         return (context) -> {
-            OAuth2AuthenticationToken token = context.getPrincipal();
+            String email = retrieveEmail(context.getPrincipal());
+            authenticationService.customizeToken(email, (name, value) -> {
+                context.getClaims().claim(name, value);
+            });
+            loginCounter.increment();
+        };
+    }
+
+    private String retrieveEmail(Authentication authentication) {
+        if (authentication instanceof OAuth2AuthenticationToken token) {
             OAuth2User user = token.getPrincipal();
             String email = user.getName();
-            UserDTO userDTO = userService.loadUser(email);
-            loginCounter.increment();
-            context.getClaims().claim("email", userDTO.getEmail()).claim("id", userDTO.getId());
-        };
+            return email;
+        } else if (authentication instanceof UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken) {
+            CustomUserPrinciple userPrinciple = (CustomUserPrinciple) usernamePasswordAuthenticationToken.getPrincipal();
+            return userPrinciple.getUsername();
+        }
+
+        throw new IllegalStateException("Unsupported authentication type: " + authentication.getClass());
     }
 
 }

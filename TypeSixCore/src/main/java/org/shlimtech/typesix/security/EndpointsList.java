@@ -83,4 +83,11 @@ public class EndpointsList {
     public static final String CODE_PAGE = PREFIX + "/emailcode";
     public static final String PASSWORD_CHANGE_PAGE = PREFIX + "/passwordchange";
     public static final String PASSWORD_SET_ENDPOINT = PREFIX + "/passwordset";
+
+
+    //
+    // OTHER ENDPOINTS
+    //
+    public static final String ERROR_PAGE = PREFIX + "/error";
+    public static final String SUCCESS_LOGIN_PAGE = PREFIX + "/success";
 }
