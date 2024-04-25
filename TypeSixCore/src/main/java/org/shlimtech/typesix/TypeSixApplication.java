@@ -1,11 +1,11 @@
 package org.shlimtech.typesix;
 
-import org.shlimtech.typesixbusinesslogic.TypeSixDatabaseCommon;
+import org.shlimtech.typesixbusinesslogic.EnableTypeSixBusinessLogic;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@TypeSixDatabaseCommon
+@EnableTypeSixBusinessLogic
 public class TypeSixApplication {
 
     public static void main(String[] args) {
