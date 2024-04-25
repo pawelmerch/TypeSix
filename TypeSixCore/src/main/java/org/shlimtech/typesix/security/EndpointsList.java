@@ -90,4 +90,5 @@ public class EndpointsList {
     //
     public static final String ERROR_PAGE = PREFIX + "/error";
     public static final String SUCCESS_LOGIN_PAGE = PREFIX + "/success";
+    public static final String ACTUATOR_BASE_PATH = "/actuator";
 }

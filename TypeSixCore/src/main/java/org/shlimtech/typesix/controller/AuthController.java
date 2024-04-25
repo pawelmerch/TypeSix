@@ -12,11 +12,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
 import java.util.Optional;
 
 import static org.shlimtech.typesix.security.EndpointsList.*;
+import static org.shlimtech.typesix.utils.Utils.retrieveEmail;
 
 @Controller
 @RequiredArgsConstructor
@@ -43,6 +45,14 @@ public class AuthController {
         return uri == null ? null : uri[0];
     }
 
+    private String getLoggedUserEmail() {
+        try {
+            return retrieveEmail(SecurityContextHolder.getContext().getAuthentication());
+        } catch (Exception ignored) {
+            return null;
+        }
+    }
+
     private Type6Oauth2ClientProperties.Type6Oauth2Client getOauth2Client(HttpServletRequest request) {
         String redirectUri = getOauth2RedirectUri(request);
 
@@ -63,6 +73,15 @@ public class AuthController {
         Arrays.stream(Type6Oauth2ClientProperties.AuthMethod.values()).forEach(provider -> model.addAttribute(provider + "_auth_url", THIRD_PARTY_AUTHORIZATION_ENDPOINT + "/" + provider));
         model.addAttribute("form_login_url", FORM_LOGIN_ENDPOINT);
         model.addAttribute("email_setup_url", EMAIL_PAGE);
+        model.addAttribute("logout_url", LOGOUT_ENDPOINT);
+
+        String email = getLoggedUserEmail();
+
+        model.addAttribute("isLogged", email != null);
+
+        if (email != null) {
+            model.addAttribute("userEmail", email);
+        }
 
         if (client == null) {
             model.addAttribute("clientMessage", "You are not bounded to any oauth2-client");
@@ -79,17 +98,22 @@ public class AuthController {
     }
 
     @GetMapping(LOGOUT_ENDPOINT)
-    public String logout(HttpServletRequest request) {
-        Type6Oauth2ClientProperties.Type6Oauth2Client client = getOauth2Client(request);
-
-        if (client == null) {
-            throw new RuntimeException("Client not found");
-        }
-
+    public String logout(HttpServletRequest request, @RequestParam(required = false) String redirect) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             request.getSession().invalidate();
         }
+
+        Type6Oauth2ClientProperties.Type6Oauth2Client client = getOauth2Client(request);
+
+        if (redirect != null) {
+            return makeRedirect(redirect);
+        }
+
+        if (client == null) {
+            return makeRedirect(LOGIN_ENDPOINT);
+        }
+
         return makeRedirect(client.getClientHostname());
     }
 

@@ -5,7 +5,7 @@ type-6:
       client-secret: ${TYPE7_CLIENT_SECRET}
       client-redirect-uri: ${TYPE7_CLIENT_REDIRECT_URI}
       client-hostname: ${TYPE7_HOSTNAME}
-      auth-method: yandex
+      auth-method: all
     type-8:
       client-id: ${TYPE8_CLIENT_ID}
       client-secret: ${TYPE8_CLIENT_SECRET}

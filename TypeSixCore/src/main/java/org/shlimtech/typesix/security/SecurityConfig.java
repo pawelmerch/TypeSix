@@ -5,16 +5,15 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import lombok.extern.java.Log;
-import org.shlimtech.typesix.utils.JwkUtils;
+import org.shlimtech.typesix.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -34,16 +33,15 @@ import java.util.stream.Collectors;
 
 import static org.shlimtech.typesix.security.EndpointsList.*;
 
-@EnableWebSecurity
 @Configuration
 @Log
-@EnableScheduling
 public class SecurityConfig {
 
-    public SecurityConfig(@Value("${spring.profiles.active}") String activeProfile,
-                          @Value("${type-6.selfUrl}") String selfUrl,
-                          @Autowired OAuth2ClientProperties oAuth2ClientProperties) {
+    public SecurityConfig(@Value("${type-6.selfUrl}") String selfUrl,
+                          @Autowired OAuth2ClientProperties oAuth2ClientProperties,
+                          @Autowired WebEndpointProperties webEndpointProperties) {
         setRedirectUriToAllRegistrations(oAuth2ClientProperties, selfUrl);
+        webEndpointProperties.setBasePath(ACTUATOR_BASE_PATH);
     }
 
     @Bean
@@ -63,7 +61,7 @@ public class SecurityConfig {
 
     @Bean
     @Order(2)
-    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain basicSecurityFilterChain(HttpSecurity http) throws Exception {
         // security chain for ui purposes
         return http
                 // TODO restore CSRF in login page
@@ -76,14 +74,27 @@ public class SecurityConfig {
                         THIRD_PARTY_CODE_ENDPOINT + "/*",
                         FORM_LOGIN_ENDPOINT,
                         SUCCESS_LOGIN_PAGE,
-                        ERROR_PAGE
+                        ERROR_PAGE,
+                        EMAIL_PAGE,
+                        CODE_PAGE,
+                        PASSWORD_CHANGE_PAGE,
+                        PASSWORD_SET_ENDPOINT
                 )
                 // only /login and /logout URLs are permitted, all others are denied
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(LOGIN_ENDPOINT, ERROR_PAGE).permitAll()
+                        .requestMatchers(
+                                LOGIN_ENDPOINT,
+                                LOGOUT_ENDPOINT,
+                                FORM_LOGIN_ENDPOINT,
+                                ERROR_PAGE,
+                                EMAIL_PAGE,
+                                CODE_PAGE,
+                                PASSWORD_CHANGE_PAGE,
+                                PASSWORD_SET_ENDPOINT
+                        ).permitAll()
                         .anyRequest().authenticated())
                 // form login authentication filter is enabled
-                .formLogin(c -> c.loginPage(LOGIN_ENDPOINT).loginProcessingUrl(FORM_LOGIN_ENDPOINT).successForwardUrl(SUCCESS_LOGIN_PAGE))
+                .formLogin(c -> c.loginPage(LOGIN_ENDPOINT).loginProcessingUrl(FORM_LOGIN_ENDPOINT).defaultSuccessUrl(SUCCESS_LOGIN_PAGE))
                 // oauth2 login authentication filter is enabled
                 .oauth2Login(c -> c
                         .loginPage(LOGIN_ENDPOINT)
@@ -94,6 +105,15 @@ public class SecurityConfig {
                 // default logout filter is disabled
                 .logout(LogoutConfigurer::disable)
                 .build();
+    }
+
+    @Bean
+    @Order(3)
+    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+        return http.authorizeHttpRequests(authorize ->
+                // expose actuator endpoints
+                authorize.requestMatchers(ACTUATOR_BASE_PATH + "/**").permitAll().anyRequest().denyAll()
+        ).build();
     }
 
     @Bean
@@ -126,7 +146,7 @@ public class SecurityConfig {
 
     @Bean
     public JWKSource<SecurityContext> jwkSource() {
-        RSAKey rsaKey = JwkUtils.generateRsa();
+        RSAKey rsaKey = Utils.generateRsa();
         JWKSet jwkSet = new JWKSet(rsaKey);
         return (jwkSelector, securityContext) -> jwkSelector.select(jwkSet);
     }

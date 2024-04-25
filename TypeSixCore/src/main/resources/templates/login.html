@@ -51,5 +51,19 @@
 
 <p th:text="${clientMessage}"></p>
 
+<br/>
+
+<div th:if="${isLogged}" class="logged_info">
+    You are logged as:
+    <p th:text="${userEmail}"></p>
+
+    <br/>
+    <br/>
+
+    <tr>
+        <td><a th:href="${logout_url}">Logout</a></td>
+    </tr>
+</div>
+
 </body>
 </html>

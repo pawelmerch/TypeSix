@@ -1,17 +1,14 @@
 package org.shlimtech.typesix.security;
 
 import io.micrometer.core.instrument.Counter;
-import org.shlimtech.typesix.security.user.CustomUserPrinciple;
 import org.shlimtech.typesixdatabasecommon.service.core.AuthenticationService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
+
+import static org.shlimtech.typesix.utils.Utils.retrieveEmail;
 
 @Configuration
 public class CustomTokenGenerator {
@@ -33,19 +30,6 @@ public class CustomTokenGenerator {
             });
             loginCounter.increment();
         };
-    }
-
-    private String retrieveEmail(Authentication authentication) {
-        if (authentication instanceof OAuth2AuthenticationToken token) {
-            OAuth2User user = token.getPrincipal();
-            String email = user.getName();
-            return email;
-        } else if (authentication instanceof UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken) {
-            CustomUserPrinciple userPrinciple = (CustomUserPrinciple) usernamePasswordAuthenticationToken.getPrincipal();
-            return userPrinciple.getUsername();
-        }
-
-        throw new IllegalStateException("Unsupported authentication type: " + authentication.getClass());
     }
 
 }
