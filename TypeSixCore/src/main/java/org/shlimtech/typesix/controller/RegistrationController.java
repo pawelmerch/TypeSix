@@ -3,8 +3,8 @@ package org.shlimtech.typesix.controller;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
-import org.shlimtech.typesixdatabasecommon.service.core.RegistrationException;
-import org.shlimtech.typesixdatabasecommon.service.core.RegistrationService;
+import org.shlimtech.typesixbusinesslogic.service.core.RegistrationException;
+import org.shlimtech.typesixbusinesslogic.service.core.RegistrationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,7 +23,7 @@ public class RegistrationController {
 
     @PostConstruct
     public void setRabbitMQStub() {
-        registrationService.setCodeSender(code -> {
+        registrationService.setCodeSender((code, email) -> {
             log.info("CODE: " + code); // TODO replace this with rabbitMQ adapter call
         });
     }

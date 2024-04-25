@@ -1,8 +1,8 @@
 package org.shlimtech.typesix.security.user;
 
 import lombok.RequiredArgsConstructor;
-import org.shlimtech.typesixdatabasecommon.service.core.AuthenticationException;
-import org.shlimtech.typesixdatabasecommon.service.core.AuthenticationService;
+import org.shlimtech.typesixbusinesslogic.service.core.AuthenticationException;
+import org.shlimtech.typesixbusinesslogic.service.core.AuthenticationService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

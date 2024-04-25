@@ -1,7 +1,7 @@
 package org.shlimtech.typesix.security;
 
 import io.micrometer.core.instrument.Counter;
-import org.shlimtech.typesixdatabasecommon.service.core.AuthenticationService;
+import org.shlimtech.typesixbusinesslogic.service.core.AuthenticationService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

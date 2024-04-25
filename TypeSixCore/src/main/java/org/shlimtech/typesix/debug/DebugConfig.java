@@ -4,8 +4,8 @@ import jakarta.annotation.PostConstruct;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
-import org.shlimtech.typesixdatabasecommon.service.core.RegistrationException;
-import org.shlimtech.typesixdatabasecommon.service.core.RegistrationService;
+import org.shlimtech.typesixbusinesslogic.service.core.RegistrationException;
+import org.shlimtech.typesixbusinesslogic.service.core.RegistrationService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
@@ -28,7 +28,7 @@ public class DebugConfig {
     @PostConstruct
     public void createUsers() {
         AtomicReference<String> code = new AtomicReference<>("");
-        registrationService.setCodeSender(code::set);
+        registrationService.setCodeSender((userCode, email) -> code.set(userCode));
 
         Arrays.stream(debugUsers).forEach(user -> {
             try {

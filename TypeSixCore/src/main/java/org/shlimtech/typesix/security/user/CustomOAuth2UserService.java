@@ -1,7 +1,7 @@
 package org.shlimtech.typesix.security.user;
 
 import io.micrometer.core.instrument.Counter;
-import org.shlimtech.typesixdatabasecommon.service.core.AuthenticationService;
+import org.shlimtech.typesixbusinesslogic.service.core.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
