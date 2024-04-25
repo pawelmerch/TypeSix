@@ -32,7 +32,6 @@ public class RegistrationController {
 
     @GetMapping(EMAIL_PAGE)
     public String emailPage(Model model) {
-        model.addAttribute("code_page", CODE_PAGE);
         model.addAttribute("email_page", EMAIL_PAGE);
         return "email";
     }
@@ -49,7 +48,6 @@ public class RegistrationController {
     public String codePage(Model model, @RequestParam String email) {
         model.addAttribute("email", email);
         model.addAttribute("code_page", CODE_PAGE);
-        model.addAttribute("password_page", PASSWORD_CHANGE_PAGE);
         return "code";
     }
 

@@ -4,6 +4,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.web.client.RestClient;
 
 @TestPropertySource(properties = {
         // H2 DATA BASE
@@ -57,6 +58,8 @@ import org.springframework.test.context.TestPropertySource;
 public class BaseTest {
     @LocalServerPort
     protected int port;
+
+    protected final RestClient defaultClient = RestClient.create();
 
     protected String origin() {
         return "http://localhost:" + port;

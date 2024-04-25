@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.shlimtech.typesix.BaseTest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
-import org.springframework.web.client.RestClient;
 
 import java.util.Base64;
 import java.util.Map;
@@ -24,7 +23,6 @@ public class Oauth2ClientWithFormLoginFlowTests extends BaseTest {
     @Value("${type6.clients.test-type.client-redirect-uri}")
     private String redirectUrl;
 
-    private final RestClient defaultClient = RestClient.create();
     private String sessionCookie;
     private String code;
 
