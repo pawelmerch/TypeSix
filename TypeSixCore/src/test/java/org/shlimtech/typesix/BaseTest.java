@@ -1,10 +1,14 @@
 package org.shlimtech.typesix;
 
+import org.junit.jupiter.api.Assertions;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.client.RestClient;
+
+import java.util.Map;
 
 @TestPropertySource(properties = {
         // H2 DATA BASE
@@ -63,5 +67,43 @@ public class BaseTest {
 
     protected String origin() {
         return "http://localhost:" + port;
+    }
+
+    protected String getPageContent(String path) {
+        var url = origin() + path;
+        var response = defaultClient
+                .get()
+                .uri(url)
+                .retrieve();
+        var ent = response.toEntity(String.class);
+        var status = ent.getStatusCode();
+        var body = ent.getBody();
+
+        Assertions.assertTrue(status.is2xxSuccessful());
+
+        return body;
+    }
+
+    protected void postWithFormMimeAndRedirect(String path, Map<String, String> params, String redirect) {
+        String mime = "";
+        for (var entry : params.entrySet()) {
+            mime += entry.getKey() + "=" + entry.getValue() + "&";
+        }
+        mime = mime.substring(0, mime.length() - 1);
+
+        var url = origin() + path;
+        var response = defaultClient
+                .post()
+                .uri(url)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .body(mime)
+                .retrieve();
+        var ent = response.toEntity(String.class);
+        var headers = ent.getHeaders();
+
+        String location = headers.getFirst("Location");
+
+        Assertions.assertTrue(ent.getStatusCode().is3xxRedirection());
+        Assertions.assertTrue(location.contains(redirect));
     }
 }

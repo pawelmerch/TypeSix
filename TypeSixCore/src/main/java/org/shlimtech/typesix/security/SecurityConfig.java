@@ -75,9 +75,8 @@ public class SecurityConfig {
                         FORM_LOGIN_ENDPOINT,
                         SUCCESS_LOGIN_PAGE,
                         ERROR_PAGE,
-                        EMAIL_PAGE,
-                        CODE_PAGE,
-                        PASSWORD_CHANGE_PAGE,
+                        EMAIL_ENDPOINT,
+                        CODE_ENDPOINT,
                         PASSWORD_SET_ENDPOINT
                 )
                 // only /login and /logout URLs are permitted, all others are denied
@@ -87,9 +86,8 @@ public class SecurityConfig {
                                 LOGOUT_ENDPOINT,
                                 FORM_LOGIN_ENDPOINT,
                                 ERROR_PAGE,
-                                EMAIL_PAGE,
-                                CODE_PAGE,
-                                PASSWORD_CHANGE_PAGE,
+                                EMAIL_ENDPOINT,
+                                CODE_ENDPOINT,
                                 PASSWORD_SET_ENDPOINT
                         ).permitAll()
                         .anyRequest().authenticated())

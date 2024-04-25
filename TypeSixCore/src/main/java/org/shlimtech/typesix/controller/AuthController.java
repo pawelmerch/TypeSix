@@ -36,7 +36,7 @@ public class AuthController {
         // Default endpoints
         Arrays.stream(Type6Oauth2ClientProperties.AuthMethod.values()).forEach(provider -> model.addAttribute(provider + "_auth_url", THIRD_PARTY_AUTHORIZATION_ENDPOINT + "/" + provider));
         model.addAttribute("form_login_url", FORM_LOGIN_ENDPOINT);
-        model.addAttribute("email_setup_url", EMAIL_PAGE);
+        model.addAttribute("email_setup_url", EMAIL_ENDPOINT);
         model.addAttribute("logout_url", LOGOUT_ENDPOINT);
 
         // User email

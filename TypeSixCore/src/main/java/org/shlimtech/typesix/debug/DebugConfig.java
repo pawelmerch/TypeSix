@@ -28,7 +28,10 @@ public class DebugConfig {
     @PostConstruct
     public void createUsers() {
         AtomicReference<String> code = new AtomicReference<>("");
-        registrationService.setCodeSender((userCode, email) -> code.set(userCode));
+        registrationService.setCodeSender((userCode, email) -> {
+            code.set(userCode);
+            log.info("Received code: " + userCode);
+        });
 
         Arrays.stream(debugUsers).forEach(user -> {
             try {

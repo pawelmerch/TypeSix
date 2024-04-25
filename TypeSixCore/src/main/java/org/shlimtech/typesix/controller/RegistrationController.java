@@ -30,36 +30,36 @@ public class RegistrationController {
 
     //==========================================
 
-    @GetMapping(EMAIL_PAGE)
+    @GetMapping(EMAIL_ENDPOINT)
     public String emailPage(Model model) {
-        model.addAttribute("email_page", EMAIL_PAGE);
+        model.addAttribute("email_page", EMAIL_ENDPOINT);
         return "email";
     }
 
-    @PostMapping(EMAIL_PAGE)
+    @PostMapping(EMAIL_ENDPOINT)
     public String acceptEmailEndpoint(@RequestParam("email") String email) {
         registrationService.beginRegistrationFlow(email);
-        return "redirect:" + CODE_PAGE + "?email=" + email;
+        return "redirect:" + CODE_ENDPOINT + "?email=" + email;
     }
 
     //==========================================
 
-    @GetMapping(CODE_PAGE)
+    @GetMapping(CODE_ENDPOINT)
     public String codePage(Model model, @RequestParam String email) {
         model.addAttribute("email", email);
-        model.addAttribute("code_page", CODE_PAGE);
+        model.addAttribute("code_page", CODE_ENDPOINT);
         return "code";
     }
 
-    @PostMapping(CODE_PAGE)
+    @PostMapping(CODE_ENDPOINT)
     public String acceptCodeEndpoint(@RequestParam("code") String code, @RequestParam String email) {
         registrationService.checkValidCode(email, code);
-        return "redirect:" + PASSWORD_CHANGE_PAGE + "?code=" + code + "&email=" + email;
+        return "redirect:" + PASSWORD_SET_ENDPOINT + "?code=" + code + "&email=" + email;
     }
 
     //==========================================
 
-    @GetMapping(PASSWORD_CHANGE_PAGE)
+    @GetMapping(PASSWORD_SET_ENDPOINT)
     public String passwordChangePage(@RequestParam String code, @RequestParam String email, Model model) {
         model.addAttribute("code", code);
         model.addAttribute("email", email);

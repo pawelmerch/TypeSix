@@ -79,9 +79,8 @@ public class EndpointsList {
     //
     // REGISTRATION FLOW ENDPOINTS
     //
-    public static final String EMAIL_PAGE = PREFIX + "/email";
-    public static final String CODE_PAGE = PREFIX + "/emailcode";
-    public static final String PASSWORD_CHANGE_PAGE = PREFIX + "/passwordchange";
+    public static final String EMAIL_ENDPOINT = PREFIX + "/email";
+    public static final String CODE_ENDPOINT = PREFIX + "/emailcode";
     public static final String PASSWORD_SET_ENDPOINT = PREFIX + "/passwordset";
 
 
