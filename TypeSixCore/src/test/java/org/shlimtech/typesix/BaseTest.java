@@ -1,12 +1,10 @@
 package org.shlimtech.typesix;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.web.servlet.MockMvc;
 
-@SpringBootTest
 @TestPropertySource(properties = {
         // H2 DATA BASE
         "spring.datasource.driver-class-name=org.h2.Driver",
@@ -15,7 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
         "spring.datasource.password=tmp_password",
 
         // PROFILE
-        "spring.profiles.active=release",
+        "spring.profiles.active=debug",
 
         // OTHER
         "type-6.selfUrl=http://localhost:7777",
@@ -31,11 +29,18 @@ import org.springframework.test.web.servlet.MockMvc;
         "spring.security.oauth2.client.registration.yandex.clientSecret=yandexTmpClientSecret",
         "spring.security.oauth2.client.registration.yandex.redirect-uri=/tmp/yandex",
 
+        // TEST-TYPE
+        "type6.clients.test-type.client-id=testClientId",
+        "type6.clients.test-type.client-secret=testClientSecret",
+        "type6.clients.test-type.client-redirect-uri=http://localhost:5555/tmp/type7/code",
+        "type6.clients.test-type.client-hostname=http://localhost:5555",
+        "type6.clients.test-type.auth-method=all",
+
         // TYPE-7 CLIENT
         "type6.clients.type-7.client-id=type7tmpClientId",
         "type6.clients.type-7.client-secret=type7tmpClientSecret",
-        "type6.clients.type-7.client-redirect-uri=/tmp/type7/code",
-        "type6.clients.type-7.client-hostname=type7.org",
+        "type6.clients.type-7.client-redirect-uri=http://localhost:4444/tmp/type7/code",
+        "type6.clients.type-7.client-hostname=http://localhost:4444",
         "type6.clients.type-7.auth-method=yandex",
 
         // TYPE-8 CLIENT
@@ -44,9 +49,16 @@ import org.springframework.test.web.servlet.MockMvc;
         "type6.clients.type-8.client-redirect-uri=/tmp/type8/code",
         "type6.clients.type-8.client-hostname=type8.org",
         "type6.clients.type-8.auth-method=github",
+
+        //"logging.level.org.springframework.security: TRACE"
 })
-@AutoConfigureMockMvc
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@EnableAutoConfiguration
 public class BaseTest {
-    @Autowired
-    protected MockMvc mockMvc;
+    @LocalServerPort
+    protected int port;
+
+    protected String origin() {
+        return "http://localhost:" + port;
+    }
 }
