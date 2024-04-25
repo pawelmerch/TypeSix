@@ -30,12 +30,12 @@ public class Oauth2ClientWithFormLoginFlowTests extends BaseTest {
 
     @Test
     public void testFlow() {
-        step1();
-        step2();
-        step3();
-        step4();
-        step5();
-        step6();
+        step1(); // OAUTH2_AUTHORIZATION_ENDPOINT
+        step2(); // LOGIN_ENDPOINT
+        step3(); // FORM_LOGIN_ENDPOINT
+        step4(); // OAUTH2_AUTHORIZATION_ENDPOINT
+        step5(); // OAUTH2_TOKEN_ENDPOINT
+        step6(); // LOGOUT_ENDPOINT
     }
 
     private void step1() {
