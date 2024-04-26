@@ -64,6 +64,12 @@ import static org.shlimtech.typesix.security.EndpointsList.SUCCESS_LOGIN_PAGE;
         "type6.clients.type-8.auth-method=github",
 
         //"logging.level.org.springframework.security: TRACE"
+
+        // RABBIT
+        "spring.rabbitmq.host=localhost",
+        "spring.rabbitmq.port=7654",
+        "spring.rabbitmq.username=user",
+        "spring.rabbitmq.password=pass"
 })
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EnableAutoConfiguration
