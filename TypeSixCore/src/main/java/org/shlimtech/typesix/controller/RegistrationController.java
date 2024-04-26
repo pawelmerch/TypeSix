@@ -1,6 +1,5 @@
 package org.shlimtech.typesix.controller;
 
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.shlimtech.typesixbusinesslogic.service.core.RegistrationException;
@@ -20,13 +19,6 @@ import static org.shlimtech.typesix.security.EndpointsList.*;
 public class RegistrationController {
 
     private final RegistrationService registrationService;
-
-    @PostConstruct
-    public void setRabbitMQStub() {
-        registrationService.setCodeSender((code, email) -> {
-            log.info("CODE: " + code); // TODO replace this with rabbitMQ adapter call
-        });
-    }
 
     //==========================================
 

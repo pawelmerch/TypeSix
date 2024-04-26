@@ -16,3 +16,13 @@ services:
       timeout: 1s
       retries: 100
     user: postgres
+  rabbitmq:
+    image: rabbitmq:management
+    hostname: rabbitmq
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=${TYPE6_RABBIT_USERNAME}
+      - RABBITMQ_DEFAULT_PASS=${TYPE6_RABBIT_PASSWORD}
+    ports:
+      - "${TYPE6_RABBIT_PORT}:5672"
+      - "1567:15672"
