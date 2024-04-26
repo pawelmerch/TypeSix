@@ -18,11 +18,17 @@ import java.util.concurrent.atomic.AtomicReference;
 @Log
 public class DebugConfig {
 
+    public static final String USER1 = "a";
+    public static final String USER2 = "b";
+
+    public static final String USER1_EMAIL = "a@gmail.com";
+    public static final String USER2_EMAIL = "b@gmail.com";
+
     private final RegistrationService registrationService;
 
     private static final SimpleUser[] debugUsers = {
-            new SimpleUser("a"),
-            new SimpleUser("b")
+            new SimpleUser(USER1),
+            new SimpleUser(USER2)
     };
 
     @PostConstruct

@@ -1,14 +1,22 @@
 package org.shlimtech.typesix;
 
 import org.junit.jupiter.api.Assertions;
+import org.shlimtech.typesix.debug.DebugConfig;
+import org.shlimtech.typesix.utils.HttpRequestInput;
+import org.shlimtech.typesix.utils.HttpResponseOutput;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.client.RestClient;
 
+import java.util.Base64;
 import java.util.Map;
+
+import static org.shlimtech.typesix.security.EndpointsList.FORM_LOGIN_ENDPOINT;
+import static org.shlimtech.typesix.security.EndpointsList.SUCCESS_LOGIN_PAGE;
 
 @TestPropertySource(properties = {
         // H2 DATA BASE
@@ -67,6 +75,114 @@ public class BaseTest {
 
     protected String origin() {
         return "http://localhost:" + port;
+    }
+
+    protected HttpResponseOutput get(HttpRequestInput input, String path) {
+        var url = origin() + path;
+        var spec = defaultClient.get();
+
+        if (input.hasCookie()) {
+            spec.header("Cookie", "JSESSIONID=" + input.getCookie());
+        }
+        if (input.hasAuth()) {
+            spec.header("Authorization", "Basic " + new String(Base64.getEncoder().encode((input.getAuth()).getBytes())));
+        }
+        if (input.hasMime()) {
+            String mime = "";
+            for (var entry : input.getMime().entrySet()) {
+                mime += entry.getKey() + "=" + entry.getValue() + "&";
+            }
+            mime = mime.substring(0, mime.length() - 1);
+            url += "?" + mime;
+        }
+
+        spec.uri(url);
+
+        var response = spec.retrieve();
+        ResponseEntity<?> ent;
+        if (input.isBodyRequested()) {
+            ent = response.toEntity(String.class);
+        } else {
+            ent = response.toBodilessEntity();
+        }
+
+        var status = ent.getStatusCode();
+        var headers = ent.getHeaders();
+
+        HttpResponseOutput output = HttpResponseOutput.builder().build();
+
+        if (headers.containsKey("set-cookie")) {
+            String cookieLine = headers.getFirst("set-cookie");
+            String sessionCookie = cookieLine.substring(cookieLine.indexOf('=') + 1, cookieLine.indexOf(';'));
+            output.setCookie(sessionCookie);
+        }
+        if (headers.containsKey("Location")) {
+            output.setLocation(headers.getFirst("Location"));
+        }
+        if (ent.getBody() != null && !ent.getBody().toString().isEmpty()) {
+            output.setContent(ent.getBody().toString());
+        }
+        output.setStatusCode(status);
+
+        return output;
+    }
+
+    protected HttpResponseOutput post(HttpRequestInput input, String path) {
+        var url = origin() + path;
+        var spec = defaultClient.post();
+
+        if (input.hasCookie()) {
+            spec.header("Cookie", "JSESSIONID=" + input.getCookie());
+        }
+        if (input.hasAuth()) {
+            spec.header("Authorization", "Basic " + new String(Base64.getEncoder().encode((input.getAuth()).getBytes())));
+        }
+        if (input.hasMime()) {
+            String mime = "";
+            for (var entry : input.getMime().entrySet()) {
+                mime += entry.getKey() + "=" + entry.getValue() + "&";
+            }
+            mime = mime.substring(0, mime.length() - 1);
+            spec.contentType(MediaType.APPLICATION_FORM_URLENCODED);
+            spec.body(mime);
+        }
+
+        spec.uri(url);
+
+        var response = spec.retrieve();
+        ResponseEntity<?> ent;
+        if (input.isBodyRequested()) {
+            ent = response.toEntity(String.class);
+        } else {
+            ent = response.toBodilessEntity();
+        }
+
+        var status = ent.getStatusCode();
+        var headers = ent.getHeaders();
+
+        HttpResponseOutput output = HttpResponseOutput.builder().build();
+
+        if (headers.containsKey("set-cookie")) {
+            String cookieLine = headers.getFirst("set-cookie");
+            String sessionCookie = cookieLine.substring(cookieLine.indexOf('=') + 1, cookieLine.indexOf(';'));
+            output.setCookie(sessionCookie);
+        }
+        if (headers.containsKey("Location")) {
+            output.setLocation(headers.getFirst("Location"));
+        }
+        if (ent.getBody() != null && !ent.getBody().toString().isEmpty()) {
+            output.setContent(ent.getBody().toString());
+        }
+        output.setStatusCode(status);
+
+        return output;
+    }
+
+    public String login() {
+        var out = post(HttpRequestInput.builder().mime(Map.of("username", DebugConfig.USER1_EMAIL, "password", DebugConfig.USER1)).build(), FORM_LOGIN_ENDPOINT);
+        Assertions.assertTrue(out.getStatusCode().is3xxRedirection());
+        Assertions.assertTrue(out.getLocation().contains(SUCCESS_LOGIN_PAGE));
+        return out.getCookie();
     }
 
     protected String getPageContent(String path) {
