@@ -50,7 +50,7 @@ public class SecurityConfig {
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
                 new OAuth2AuthorizationServerConfigurer();
         return http
-                .securityMatcher(OAUTH2_TOKEN_ENDPOINT, OAUTH2_AUTHORIZATION_ENDPOINT)
+                .securityMatcher(OAUTH2_TOKEN_ENDPOINT, OAUTH2_AUTHORIZATION_ENDPOINT, OAUTH2_JWK_SET_ENDPOINT)
                 .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .apply(authorizationServerConfigurer).and()
@@ -139,6 +139,7 @@ public class SecurityConfig {
         return AuthorizationServerSettings.builder()
                 .tokenEndpoint(OAUTH2_TOKEN_ENDPOINT)
                 .authorizationEndpoint(OAUTH2_AUTHORIZATION_ENDPOINT)
+                .jwkSetEndpoint(OAUTH2_JWK_SET_ENDPOINT)
                 .build();
     }
 

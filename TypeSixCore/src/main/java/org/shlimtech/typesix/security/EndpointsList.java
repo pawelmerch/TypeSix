@@ -31,6 +31,7 @@ package org.shlimtech.typesix.security;
  */
 public class EndpointsList {
     public static final String PREFIX = "/sso";
+    public static final String PREFIX_INTERNAL = "";
 
 
     //
@@ -44,6 +45,10 @@ public class EndpointsList {
      * Сюда клиент переходит для начала внешнего конвейера oauth2
      */
     public static final String OAUTH2_AUTHORIZATION_ENDPOINT = PREFIX + "/oauth2/authorize";
+    /**
+     * Сюда другие микросервисы подключаются, чтобы получить JWK
+     */
+    public static final String OAUTH2_JWK_SET_ENDPOINT = PREFIX_INTERNAL + "/oauth2/jwks";
     /**
      * Сюда клиент отправляет POST-запрос, чтобы указать логин и пароль
      */
@@ -89,5 +94,5 @@ public class EndpointsList {
     //
     public static final String ERROR_PAGE = PREFIX + "/error";
     public static final String SUCCESS_LOGIN_PAGE = PREFIX + "/success";
-    public static final String ACTUATOR_BASE_PATH = "/actuator";
+    public static final String ACTUATOR_BASE_PATH = PREFIX_INTERNAL + "/actuator";
 }

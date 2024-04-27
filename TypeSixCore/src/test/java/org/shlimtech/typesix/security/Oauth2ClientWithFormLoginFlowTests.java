@@ -34,6 +34,7 @@ public class Oauth2ClientWithFormLoginFlowTests extends BaseTest {
         step4(); // OAUTH2_AUTHORIZATION_ENDPOINT
         step5(); // OAUTH2_TOKEN_ENDPOINT
         step6(); // LOGOUT_ENDPOINT
+        step7(); // OAUTH2_JWK_SET_ENDPOINT
     }
 
     private void step1() {
@@ -154,6 +155,19 @@ public class Oauth2ClientWithFormLoginFlowTests extends BaseTest {
         // redirecting to redirect url of the client
         Assertions.assertTrue(status.is3xxRedirection());
         Assertions.assertTrue(redirectUrl.contains(location));
+    }
+
+    private void step7() {
+        var url = origin() + OAUTH2_JWK_SET_ENDPOINT;
+        var response = defaultClient
+                .get()
+                .uri(url).retrieve();
+        var body = response.body(Map.class);
+        var ent = response.toBodilessEntity();
+        var status = ent.getStatusCode();
+
+        Assertions.assertTrue(status.is2xxSuccessful());
+        log.info(body.toString());
     }
 
 }
