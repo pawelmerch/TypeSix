@@ -63,6 +63,14 @@ spec:
               value: "https://mipt-study.ru"
             - name: TYPE8_CLIENT_REDIRECT_URI
               value: "https://mipt-study.ru/code"
+            - name: TYPE6_RABBIT_HOST
+              value: rabbitmq.default.svc.cluster.local
+            - name: TYPE6_RABBIT_PORT
+              value: "15672"
+            - name: TYPE6_RABBIT_USERNAME
+              value: rabbit
+            - name: TYPE6_RABBIT_PASSWORD
+              value: rabbit
             - name: TYPE6_GITHUB_CLIENT_ID
               valueFrom:
                 secretKeyRef:
