@@ -25,9 +25,12 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
+import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -50,7 +53,7 @@ public class SecurityConfig {
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
                 new OAuth2AuthorizationServerConfigurer();
         return http
-                .securityMatcher(OAUTH2_TOKEN_ENDPOINT, OAUTH2_AUTHORIZATION_ENDPOINT, OAUTH2_JWK_SET_ENDPOINT)
+                .securityMatcher(OAUTH2_TOKEN_ENDPOINT, OAUTH2_AUTHORIZATION_ENDPOINT, OAUTH2_JWK_SET_ENDPOINT, TOKEN_INTROSPECTION_ENDPOINT)
                 .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .apply(authorizationServerConfigurer).and()
@@ -140,6 +143,7 @@ public class SecurityConfig {
                 .tokenEndpoint(OAUTH2_TOKEN_ENDPOINT)
                 .authorizationEndpoint(OAUTH2_AUTHORIZATION_ENDPOINT)
                 .jwkSetEndpoint(OAUTH2_JWK_SET_ENDPOINT)
+                .tokenIntrospectionEndpoint(TOKEN_INTROSPECTION_ENDPOINT)
                 .build();
     }
 

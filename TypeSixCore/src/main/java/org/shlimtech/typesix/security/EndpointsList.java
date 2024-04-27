@@ -50,6 +50,10 @@ public class EndpointsList {
      */
     public static final String OAUTH2_JWK_SET_ENDPOINT = PREFIX_INTERNAL + "/oauth2/jwks";
     /**
+     * Здесь можно проверить валидность токена
+     */
+    public static final String TOKEN_INTROSPECTION_ENDPOINT = PREFIX + "/oauth2/introspect";
+    /**
      * Сюда клиент отправляет POST-запрос, чтобы указать логин и пароль
      */
     public static final String FORM_LOGIN_ENDPOINT = PREFIX + "/formlogin";
