@@ -60,9 +60,9 @@ spec:
                   name: type-6-basic-secrets
                   key: type_8_client_secret
             - name: TYPE8_HOSTNAME
-              value: "https://mipt-study.ru"
+              value: "https://service-shlim-tech.ru"
             - name: TYPE8_CLIENT_REDIRECT_URI
-              value: "https://mipt-study.ru/code"
+              value: "https://service-shlim-tech/code"
             - name: TYPE6_RABBIT_HOST
               value: rabbitmq.default.svc.cluster.local
             - name: TYPE6_RABBIT_PORT

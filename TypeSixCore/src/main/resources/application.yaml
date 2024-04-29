@@ -11,4 +11,4 @@ type-6:
       client-secret: ${TYPE8_CLIENT_SECRET}
       client-redirect-uri: ${TYPE8_CLIENT_REDIRECT_URI}
       client-hostname: ${TYPE8_HOSTNAME}
-      auth-method: yandex
+      auth-method: all
