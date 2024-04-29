@@ -62,7 +62,7 @@ spec:
             - name: TYPE8_HOSTNAME
               value: "https://service-shlim-tech.ru"
             - name: TYPE8_CLIENT_REDIRECT_URI
-              value: "https://service-shlim-tech/code"
+              value: "https://service-shlim-tech.ru/code"
             - name: TYPE6_RABBIT_HOST
               value: rabbitmq.default.svc.cluster.local
             - name: TYPE6_RABBIT_PORT
