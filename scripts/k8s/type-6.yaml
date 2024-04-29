@@ -24,11 +24,7 @@ spec:
             - name: TYPE6_DATABASE_USER
               value: default-user
             - name: TYPE6_SELF_IP
-              value: https://service-shlim-tech.ru
-            - name: TYPE7_CLIENT_REDIRECT_URI
-              value: https://mipt-match.ru/code
-            - name: TYPE7_HOSTNAME
-              value: https://mipt-match.ru
+              value: https://service.shlimtech.org
             - name: TYPE6_DATABASE_URL
               valueFrom:
                 secretKeyRef:
@@ -39,16 +35,6 @@ spec:
                 secretKeyRef:
                   name: type-6-basic-secrets
                   key: type_6_database_password
-            - name: TYPE7_CLIENT_ID
-              valueFrom:
-                secretKeyRef:
-                  name: type-6-basic-secrets
-                  key: type_6_client_id
-            - name: TYPE7_CLIENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: type-6-basic-secrets
-                  key: type_6_client_secret
             - name: TYPE8_CLIENT_ID
               valueFrom:
                 secretKeyRef:
@@ -60,9 +46,9 @@ spec:
                   name: type-6-basic-secrets
                   key: type_8_client_secret
             - name: TYPE8_HOSTNAME
-              value: "https://service-shlim-tech.ru"
+              value: "https://pattern.shlimtech.org"
             - name: TYPE8_CLIENT_REDIRECT_URI
-              value: "https://service-shlim-tech.ru/code"
+              value: "https://pattern.shlimtech.org/code"
             - name: TYPE6_RABBIT_HOST
               value: rabbitmq.default.svc.cluster.local
             - name: TYPE6_RABBIT_PORT
