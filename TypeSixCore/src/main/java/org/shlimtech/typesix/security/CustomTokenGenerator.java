@@ -12,7 +12,6 @@ import static org.shlimtech.typesix.utils.Utils.retrieveEmail;
 
 @Configuration
 public class CustomTokenGenerator {
-
     private final AuthenticationService authenticationService;
     private final Counter loginCounter;
 
@@ -31,5 +30,4 @@ public class CustomTokenGenerator {
             loginCounter.increment();
         };
     }
-
 }

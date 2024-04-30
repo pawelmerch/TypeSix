@@ -24,37 +24,37 @@ public class RegistrationControllerTests extends BaseTest {
 
     @Test
     public void emailPageGetTest() {
-        String content = getPageContent(EMAIL_ENDPOINT);
-        Assertions.assertTrue(content.contains(EMAIL_ENDPOINT));
+        String content = getPageContent(REGISTRATION_EMAIL_PAGE);
+        Assertions.assertTrue(content.contains(REGISTRATION_EMAIL_ENDPOINT));
     }
 
     @Test
     public void emailPagePostTest() {
-        postWithFormMimeAndRedirect(EMAIL_ENDPOINT, Map.of("email", TEST_EMAIL), CODE_ENDPOINT);
+        postWithFormMimeAndRedirect(REGISTRATION_EMAIL_ENDPOINT, Map.of("email", TEST_EMAIL), REGISTRATION_CODE_PAGE);
         verify(registrationService).beginRegistrationFlow(TEST_EMAIL);
     }
 
     @Test
     public void codePageGetTest() {
-        String content = getPageContent(CODE_ENDPOINT + "?email=" + TEST_EMAIL);
-        Assertions.assertTrue(content.contains(CODE_ENDPOINT));
+        String content = getPageContent(REGISTRATION_CODE_PAGE + "?email=" + TEST_EMAIL);
+        Assertions.assertTrue(content.contains(REGISTRATION_CODE_ENDPOINT));
     }
 
     @Test
     public void codePagePostTest() {
-        postWithFormMimeAndRedirect(CODE_ENDPOINT, Map.of("email", TEST_EMAIL, "code", TEST_CODE), PASSWORD_SET_ENDPOINT);
+        postWithFormMimeAndRedirect(REGISTRATION_CODE_ENDPOINT, Map.of("email", TEST_EMAIL, "code", TEST_CODE), REGISTRATION_PASSWORD_SET_PAGE);
         verify(registrationService).checkValidCode(TEST_EMAIL, TEST_CODE);
     }
 
     @Test
     public void passwordChangeGetTest() {
-        String content = getPageContent(PASSWORD_SET_ENDPOINT + "?email=" + TEST_EMAIL + "&code=" + TEST_CODE);
-        Assertions.assertTrue(content.contains(PASSWORD_SET_ENDPOINT));
+        String content = getPageContent(REGISTRATION_PASSWORD_SET_PAGE + "?email=" + TEST_EMAIL + "&code=" + TEST_CODE);
+        Assertions.assertTrue(content.contains(REGISTRATION_PASSWORD_SET_ENDPOINT));
     }
 
     @Test
     public void passwordChangePostTest() {
-        postWithFormMimeAndRedirect(PASSWORD_SET_ENDPOINT, Map.of("email", TEST_EMAIL, "code", TEST_CODE, "password", TEST_PASSWORD), LOGIN_ENDPOINT);
+        postWithFormMimeAndRedirect(REGISTRATION_PASSWORD_SET_ENDPOINT, Map.of("email", TEST_EMAIL, "code", TEST_CODE, "password", TEST_PASSWORD), LOGIN_PAGE);
         verify(registrationService).endRegistrationFlow(TEST_EMAIL, TEST_CODE, TEST_PASSWORD);
     }
 

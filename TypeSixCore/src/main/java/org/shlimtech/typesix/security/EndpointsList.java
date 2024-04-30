@@ -5,7 +5,7 @@ package org.shlimtech.typesix.security;
  * <br/>
  * 1. OAUTH2_AUTHORIZATION_ENDPOINT
  * <br/>
- * 2. LOGIN_ENDPOINT
+ * 2. LOGIN_PAGE
  * <br/>
  * 3. THIRD_PARTY_AUTHORIZATION_ENDPOINT
  * <br/>
@@ -13,29 +13,35 @@ package org.shlimtech.typesix.security;
  * <br/>
  * 5. OAUTH2_TOKEN_ENDPOINT
  * <br/>
- * 6. LOGOUT_ENDPOINT
+ * 6. TOKEN_INTROSPECTION_ENDPOINT
+ * <br/>
+ * 7. LOGOUT_ENDPOINT
  * <br/>
  * <br/>
  * Полный конвейер перехода по эндпоинтам при использовании одиночного конвейера протокола oauth2:
  * <br/>
  * 1. OAUTH2_AUTHORIZATION_ENDPOINT
  * <br/>
- * 2. LOGIN_ENDPOINT
+ * 2. LOGIN_PAGE
  * <br/>
  * 3. FORM_LOGIN_ENDPOINT
  * <br/>
  * 4. OAUTH2_TOKEN_ENDPOINT
  * <br/>
- * 5. LOGOUT_ENDPOINT
+ * 5. TOKEN_INTROSPECTION_ENDPOINT
+ * <br/>
+ * 6. LOGOUT_ENDPOINT
  * <br/>
  */
 public class EndpointsList {
     public static final String PREFIX = "/sso";
     public static final String PREFIX_INTERNAL = "";
+    public static final String PREFIX_PAGE = PREFIX + "/pages";
 
 
     //
     // TYPE-N CLIENT AUTHENTICATING VIA OAUTH2
+    // PUBLIC API
     //
     /**
      * Генерирует токен для клиента в обмен на код
@@ -53,19 +59,6 @@ public class EndpointsList {
      * Здесь можно проверить валидность токена
      */
     public static final String TOKEN_INTROSPECTION_ENDPOINT = PREFIX + "/oauth2/introspect";
-    /**
-     * Сюда клиент отправляет POST-запрос, чтобы указать логин и пароль
-     */
-    public static final String FORM_LOGIN_ENDPOINT = PREFIX + "/formlogin";
-
-
-    //
-    // CUSTOM PAGES FOR TYPE-N CLIENT AUTHENTICATION FLOW
-    //
-    /**
-     * Основная страница логина
-     */
-    public static final String LOGIN_ENDPOINT = PREFIX + "/login";
     /**
      * Путь для завершения сессии
      */
@@ -86,17 +79,43 @@ public class EndpointsList {
 
 
     //
-    // REGISTRATION FLOW ENDPOINTS
+    // REGISTRATION FLOW ENDPOINTS AND PAGES
     //
-    public static final String EMAIL_ENDPOINT = PREFIX + "/email";
-    public static final String CODE_ENDPOINT = PREFIX + "/emailcode";
-    public static final String PASSWORD_SET_ENDPOINT = PREFIX + "/passwordset";
+    public static final String REGISTRATION_EMAIL_ENDPOINT = PREFIX + "/registration/email";
+    public static final String REGISTRATION_CODE_ENDPOINT = PREFIX + "/registration/verify";
+    public static final String REGISTRATION_PASSWORD_SET_ENDPOINT = PREFIX + "/registration/password";
+
+    public static final String REGISTRATION_EMAIL_PAGE = PREFIX_PAGE + "/registration/email";
+    public static final String REGISTRATION_CODE_PAGE = PREFIX_PAGE + "/registration/verify";
+    public static final String REGISTRATION_PASSWORD_SET_PAGE = PREFIX_PAGE + "/registration/password";
+
+
+    //
+    // PAGES
+    //
+    /**
+     * Основная страница логина
+     */
+    public static final String LOGIN_PAGE = PREFIX_PAGE + "/login";
+    /**
+     * Сюда будет переадресация после успешного логина, при отсутсвии привязки к oauth2-клиенту
+     */
+    public static final String SUCCESS_LOGIN_PAGE = PREFIX_PAGE + "/success";
+    /**
+     * Сюда перенаправляются ошибки
+     */
+    public static final String ERROR_PAGE = PREFIX_PAGE + "/error";
 
 
     //
     // OTHER ENDPOINTS
     //
-    public static final String ERROR_PAGE = PREFIX + "/error";
-    public static final String SUCCESS_LOGIN_PAGE = PREFIX + "/success";
+    /**
+     * Путь для actuator
+     */
     public static final String ACTUATOR_BASE_PATH = PREFIX_INTERNAL + "/actuator";
+    /**
+     * Сюда клиент отправляет POST-запрос, чтобы указать логин и пароль
+     */
+    public static final String FORM_LOGIN_ENDPOINT = PREFIX + "/formlogin";
 }

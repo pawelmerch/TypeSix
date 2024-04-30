@@ -10,8 +10,8 @@ import java.util.Map;
 @ConfigurationProperties(prefix = "type6")
 @Data
 public class Type6Oauth2ClientProperties {
-
     private Map<String, Type6Oauth2Client> clients;
+
     @Data
     public static class Type6Oauth2Client {
         private String clientId;
@@ -24,5 +24,4 @@ public class Type6Oauth2ClientProperties {
     public enum AuthMethod {
         yandex, all, github
     }
-
 }

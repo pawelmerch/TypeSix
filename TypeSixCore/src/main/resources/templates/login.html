@@ -22,7 +22,7 @@
 
 <br/>
 
-<form class="form-signin" method="post" th:action="${form_login_url}">
+<form class="form-signin" method="post" th:action="${form_login_endpoint}">
     <p>
         <label for="username" class="sr-only">Username</label>
         <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
@@ -44,7 +44,7 @@
 <br/>
 
 <tr>
-    <td><a th:href="${email_setup_url}">Register</a></td>
+    <td><a th:href="${email_page}">Register</a></td>
 </tr>
 
 <br/>
@@ -62,7 +62,7 @@
     <br/>
 
     <tr>
-        <td><a th:href="${logout_url}">Logout</a></td>
+        <td><a th:href="${logout_endpoint}">Logout</a></td>
     </tr>
 </div>
 

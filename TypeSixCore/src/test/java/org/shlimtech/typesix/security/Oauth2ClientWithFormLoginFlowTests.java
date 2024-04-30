@@ -25,6 +25,8 @@ public class Oauth2ClientWithFormLoginFlowTests extends BaseTest {
 
     private String sessionCookie;
     private String code;
+    private String accessToken;
+    private String refreshToken;
 
     @Test
     public void testFlow() {
@@ -33,8 +35,9 @@ public class Oauth2ClientWithFormLoginFlowTests extends BaseTest {
         step3(); // FORM_LOGIN_ENDPOINT
         step4(); // OAUTH2_AUTHORIZATION_ENDPOINT
         step5(); // OAUTH2_TOKEN_ENDPOINT
-        step6(); // LOGOUT_ENDPOINT
-        step7(); // OAUTH2_JWK_SET_ENDPOINT
+        step6(); // TOKEN_INTROSPECTION_ENDPOINT
+        step7(); // LOGOUT_ENDPOINT
+        step8(); // OAUTH2_JWK_SET_ENDPOINT
     }
 
     private void step1() {
@@ -53,12 +56,12 @@ public class Oauth2ClientWithFormLoginFlowTests extends BaseTest {
         String location = headers.get("location").get(0);
 
         // redirecting to LOGIN_ENDPOINT
-        Assertions.assertTrue(location.contains(LOGIN_ENDPOINT));
+        Assertions.assertTrue(location.contains(LOGIN_PAGE));
         Assertions.assertTrue(ent.getStatusCode().is3xxRedirection());
     }
 
     private void step2() {
-        var url = origin() + LOGIN_ENDPOINT;
+        var url = origin() + LOGIN_PAGE;
         var response = defaultClient
                 .get()
                 .uri(url)
@@ -130,17 +133,36 @@ public class Oauth2ClientWithFormLoginFlowTests extends BaseTest {
         var ent = response.toBodilessEntity();
         var status = ent.getStatusCode();
 
-        String access = body.get("access_token").toString();
-        String refresh = body.get("refresh_token").toString();
+        accessToken = body.get("access_token").toString();
+        refreshToken = body.get("refresh_token").toString();
 
-        log.info("access: " + access);
-        log.info("refresh: " + refresh);
+        log.info("access: " + accessToken);
+        log.info("refresh: " + refreshToken);
 
         Assertions.assertTrue(status.is2xxSuccessful());
     }
 
-    @SneakyThrows
     private void step6() {
+        var url = origin() + TOKEN_INTROSPECTION_ENDPOINT;
+        var response = defaultClient
+                .post()
+                .uri(url)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .body("token=" + accessToken)
+                .header("Authorization", "Basic " + new String(Base64.getEncoder().encode((clientId + ":" + clientSecret).getBytes())))
+                .retrieve();
+        var body = response.body(Map.class);
+        var ent = response.toBodilessEntity();
+        var status = ent.getStatusCode();
+
+        boolean active = Boolean.parseBoolean(body.get("active").toString());
+
+        Assertions.assertTrue(active);
+        Assertions.assertTrue(status.is2xxSuccessful());
+    }
+
+    @SneakyThrows
+    private void step7() {
         var url = origin() + LOGOUT_ENDPOINT;
         var response = defaultClient
                 .get()
@@ -152,12 +174,15 @@ public class Oauth2ClientWithFormLoginFlowTests extends BaseTest {
 
         String location = headers.get("location").get(0);
 
+        log.info(location);
+        log.info(redirectUrl);
+
         // redirecting to redirect url of the client
         Assertions.assertTrue(status.is3xxRedirection());
         Assertions.assertTrue(redirectUrl.contains(location));
     }
 
-    private void step7() {
+    private void step8() {
         var url = origin() + OAUTH2_JWK_SET_ENDPOINT;
         var response = defaultClient
                 .get()

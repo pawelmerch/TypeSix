@@ -17,52 +17,51 @@ import static org.shlimtech.typesix.security.EndpointsList.*;
 @Log
 @RequiredArgsConstructor
 public class RegistrationController {
-
     private final RegistrationService registrationService;
 
     //==========================================
 
-    @GetMapping(EMAIL_ENDPOINT)
+    @GetMapping(REGISTRATION_EMAIL_PAGE)
     public String emailPage(Model model) {
-        model.addAttribute("email_page", EMAIL_ENDPOINT);
+        model.addAttribute("email_endpoint", REGISTRATION_EMAIL_ENDPOINT);
         return "email";
     }
 
-    @PostMapping(EMAIL_ENDPOINT)
+    @PostMapping(REGISTRATION_EMAIL_ENDPOINT)
     public String acceptEmailEndpoint(@RequestParam("email") String email) {
         registrationService.beginRegistrationFlow(email);
-        return "redirect:" + CODE_ENDPOINT + "?email=" + email;
+        return "redirect:" + REGISTRATION_CODE_PAGE + "?email=" + email;
     }
 
     //==========================================
 
-    @GetMapping(CODE_ENDPOINT)
+    @GetMapping(REGISTRATION_CODE_PAGE)
     public String codePage(Model model, @RequestParam String email) {
         model.addAttribute("email", email);
-        model.addAttribute("code_page", CODE_ENDPOINT);
+        model.addAttribute("code_endpoint", REGISTRATION_CODE_ENDPOINT);
         return "code";
     }
 
-    @PostMapping(CODE_ENDPOINT)
+    @PostMapping(REGISTRATION_CODE_ENDPOINT)
     public String acceptCodeEndpoint(@RequestParam("code") String code, @RequestParam String email) {
         registrationService.checkValidCode(email, code);
-        return "redirect:" + PASSWORD_SET_ENDPOINT + "?code=" + code + "&email=" + email;
+        return "redirect:" + REGISTRATION_PASSWORD_SET_PAGE + "?code=" + code + "&email=" + email;
     }
 
     //==========================================
 
-    @GetMapping(PASSWORD_SET_ENDPOINT)
+    @GetMapping(REGISTRATION_PASSWORD_SET_PAGE)
     public String passwordChangePage(@RequestParam String code, @RequestParam String email, Model model) {
         model.addAttribute("code", code);
         model.addAttribute("email", email);
-        model.addAttribute("password_endpoint", PASSWORD_SET_ENDPOINT);
+        model.addAttribute("password_endpoint", REGISTRATION_PASSWORD_SET_ENDPOINT);
         return "password";
     }
 
-    @PostMapping(PASSWORD_SET_ENDPOINT)
+    @PostMapping(REGISTRATION_PASSWORD_SET_ENDPOINT)
     public String passwordSetupEndpoint(@RequestParam String code, @RequestParam String password, @RequestParam String email, Model model) {
         registrationService.endRegistrationFlow(email, code, password);
-        return "redirect:" + LOGIN_ENDPOINT;
+        return "redirect:" + LOGIN_PAGE;
     }
 
     //==========================================

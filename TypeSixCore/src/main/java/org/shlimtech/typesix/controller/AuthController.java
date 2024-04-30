@@ -23,21 +23,18 @@ import static org.shlimtech.typesix.utils.Utils.retrieveEmail;
 @Controller
 @RequiredArgsConstructor
 public class AuthController {
-    public static final String DEFAULT_SAVED_REQUEST_SESSION_ATTRIBUTE = "SPRING_SECURITY_SAVED_REQUEST";
-    public static final String SAVED_REQUEST_REDIRECT_URL_PARAMETER = "redirect_uri";
-
-    public static final String yandexAuthUrl = THIRD_PARTY_AUTHORIZATION_ENDPOINT + "/yandex";
-    public static final String githubAuthUrl = THIRD_PARTY_AUTHORIZATION_ENDPOINT + "/github";
+    private static final String DEFAULT_SAVED_REQUEST_SESSION_ATTRIBUTE = "SPRING_SECURITY_SAVED_REQUEST";
+    private static final String SAVED_REQUEST_REDIRECT_URL_PARAMETER = "redirect_uri";
 
     private final Type6Oauth2ClientProperties clientProperties;
 
-    @GetMapping(LOGIN_ENDPOINT)
+    @GetMapping(LOGIN_PAGE)
     public String login(HttpServletRequest request, Model model) {
         // Default endpoints
         Arrays.stream(Type6Oauth2ClientProperties.AuthMethod.values()).forEach(provider -> model.addAttribute(provider + "_auth_url", THIRD_PARTY_AUTHORIZATION_ENDPOINT + "/" + provider));
-        model.addAttribute("form_login_url", FORM_LOGIN_ENDPOINT);
-        model.addAttribute("email_setup_url", EMAIL_ENDPOINT);
-        model.addAttribute("logout_url", LOGOUT_ENDPOINT);
+        model.addAttribute("form_login_endpoint", FORM_LOGIN_ENDPOINT);
+        model.addAttribute("email_page", REGISTRATION_EMAIL_PAGE);
+        model.addAttribute("logout_endpoint", LOGOUT_ENDPOINT);
 
         // User email
         String email = getLoggedUserEmail();
@@ -79,7 +76,7 @@ public class AuthController {
 
         // Use client to determine redirect
         if (client == null) {
-            return makeRedirect(LOGIN_ENDPOINT);
+            return makeRedirect(LOGIN_PAGE);
         }
         return makeRedirect(client.getClientHostname());
     }

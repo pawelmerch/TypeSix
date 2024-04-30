@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class MetricsConfig {
-
     @Bean
     @Qualifier("login_counter")
     public Counter loginCounter(MeterRegistry meterRegistry) {
@@ -20,5 +19,4 @@ public class MetricsConfig {
     public Counter registrationCounter(MeterRegistry meterRegistry) {
         return meterRegistry.counter("type6RegistrationCounter");
     }
-
 }

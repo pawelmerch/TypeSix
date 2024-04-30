@@ -25,12 +25,9 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
-import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -58,7 +55,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .apply(authorizationServerConfigurer).and()
                 .exceptionHandling(exceptions ->
-                        exceptions.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint(LOGIN_ENDPOINT))
+                        exceptions.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint(LOGIN_PAGE))
                 ).build();
     }
 
@@ -71,34 +68,40 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 // indicates that this chain is used only with /login and /logout URLs
                 .securityMatcher(
-                        LOGIN_ENDPOINT,
+                        LOGIN_PAGE,
                         LOGOUT_ENDPOINT,
                         THIRD_PARTY_AUTHORIZATION_ENDPOINT + "/*",
                         THIRD_PARTY_CODE_ENDPOINT + "/*",
                         FORM_LOGIN_ENDPOINT,
                         SUCCESS_LOGIN_PAGE,
                         ERROR_PAGE,
-                        EMAIL_ENDPOINT,
-                        CODE_ENDPOINT,
-                        PASSWORD_SET_ENDPOINT
+                        REGISTRATION_EMAIL_ENDPOINT,
+                        REGISTRATION_CODE_ENDPOINT,
+                        REGISTRATION_PASSWORD_SET_ENDPOINT,
+                        REGISTRATION_EMAIL_PAGE,
+                        REGISTRATION_CODE_PAGE,
+                        REGISTRATION_PASSWORD_SET_PAGE
                 )
                 // only /login and /logout URLs are permitted, all others are denied
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(
-                                LOGIN_ENDPOINT,
+                                LOGIN_PAGE,
                                 LOGOUT_ENDPOINT,
                                 FORM_LOGIN_ENDPOINT,
                                 ERROR_PAGE,
-                                EMAIL_ENDPOINT,
-                                CODE_ENDPOINT,
-                                PASSWORD_SET_ENDPOINT
+                                REGISTRATION_EMAIL_ENDPOINT,
+                                REGISTRATION_CODE_ENDPOINT,
+                                REGISTRATION_PASSWORD_SET_ENDPOINT,
+                                REGISTRATION_EMAIL_PAGE,
+                                REGISTRATION_CODE_PAGE,
+                                REGISTRATION_PASSWORD_SET_PAGE
                         ).permitAll()
                         .anyRequest().authenticated())
                 // form login authentication filter is enabled
-                .formLogin(c -> c.loginPage(LOGIN_ENDPOINT).loginProcessingUrl(FORM_LOGIN_ENDPOINT).defaultSuccessUrl(SUCCESS_LOGIN_PAGE))
+                .formLogin(c -> c.loginPage(LOGIN_PAGE).loginProcessingUrl(FORM_LOGIN_ENDPOINT).defaultSuccessUrl(SUCCESS_LOGIN_PAGE))
                 // oauth2 login authentication filter is enabled
                 .oauth2Login(c -> c
-                        .loginPage(LOGIN_ENDPOINT)
+                        .loginPage(LOGIN_PAGE)
                         .defaultSuccessUrl(SUCCESS_LOGIN_PAGE)
                         .authorizationEndpoint(endpoint -> endpoint.baseUri(THIRD_PARTY_AUTHORIZATION_ENDPOINT))
                         .redirectionEndpoint(endpoint -> endpoint.baseUri(THIRD_PARTY_CODE_ENDPOINT + "/*"))
