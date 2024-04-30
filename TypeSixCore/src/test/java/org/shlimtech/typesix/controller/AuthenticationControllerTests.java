@@ -12,7 +12,6 @@ import static org.shlimtech.typesix.security.EndpointsList.SUCCESS_LOGIN_PAGE;
 
 @Log
 public class AuthenticationControllerTests extends BaseTest {
-
     @Test
     public void successPageWithSessionTest() {
         String cookie = login();
@@ -38,5 +37,4 @@ public class AuthenticationControllerTests extends BaseTest {
 
         Assertions.assertFalse(out.getContent().contains(DebugConfig.USER1_EMAIL));
     }
-
 }

@@ -14,7 +14,6 @@ import static org.shlimtech.typesix.security.EndpointsList.*;
 
 @Log
 public class RegistrationControllerTests extends BaseTest {
-
     private static final String TEST_EMAIL = "email";
     private static final String TEST_CODE = "code";
     private static final String TEST_PASSWORD = "password";
@@ -27,7 +26,7 @@ public class RegistrationControllerTests extends BaseTest {
         String content = getPageContent(REGISTRATION_EMAIL_PAGE);
         Assertions.assertTrue(content.contains(REGISTRATION_EMAIL_ENDPOINT));
     }
-
+    
     @Test
     public void emailPagePostTest() {
         postWithFormMimeAndRedirect(REGISTRATION_EMAIL_ENDPOINT, Map.of("email", TEST_EMAIL), REGISTRATION_CODE_PAGE);
@@ -57,5 +56,4 @@ public class RegistrationControllerTests extends BaseTest {
         postWithFormMimeAndRedirect(REGISTRATION_PASSWORD_SET_ENDPOINT, Map.of("email", TEST_EMAIL, "code", TEST_CODE, "password", TEST_PASSWORD), LOGIN_PAGE);
         verify(registrationService).endRegistrationFlow(TEST_EMAIL, TEST_CODE, TEST_PASSWORD);
     }
-
 }

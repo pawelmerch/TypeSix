@@ -10,7 +10,6 @@ import java.util.Map;
 import static org.shlimtech.typesix.security.EndpointsList.ERROR_PAGE;
 
 public class ErrorControllerTests extends BaseTest {
-
     @Test
     public void errorPageWithMessageTest() {
         final String message = "message";
@@ -24,5 +23,4 @@ public class ErrorControllerTests extends BaseTest {
         var out = get(HttpRequestInput.builder().bodyRequested(true).build(), ERROR_PAGE);
         out.getStatusCode().is2xxSuccessful();
     }
-
 }

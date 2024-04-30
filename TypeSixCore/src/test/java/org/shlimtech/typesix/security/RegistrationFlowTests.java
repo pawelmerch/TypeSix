@@ -15,7 +15,6 @@ import static org.mockito.Mockito.when;
 import static org.shlimtech.typesix.security.EndpointsList.*;
 
 public class RegistrationFlowTests extends BaseTest {
-
     private static final String TEST_EMAIL = "email";
     private static final String TEST_CODE = "code";
     private static final String TEST_PASSWORD = "password";
@@ -77,5 +76,4 @@ public class RegistrationFlowTests extends BaseTest {
         when(authenticationService.loadUser(TEST_EMAIL)).thenReturn(User.builder().email(TEST_EMAIL).password(TEST_PASSWORD).build());
         postWithFormMimeAndRedirect(FORM_LOGIN_ENDPOINT, Map.of("username", TEST_EMAIL, "password", TEST_PASSWORD), SUCCESS_LOGIN_PAGE);
     }
-
 }

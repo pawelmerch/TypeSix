@@ -15,7 +15,6 @@ import static org.shlimtech.typesix.security.EndpointsList.*;
 
 @Log
 public class Oauth2ClientWithFormLoginFlowTests extends BaseTest {
-
     @Value("${type6.clients.test-type.client-id}")
     private String clientId;
     @Value("${type6.clients.test-type.client-secret}")
@@ -194,5 +193,4 @@ public class Oauth2ClientWithFormLoginFlowTests extends BaseTest {
         Assertions.assertTrue(status.is2xxSuccessful());
         log.info(body.toString());
     }
-
 }
