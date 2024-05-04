@@ -11,7 +11,7 @@ import org.springframework.http.MediaType;
 import java.util.Base64;
 import java.util.Map;
 
-import static org.shlimtech.typesix.security.EndpointsList.*;
+import static org.shlimtech.typesix.web.EndpointsList.*;
 
 @Log
 public class Oauth2ClientWithFormLoginFlowTests extends BaseTest {

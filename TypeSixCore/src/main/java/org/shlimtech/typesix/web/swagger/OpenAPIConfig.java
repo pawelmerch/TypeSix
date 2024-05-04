@@ -1,17 +1,16 @@
-package org.shlimtech.typesix.swagger;
+package org.shlimtech.typesix.web.swagger;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.info.Info;
-import org.shlimtech.typesix.security.EndpointsList;
+import org.shlimtech.typesix.web.EndpointsList;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
 @Configuration
 public class OpenAPIConfig {
-
     private static final String TITLE = "Type-6";
 
     @Bean
@@ -40,5 +39,4 @@ public class OpenAPIConfig {
 
         return openAPI;
     }
-
 }

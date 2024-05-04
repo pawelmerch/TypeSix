@@ -1,4 +1,4 @@
-package org.shlimtech.typesix.controller;
+package org.shlimtech.typesix.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import static org.shlimtech.typesix.security.EndpointsList.*;
+import static org.shlimtech.typesix.web.EndpointsList.*;
 
 @Controller
 @Log

@@ -6,13 +6,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.Properties;
 
-import static org.shlimtech.typesix.security.EndpointsList.SPRING_DOC_PATH;
-import static org.shlimtech.typesix.security.EndpointsList.SWAGGER_UI_BASE_PATH;
+import static org.shlimtech.typesix.web.EndpointsList.SPRING_DOC_PATH;
+import static org.shlimtech.typesix.web.EndpointsList.SWAGGER_UI_BASE_PATH;
 
 @SpringBootApplication
 @EnableTypeSixBusinessLogic
 public class TypeSixApplication {
-
     public static void main(String[] args) {
         addCustomProperties(new SpringApplication(TypeSixApplication.class)).run(args);
     }
@@ -24,5 +23,4 @@ public class TypeSixApplication {
         application.setDefaultProperties(properties);
         return application;
     }
-
 }

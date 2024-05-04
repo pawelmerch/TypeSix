@@ -19,7 +19,6 @@ import java.util.function.BiConsumer;
 @RequiredArgsConstructor
 @Log
 public class RabbitAdapter implements BiConsumer<String, String> {
-
     private final RegistrationService registrationService;
     private final AmqpTemplate rabbitTemplate;
     private final ObjectMapper objectMapper;
@@ -45,5 +44,4 @@ public class RabbitAdapter implements BiConsumer<String, String> {
         private String code;
         private String email;
     }
-
 }

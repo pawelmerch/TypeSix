@@ -1,10 +1,10 @@
-package org.shlimtech.typesix.security;
+package org.shlimtech.typesix.web;
 
-import org.shlimtech.typesix.swagger.Type6Endpoint;
+import org.shlimtech.typesix.web.swagger.Type6Endpoint;
 
 import static io.swagger.v3.oas.models.PathItem.HttpMethod.GET;
 import static io.swagger.v3.oas.models.PathItem.HttpMethod.POST;
-import static org.shlimtech.typesix.swagger.Type6Endpoint.ENDPOINT_CATEGORY.*;
+import static org.shlimtech.typesix.web.swagger.Type6Endpoint.ENDPOINT_CATEGORY.*;
 
 /**
  * Полный конвейер перехода по эндпоинтам при использовании двойного конвейера протокола oauth2:
@@ -106,18 +106,46 @@ public class EndpointsList {
     //
     // REGISTRATION FLOW ENDPOINTS AND PAGES
     //
-    @Type6Endpoint(description = "Первый шаг конвейера", method = POST, category = REGISTRATION)
+    @Type6Endpoint(
+            description = "Первый шаг конвейера",
+            method = POST,
+            category = REGISTRATION
+    )
     public static final String REGISTRATION_EMAIL_ENDPOINT = PREFIX + "/registration/email";
-    @Type6Endpoint(description = "Второй шаг конвейера", method = POST, category = REGISTRATION)
+
+    @Type6Endpoint(
+            description = "Второй шаг конвейера",
+            method = POST,
+            category = REGISTRATION
+    )
     public static final String REGISTRATION_CODE_ENDPOINT = PREFIX + "/registration/verify";
-    @Type6Endpoint(description = "Третий шаг конвейера", method = POST, category = REGISTRATION)
+
+    @Type6Endpoint(
+            description = "Третий шаг конвейера",
+            method = POST,
+            category = REGISTRATION
+    )
     public static final String REGISTRATION_PASSWORD_SET_ENDPOINT = PREFIX + "/registration/password";
 
-    @Type6Endpoint(description = "Страница для первого шага конвейера", method = GET, category = REGISTRATION)
+    @Type6Endpoint(
+            description = "Страница для первого шага конвейера",
+            method = GET,
+            category = REGISTRATION
+    )
     public static final String REGISTRATION_EMAIL_PAGE = PREFIX_PAGE + "/registration/email";
-    @Type6Endpoint(description = "Страница для второго шага конвейера", method = GET, category = REGISTRATION)
+
+    @Type6Endpoint(
+            description = "Страница для второго шага конвейера",
+            method = GET,
+            category = REGISTRATION
+    )
     public static final String REGISTRATION_CODE_PAGE = PREFIX_PAGE + "/registration/verify";
-    @Type6Endpoint(description = "Страница для третьего шага конвейера", method = GET, category = REGISTRATION)
+
+    @Type6Endpoint(
+            description = "Страница для третьего шага конвейера",
+            method = GET,
+            category = REGISTRATION
+    )
     public static final String REGISTRATION_PASSWORD_SET_PAGE = PREFIX_PAGE + "/registration/password";
 
 

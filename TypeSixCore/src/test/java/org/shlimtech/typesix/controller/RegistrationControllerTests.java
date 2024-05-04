@@ -10,7 +10,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.Map;
 
 import static org.mockito.Mockito.verify;
-import static org.shlimtech.typesix.security.EndpointsList.*;
+import static org.shlimtech.typesix.web.EndpointsList.*;
 
 @Log
 public class RegistrationControllerTests extends BaseTest {
@@ -26,7 +26,7 @@ public class RegistrationControllerTests extends BaseTest {
         String content = getPageContent(REGISTRATION_EMAIL_PAGE);
         Assertions.assertTrue(content.contains(REGISTRATION_EMAIL_ENDPOINT));
     }
-    
+
     @Test
     public void emailPagePostTest() {
         postWithFormMimeAndRedirect(REGISTRATION_EMAIL_ENDPOINT, Map.of("email", TEST_EMAIL), REGISTRATION_CODE_PAGE);

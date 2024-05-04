@@ -12,7 +12,7 @@ import java.util.Map;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.shlimtech.typesix.security.EndpointsList.*;
+import static org.shlimtech.typesix.web.EndpointsList.*;
 
 public class RegistrationFlowTests extends BaseTest {
     private static final String TEST_EMAIL = "email";

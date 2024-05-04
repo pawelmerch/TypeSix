@@ -1,4 +1,4 @@
-package org.shlimtech.typesix.security;
+package org.shlimtech.typesix.web.security;
 
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -6,6 +6,8 @@ import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import lombok.extern.java.Log;
 import org.shlimtech.typesix.utils.Utils;
+import org.shlimtech.typesix.web.EndpointsList;
+import org.shlimtech.typesix.web.security.oauth2.Type6Oauth2ClientProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
@@ -31,12 +33,11 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static org.shlimtech.typesix.security.EndpointsList.*;
+import static org.shlimtech.typesix.web.EndpointsList.*;
 
 @Configuration
 @Log
 public class SecurityConfig {
-
     public SecurityConfig(@Value("${type-6.selfUrl}") String selfUrl,
                           @Autowired OAuth2ClientProperties oAuth2ClientProperties,
                           @Autowired WebEndpointProperties webEndpointProperties) {
@@ -47,22 +48,32 @@ public class SecurityConfig {
     @Bean
     @Order(1)
     public SecurityFilterChain authServerSecurityFilterChain(HttpSecurity http) throws Exception {
-        OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
-                new OAuth2AuthorizationServerConfigurer();
         return http
-                .securityMatcher(OAUTH2_TOKEN_ENDPOINT, OAUTH2_AUTHORIZATION_ENDPOINT, OAUTH2_JWK_SET_ENDPOINT, TOKEN_INTROSPECTION_ENDPOINT)
-                .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+                // only auth server endpoints
+                .securityMatcher(
+                        EndpointsList.OAUTH2_TOKEN_ENDPOINT,
+                        EndpointsList.OAUTH2_AUTHORIZATION_ENDPOINT,
+                        EndpointsList.OAUTH2_JWK_SET_ENDPOINT,
+                        EndpointsList.TOKEN_INTROSPECTION_ENDPOINT
+                )
+                // all request require auth
+                .authorizeHttpRequests(authorize -> authorize
+                        .anyRequest().authenticated()
+                )
+                // CSRF is off
                 .csrf(AbstractHttpConfigurer::disable)
-                .apply(authorizationServerConfigurer).and()
+                // spring auth server config
+                .apply(new OAuth2AuthorizationServerConfigurer()).and()
+                // after session is created in pipeline start, user will be redirected to login page
                 .exceptionHandling(exceptions ->
-                        exceptions.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint(LOGIN_PAGE))
+                        exceptions.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint(EndpointsList.LOGIN_PAGE))
                 ).build();
     }
 
     @Bean
     @Order(2)
     public SecurityFilterChain basicSecurityFilterChain(HttpSecurity http) throws Exception {
-        // security chain for ui purposes
+        // basic security chain for most auth types
         return http
                 // TODO restore CSRF in login page
                 .csrf(AbstractHttpConfigurer::disable)
@@ -82,7 +93,7 @@ public class SecurityConfig {
                         REGISTRATION_CODE_PAGE,
                         REGISTRATION_PASSWORD_SET_PAGE
                 )
-                // only /login and /logout URLs are permitted, all others are denied
+                // login, logout, registration endpoints are permitted
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(
                                 LOGIN_PAGE,
@@ -169,5 +180,4 @@ public class SecurityConfig {
     private void setRedirectUriToAllRegistrations(OAuth2ClientProperties oAuth2ClientProperties, String selfUrl) {
         oAuth2ClientProperties.getRegistration().forEach((key, value) -> value.setRedirectUri(selfUrl + THIRD_PARTY_CODE_ENDPOINT + "/" + key));
     }
-
 }

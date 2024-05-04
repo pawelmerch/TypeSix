@@ -1,4 +1,4 @@
-package org.shlimtech.typesix.swagger;
+package org.shlimtech.typesix.web.swagger;
 
 import io.swagger.v3.oas.models.PathItem;
 

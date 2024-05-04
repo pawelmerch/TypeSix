@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.shlimtech.typesix.BaseTest;
 import org.shlimtech.typesix.utils.HttpRequestInput;
 
-import static org.shlimtech.typesix.security.EndpointsList.*;
+import static org.shlimtech.typesix.web.EndpointsList.*;
 
 public class OtherControllerTests extends BaseTest {
     @Test

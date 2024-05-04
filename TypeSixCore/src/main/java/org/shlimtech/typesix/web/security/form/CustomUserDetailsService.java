@@ -1,4 +1,4 @@
-package org.shlimtech.typesix.security.user;
+package org.shlimtech.typesix.web.security.form;
 
 import lombok.RequiredArgsConstructor;
 import org.shlimtech.typesixbusinesslogic.service.core.AuthenticationException;
