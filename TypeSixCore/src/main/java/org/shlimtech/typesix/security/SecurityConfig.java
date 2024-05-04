@@ -116,7 +116,11 @@ public class SecurityConfig {
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(authorize ->
                 // expose actuator endpoints
-                authorize.requestMatchers(ACTUATOR_BASE_PATH + "/**").permitAll().anyRequest().denyAll()
+                authorize.requestMatchers(
+                        ACTUATOR_BASE_PATH + "/**",
+                        SWAGGER_UI_BASE_PATH + "/**",
+                        SPRING_DOC_PATH + "/**"
+                ).permitAll().anyRequest().denyAll()
         ).build();
     }
 
