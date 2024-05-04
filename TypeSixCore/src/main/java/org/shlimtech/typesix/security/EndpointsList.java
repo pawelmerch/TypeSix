@@ -176,7 +176,4 @@ public class EndpointsList {
             category = OTHER
     )
     public static final String SPRING_DOC_PATH = "/docs";
-
-    @Type6Endpoint(description = "test", method = GET, category = OTHER)
-    public static final String TEST_ENDPOINT = "/test";
 }
