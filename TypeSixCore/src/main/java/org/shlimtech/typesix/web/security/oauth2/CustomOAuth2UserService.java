@@ -1,4 +1,4 @@
-package org.shlimtech.typesix.security.user;
+package org.shlimtech.typesix.web.security.oauth2;
 
 import io.micrometer.core.instrument.Counter;
 import org.shlimtech.typesixbusinesslogic.service.core.AuthenticationService;
@@ -14,7 +14,6 @@ import java.util.Map;
 
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
-
     private final AuthenticationService authenticationService;
     private final Counter registrationCounter;
 
@@ -40,5 +39,4 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         return user;
     }
-
 }

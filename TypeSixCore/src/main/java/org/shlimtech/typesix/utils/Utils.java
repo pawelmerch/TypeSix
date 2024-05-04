@@ -2,7 +2,7 @@ package org.shlimtech.typesix.utils;
 
 import com.nimbusds.jose.jwk.RSAKey;
 import lombok.SneakyThrows;
-import org.shlimtech.typesix.security.user.CustomUserPrinciple;
+import org.shlimtech.typesix.web.security.form.CustomUserPrinciple;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;

@@ -7,7 +7,7 @@ import org.shlimtech.typesix.utils.HttpRequestInput;
 
 import java.util.Map;
 
-import static org.shlimtech.typesix.security.EndpointsList.ERROR_PAGE;
+import static org.shlimtech.typesix.web.EndpointsList.ERROR_PAGE;
 
 public class ErrorControllerTests extends BaseTest {
     @Test

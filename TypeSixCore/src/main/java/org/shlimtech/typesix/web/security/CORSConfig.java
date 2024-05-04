@@ -1,6 +1,7 @@
-package org.shlimtech.typesix.security;
+package org.shlimtech.typesix.web.security;
 
 import lombok.RequiredArgsConstructor;
+import org.shlimtech.typesix.web.security.oauth2.Type6Oauth2ClientProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

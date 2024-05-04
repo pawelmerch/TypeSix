@@ -1,10 +1,10 @@
-package org.shlimtech.typesix.controller;
+package org.shlimtech.typesix.web.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.shlimtech.typesix.security.Type6Oauth2ClientProperties;
+import org.shlimtech.typesix.web.security.oauth2.Type6Oauth2ClientProperties;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Arrays;
 import java.util.Optional;
 
-import static org.shlimtech.typesix.security.EndpointsList.*;
 import static org.shlimtech.typesix.utils.Utils.retrieveEmail;
+import static org.shlimtech.typesix.web.EndpointsList.*;
 
 @Controller
 @RequiredArgsConstructor

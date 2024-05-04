@@ -1,4 +1,4 @@
-package org.shlimtech.typesix.security;
+package org.shlimtech.typesix.web.security.oauth2;
 
 import io.micrometer.core.instrument.Counter;
 import org.shlimtech.typesixbusinesslogic.service.core.AuthenticationService;

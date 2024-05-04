@@ -1,4 +1,4 @@
-package org.shlimtech.typesix.security;
+package org.shlimtech.typesix.web.security.oauth2;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

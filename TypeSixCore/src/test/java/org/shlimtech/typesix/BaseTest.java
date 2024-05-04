@@ -1,9 +1,9 @@
 package org.shlimtech.typesix;
 
 import org.junit.jupiter.api.Assertions;
-import org.shlimtech.typesix.debug.DebugConfig;
 import org.shlimtech.typesix.utils.HttpRequestInput;
 import org.shlimtech.typesix.utils.HttpResponseOutput;
+import org.shlimtech.typesix.web.debug.DebugUsersConfig;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -15,8 +15,7 @@ import org.springframework.web.client.RestClient;
 import java.util.Base64;
 import java.util.Map;
 
-import static org.shlimtech.typesix.security.EndpointsList.FORM_LOGIN_ENDPOINT;
-import static org.shlimtech.typesix.security.EndpointsList.SUCCESS_LOGIN_PAGE;
+import static org.shlimtech.typesix.web.EndpointsList.*;
 
 @TestPropertySource(properties = {
         // H2 DATA BASE
@@ -69,7 +68,11 @@ import static org.shlimtech.typesix.security.EndpointsList.SUCCESS_LOGIN_PAGE;
         "spring.rabbitmq.host=localhost",
         "spring.rabbitmq.port=7654",
         "spring.rabbitmq.username=user",
-        "spring.rabbitmq.password=pass"
+        "spring.rabbitmq.password=pass",
+
+        // SWAGGER
+        "springdoc.api-docs.path=" + SPRING_DOC_PATH,
+        "springdoc.swagger-ui.path=" + SWAGGER_UI_BASE_PATH
 })
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EnableAutoConfiguration
@@ -185,7 +188,7 @@ public class BaseTest {
     }
 
     public String login() {
-        var out = post(HttpRequestInput.builder().mime(Map.of("username", DebugConfig.USER1_EMAIL, "password", DebugConfig.USER1)).build(), FORM_LOGIN_ENDPOINT);
+        var out = post(HttpRequestInput.builder().mime(Map.of("username", DebugUsersConfig.USER1_EMAIL, "password", DebugUsersConfig.USER1)).build(), FORM_LOGIN_ENDPOINT);
         Assertions.assertTrue(out.getStatusCode().is3xxRedirection());
         Assertions.assertTrue(out.getLocation().contains(SUCCESS_LOGIN_PAGE));
         return out.getCookie();
