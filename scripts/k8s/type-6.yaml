@@ -49,6 +49,20 @@ spec:
               value: "https://pattern.shlimtech.org"
             - name: TYPE8_CLIENT_REDIRECT_URI
               value: "https://pattern.shlimtech.org/code"
+            - name: TYPE12_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: type-6-basic-secrets
+                  key: type_12_client_id
+            - name: TYPE12_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: type-6-basic-secrets
+                  key: type_12_client_secret
+            - name: TYPE12_HOSTNAME
+              value: "https://messenger.shlimtech.org"
+            - name: TYPE12_CLIENT_REDIRECT_URI
+              value: "https://messenger.shlimtech.org/code"
             - name: TYPE6_RABBIT_HOST
               value: rabbitmq.default.svc.cluster.local
             - name: TYPE6_RABBIT_PORT

@@ -6,3 +6,9 @@ type-6:
       client-redirect-uri: ${TYPE8_CLIENT_REDIRECT_URI}
       client-hostname: ${TYPE8_HOSTNAME}
       auth-method: all
+    type-12:
+      client-id: ${TYPE12_CLIENT_ID}
+      client-secret: ${TYPE12_CLIENT_SECRET}
+      client-redirect-uri: ${TYPE12_CLIENT_REDIRECT_URI}
+      client-hostname: ${TYPE12_HOSTNAME}
+      auth-method: all
