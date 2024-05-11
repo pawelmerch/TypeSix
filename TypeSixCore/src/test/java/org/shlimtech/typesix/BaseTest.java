@@ -62,6 +62,13 @@ import static org.shlimtech.typesix.web.EndpointsList.*;
         "type6.clients.type-8.client-hostname=type8.org",
         "type6.clients.type-8.auth-method=github",
 
+        // TYPE-8 CLIENT
+        "type6.clients.type-12.client-id=type12tmpClientId",
+        "type6.clients.type-12.client-secret=type12tmpClientSecret",
+        "type6.clients.type-12.client-redirect-uri=/tmp/type12/code",
+        "type6.clients.type-12.client-hostname=type12.org",
+        "type6.clients.type-12.auth-method=github",
+
         //"logging.level.org.springframework.security: TRACE"
 
         // RABBIT
