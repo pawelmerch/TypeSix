@@ -27,7 +27,7 @@ import static org.shlimtech.typesix.web.EndpointsList.*;
         "spring.datasource.password=tmp_password",
 
         // PROFILE
-        "spring.profiles.active=debug",
+        "spring.profiles.active=test",
 
         // OTHER
         "type-6.selfUrl=http://localhost:7777",

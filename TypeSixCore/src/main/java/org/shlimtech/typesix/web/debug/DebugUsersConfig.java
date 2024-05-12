@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Profile("debug")
+@Profile("debug || test")
 @RequiredArgsConstructor
 @Log
 public class DebugUsersConfig {

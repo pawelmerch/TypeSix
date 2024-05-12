@@ -25,7 +25,6 @@ import org.springframework.security.oauth2.server.authorization.settings.Authori
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.shlimtech.typesix.web.EndpointsList.*;
@@ -139,7 +138,7 @@ public class SecurityConfig {
                 .stream()
                 .map(client ->
                         RegisteredClient
-                                .withId(UUID.randomUUID().toString())
+                                .withId(client.getClientId())
                                 .clientId(client.getClientId())
                                 .clientSecret(passwordEncoder.encode(client.getClientSecret()))
                                 .redirectUri(client.getClientRedirectUri())

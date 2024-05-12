@@ -22,6 +22,8 @@ import java.security.spec.X509EncodedKeySpec;
 
 @Configuration
 public class RsaConfig {
+    private static final String KEY_ID = "type-6-key-id";
+
     @Bean
     public JWKSource<SecurityContext> jwkSource(@Value("${type-6.rsa.public-key-file-path}") Path publicKeyPath,
                                                 @Value("${type-6.rsa.private-key-file-path}") Path privateKeyPath) {
@@ -36,7 +38,7 @@ public class RsaConfig {
         RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
         return new RSAKey.Builder(publicKey)
                 .privateKey(privateKey)
-                .keyID("key-id")
+                .keyID(KEY_ID)
                 .build();
     }
 
