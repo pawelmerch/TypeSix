@@ -65,6 +65,16 @@ spec:
               value: "https://messenger.shlimtech.org/code"
             - name: TYPE6_RABBIT_HOST
               value: rabbitmq.default.svc.cluster.local
+            - name: TYPE6_REDIS_HOSTNAME
+              valueFrom:
+                secretKeyRef:
+                  name: type-6-basic-secrets
+                  key: type_6_redis_hostname
+            - name: TYPE6_REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: type-6-basic-secrets
+                  key: type_6_redis_password
             - name: TYPE6_RABBIT_PORT
               value: "15672"
             - name: TYPE6_RABBIT_USERNAME

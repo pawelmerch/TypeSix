@@ -1,7 +1,7 @@
 version: '3.4'
 
 services:
-  type-1-database:
+  database:
     image: postgres:latest
     environment:
       POSTGRES_USER: ${TYPE6_DATABASE_USER}
@@ -26,3 +26,9 @@ services:
     ports:
       - "${TYPE6_RABBIT_PORT}:5672"
       - "1567:15672"
+  redis:
+    image: redis:latest
+    restart: always
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${TYPE6_REDIS_PASSWORD}
+    ports:
+      - '6379:6379'

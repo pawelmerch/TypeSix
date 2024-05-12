@@ -6,13 +6,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class CustomUserPrinciple implements UserDetails {
+public class CustomUserPrinciple implements UserDetails, Serializable {
     private final User user;
-    private final PasswordEncoder passwordEncoder;
+    private transient final PasswordEncoder passwordEncoder;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

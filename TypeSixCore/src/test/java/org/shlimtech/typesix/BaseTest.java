@@ -5,6 +5,8 @@ import org.shlimtech.typesix.utils.HttpRequestInput;
 import org.shlimtech.typesix.utils.HttpResponseOutput;
 import org.shlimtech.typesix.web.debug.DebugUsersConfig;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
+import org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
@@ -82,7 +84,7 @@ import static org.shlimtech.typesix.web.EndpointsList.*;
         "springdoc.swagger-ui.path=" + SWAGGER_UI_BASE_PATH
 })
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@EnableAutoConfiguration
+@EnableAutoConfiguration(exclude = {RedisAutoConfiguration.class, RedisRepositoriesAutoConfiguration.class})
 public class BaseTest {
     @LocalServerPort
     protected int port;
