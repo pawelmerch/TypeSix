@@ -1,4 +1,4 @@
-package org.shlimtech.typesix.web.security;
+package org.shlimtech.typesix.web.security.config;
 
 import lombok.RequiredArgsConstructor;
 import org.shlimtech.typesix.web.security.oauth2.Type6Oauth2ClientProperties;

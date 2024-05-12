@@ -1,11 +1,6 @@
-package org.shlimtech.typesix.web.security;
+package org.shlimtech.typesix.web.security.config;
 
-import com.nimbusds.jose.jwk.JWKSet;
-import com.nimbusds.jose.jwk.RSAKey;
-import com.nimbusds.jose.jwk.source.JWKSource;
-import com.nimbusds.jose.proc.SecurityContext;
 import lombok.extern.java.Log;
-import org.shlimtech.typesix.utils.Utils;
 import org.shlimtech.typesix.web.EndpointsList;
 import org.shlimtech.typesix.web.security.oauth2.Type6Oauth2ClientProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,13 +158,6 @@ public class SecurityConfig {
                 .jwkSetEndpoint(OAUTH2_JWK_SET_ENDPOINT)
                 .tokenIntrospectionEndpoint(TOKEN_INTROSPECTION_ENDPOINT)
                 .build();
-    }
-
-    @Bean
-    public JWKSource<SecurityContext> jwkSource() {
-        RSAKey rsaKey = Utils.generateRsa();
-        JWKSet jwkSet = new JWKSet(rsaKey);
-        return (jwkSelector, securityContext) -> jwkSelector.select(jwkSet);
     }
 
     @Bean

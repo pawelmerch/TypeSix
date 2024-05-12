@@ -81,7 +81,11 @@ import static org.shlimtech.typesix.web.EndpointsList.*;
 
         // SWAGGER
         "springdoc.api-docs.path=" + SPRING_DOC_PATH,
-        "springdoc.swagger-ui.path=" + SWAGGER_UI_BASE_PATH
+        "springdoc.swagger-ui.path=" + SWAGGER_UI_BASE_PATH,
+
+        // RSA
+        "type-6.rsa.public-key-file-path=classpath:/keys/public_key.der",
+        "type-6.rsa.private-key-file-path=classpath:/keys/private_key.der"
 })
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EnableAutoConfiguration(exclude = {RedisAutoConfiguration.class, RedisRepositoriesAutoConfiguration.class})
