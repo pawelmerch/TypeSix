@@ -21,16 +21,16 @@ spec:
               value: "false"
             - name: TYPE6_ACTIVE_PROFILE
               value: "release"
-            - name: TYPE6_DATABASE_USER
+            - name: TYPE6_POSTGRES_USER
               value: default-user
-            - name: TYPE6_SELF_IP
+            - name: TYPE6_HOST
               value: https://service.shlimtech.org
-            - name: TYPE6_DATABASE_URL
+            - name: TYPE6_POSTGRES_URL
               valueFrom:
                 secretKeyRef:
                   name: type-6-basic-secrets
                   key: type_6_database_jdbc_url
-            - name: TYPE6_DATABASE_PASSWORD
+            - name: TYPE6_POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: type-6-basic-secrets
@@ -65,7 +65,7 @@ spec:
               value: "https://messenger.shlimtech.org/code"
             - name: TYPE6_RABBIT_HOST
               value: rabbitmq.default.svc.cluster.local
-            - name: TYPE6_REDIS_HOSTNAME
+            - name: TYPE6_REDIS_HOST
               valueFrom:
                 secretKeyRef:
                   name: type-6-basic-secrets
@@ -75,8 +75,6 @@ spec:
                 secretKeyRef:
                   name: type-6-basic-secrets
                   key: type_6_redis_password
-            - name: TYPE6_RABBIT_PORT
-              value: "15672"
             - name: TYPE6_RABBIT_USERNAME
               value: rabbit
             - name: TYPE6_RABBIT_PASSWORD

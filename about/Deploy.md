@@ -1,11 +1,11 @@
-## Параметры для развертывания, которые нужно указать при обновлении конфигурации облака
+# Параметры для развертывания, которые нужно указать при обновлении конфигурации облака
 
 * KUBERNETES_URL (github action secret)
 * KUBERNETES_SECRET (github action secret)
 
-## Переменные окружения, необходимые для запуска микросервиса
+# Переменные окружения, необходимые для запуска микросервиса
 
-### Клиенты
+## Клиенты
 
 #### Type-8
 
@@ -14,31 +14,51 @@
 * TYPE8_CLIENT_SECRET
 * TYPE8_HOSTNAME
 
-### Github
+#### Type-12
+
+* TYPE12_CLIENT_ID
+* TYPE12_CLIENT_REDIRECT_URI
+* TYPE12_CLIENT_SECRET
+* TYPE12_HOSTNAME
+
+## Провайдеры pa
+
+#### Github
 
 * TYPE6_GITHUB_CLIENT_ID
 * TYPE6_GITHUB_CLIENT_SECRET
 
-### Yandex
+#### Yandex
 
 * TYPE6_YANDEX_CLIENT_ID
 * TYPE6_YANDEX_CLIENT_SECRET
 
-### База данных
+## Внутренние сервисы
 
-* TYPE6_DATABASE_URL
-* TYPE6_DATABASE_USER
-* TYPE6_DATABASE_PASSWORD
+#### Postgres
 
-### RabbitMQ
+* TYPE6_POSTGRES_URL
+* TYPE6_POSTGRES_USER
+* TYPE6_POSTGRES_PASSWORD
+
+#### RabbitMQ
 
 * TYPE6_RABBIT_HOST
-* TYPE6_RABBIT_PORT
 * TYPE6_RABBIT_USERNAME
 * TYPE6_RABBIT_PASSWORD
 
-### Прочее
+#### Redis
 
-* TYPE6_SELF_IP
+* TYPE6_REDIS_HOST
+* TYPE6_REDIS_PASSWORD
+
+## RSA
+
+* TYPE6_WEB_RSA_PUBLIC_KEY_PATH
+* TYPE6_WEB_RSA_PRIVATE_KEY_PATH
+
+## Прочее
+
+* TYPE6_HOST
 * TYPE6_ACTIVE_PROFILE
 * TYPE6_ENABLE_SSL
