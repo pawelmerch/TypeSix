@@ -6,8 +6,6 @@ services:
     environment:
       POSTGRES_USER: ${TYPE6_DATABASE_USER}
       POSTGRES_PASSWORD: ${TYPE6_DATABASE_PASSWORD}
-      POSTGRES_PORT: ${TYPE6_POSTGRES_PORT}
-      POSTGRES_IP: ${TYPE6_POSTGRES_IP}
     ports:
       - "5432:5432"
     healthcheck:
@@ -24,7 +22,7 @@ services:
       - RABBITMQ_DEFAULT_USER=${TYPE6_RABBIT_USERNAME}
       - RABBITMQ_DEFAULT_PASS=${TYPE6_RABBIT_PASSWORD}
     ports:
-      - "${TYPE6_RABBIT_PORT}:5672"
+      - "15672:5672"
       - "1567:15672"
   redis:
     image: redis:latest

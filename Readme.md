@@ -9,5 +9,4 @@
 * [**Как разворачивать**](https://github.com/timattt/TypeSix/blob/master/about/Deploy.md)
 * [**Список эндпоинтов**](https://github.com/timattt/TypeSix/blob/master/about/Endpoints.md)
 * [**Сценарии работы**](https://github.com/timattt/TypeSix/blob/master/about/Scenarios.md)
-
-
+* [**Генерация RSA-ключей**](https://github.com/timattt/TypeSix/blob/master/about/RsaKeys.md)
