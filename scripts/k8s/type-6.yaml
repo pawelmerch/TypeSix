@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: type-6
-          image: docker.io/timattt/type-6:latest
+          image: quay.io/timattt/type-6:latest
           imagePullPolicy: Always
           env:
             - name: TYPE6_ENABLE_SSL
