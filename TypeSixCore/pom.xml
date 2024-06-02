@@ -10,7 +10,7 @@
         <relativePath/>
     </parent>
 
-    <groupId>org.shlimtech.type-6.core</groupId>
+    <groupId>io.mipt.type-6.core</groupId>
     <artifactId>TypeSixCore</artifactId>
     <version>${revision}</version>
 
@@ -117,7 +117,7 @@
 
         <!--INTERNAL-->
         <dependency>
-            <groupId>org.shlimtech.type-6.businessLogic</groupId>
+            <groupId>io.mipt.type-6.businessLogic</groupId>
             <artifactId>TypeSixBusinessLogic</artifactId>
             <version>${type-6.businessLogic.version}</version>
             <scope>compile</scope>
