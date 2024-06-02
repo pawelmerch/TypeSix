@@ -1,4 +1,4 @@
-name: deploy-type-11
+name: deploy-type-6
 
 on:
   workflow_dispatch:
