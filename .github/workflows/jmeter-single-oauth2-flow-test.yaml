@@ -17,8 +17,11 @@ jobs:
         with:
           testFilePath: scripts/test/jmeter/type-6-single-oauth2-test-scenario.jmx
           outputReportsFolder: reports/
-          args: "--loglevel INFO -JclientId=\"biba\" -Jauth=\"biba\" -JredirectUrl=\"https://pattern.mipt.io/code\" -Jemail=\"service@mipt.io\" -Jpassword=biba -Jhost=sso.mipt.io -Jprotocol=https -Jport=443"
+          args: "--loglevel INFO -JclientId=\"${{ secrets.TEST_CLIENT_ID }}\" -Jauth=\"biba\" -JredirectUrl=\"https://pattern.mipt.io/code\" -Jemail=\"service@mipt.io\" -Jpassword=biba -Jhost=sso.mipt.io -Jprotocol=https -Jport=443"
       - name: Print the final result
         shell: bash
         run: |
           ls reports
+          ls reports/content
+          cat reports/statistics.json
+          cat index.html
