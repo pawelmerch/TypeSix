@@ -10,18 +10,21 @@ jobs:
   action_test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Run JMeter Action on a test
-        uses: rbhadti94/apache-jmeter-action@v0.7.0
+      - uses: actions/checkout@v3
+      - name: Run JMeter Tests
+        uses: QAInsights/PerfAction@v3.1
         with:
-          testFilePath: scripts/test/jmeter/type-6-single-oauth2-test-scenario.jmx
-          outputReportsFolder: reports/
-          args: "--loglevel INFO -JclientId=\"${{ secrets.TEST_CLIENT_ID }}\" -Jauth=\"${{ secrets.TEST_AUTH }}\" -JredirectUrl=\"https://pattern.mipt.io/code\" -Jemail=\"service@mipt.io\" -Jpassword=biba -Jhost=sso.mipt.io -Jprotocol=https -Jport=443"
-      - name: Print the final result
-        shell: bash
-        run: |
-          ls reports
-          ls reports/content
-          cat reports/statistics.json
-          cat index.html
+          test-plan-path: scripts/test/jmeter/type-6-single-oauth2-test-scenario.jmx
+          args: '-H clientId=\"${{ secrets.TEST_CLIENT_ID }}\" -H auth=\"Basic ${{ secrets.TEST_AUTH }}\" -H redirectUrl=\"https://pattern.mipt.io/code\" -H email=\"service@mipt.io\" -H password=biba -H host=sso.mipt.io -H protocol=https -H port=443'
+      - name: Upload Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: jmeter-results
+          path: result.jtl
+      - name: Analyze Results with Latency Lingo
+        uses: latency-lingo/github-action@v0.0.2
+        with:
+          api-key: ${{ secrets.LATENCY_LINGO_API_KEY }}
+          file: result.jtl
+          label: Checkout Flow Automated Test Plan
+          format: jmeter
