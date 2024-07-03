@@ -15,7 +15,7 @@ jobs:
         uses: QAInsights/PerfAction@v3.1
         with:
           test-plan-path: scripts/test/jmeter/type-6-single-oauth2-test-scenario.jmx
-          args: "-J clientId=\"${{ secrets.TEST_CLIENT_ID }}\" -J auth=\"Basic ${{ secrets.TEST_AUTH }}\" -J redirectUrl=\"https://pattern.mipt.io/code\" -J email=\"service@mipt.io\" -Jpassword=biba -J host=sso.mipt.io -J protocol=https -J port=443"
+          args: "-JclientId=\"${{ secrets.TEST_CLIENT_ID }}\" -Jauth=\"Basic ${{ secrets.TEST_AUTH }}\" -JredirectUrl=\"https://pattern.mipt.io/code\" -Jemail=\"service@mipt.io\" -Jpassword=biba -Jhost=sso.mipt.io -Jprotocol=https -Jport=443"
       - name: Upload Results
         uses: actions/upload-artifact@v2
         with:
