@@ -177,6 +177,9 @@ public class RedisOAuth2AuthorizationService implements OAuth2AuthorizationServi
     }
 
     private static boolean matchesAuthorizationCode(OAuth2Authorization authorization, String token) {
+        if (authorization == null) {
+            return false;
+        }
         OAuth2Authorization.Token<OAuth2AuthorizationCode> authorizationCode =
                 authorization.getToken(OAuth2AuthorizationCode.class);
         return authorizationCode != null && authorizationCode.getToken().getTokenValue().equals(token);
