@@ -15,9 +15,15 @@ jobs:
         uses: QAInsights/PerfAction@v5.6.2
         with:
           test-plan-path: scripts/test/jmeter/type-6-single-oauth2-test-scenario.jmx
-          args: "-JclientId=\"${{ secrets.TEST_CLIENT_ID }}\" -Jauth=\"${{ secrets.TEST_AUTH }}\" -JredirectUrl=\"https://pattern.mipt.io/code\" -Jemail=\"service@mipt.io\" -Jpassword=biba -Jhost=sso.mipt.io"
       - name: Upload Results
         uses: actions/upload-artifact@v2
         with:
           name: jmeter-results
           path: result.jtl
+      - name: Analyze Results with Latency Lingo
+        uses: latency-lingo/github-action@v0.0.2
+        with:
+          api-key: ${{ secrets.LATENCY_LINGO_API_KEY }}
+          file: result.jtl
+          label: Checkout Flow Automated Test Plan
+          format: jmeter
