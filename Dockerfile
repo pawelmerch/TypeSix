@@ -11,4 +11,7 @@ RUN mkdir -p /root/.postgresql
 RUN wget "https://storage.yandexcloud.net/cloud-certs/CA.pem" --output-document /root/.postgresql/root.crt
 RUN chmod 777 /root/.postgresql/root.crt
 
-ENTRYPOINT java -jar /app/*.jar
+ENV MIN_MEMORY=512m
+ENV MAX_MEMORY=1024m
+
+ENTRYPOINT java -jar -Xms${MIN_MEMORY} -Xmx${MAX_MEMORY} /app/*.jar

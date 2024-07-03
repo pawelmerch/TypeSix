@@ -16,7 +16,15 @@ spec:
         - name: type-6
           image: quay.io/timattt/type-6:latest
           imagePullPolicy: Always
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "1000m"
           env:
+            - name: MIN_MEMORY
+              value: "128mm"
+            - name: MAX_MEMORY
+              value: "512m"
             - name: TYPE6_ENABLE_SSL
               value: "false"
             - name: TYPE6_ACTIVE_PROFILE
