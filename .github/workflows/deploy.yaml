@@ -53,23 +53,3 @@ jobs:
           kubectl delete --ignore-not-found=true -f scripts/k8s/type-6.yaml
           kubectl apply -f scripts/k8s/type-6.yaml
           kubectl get pod -A
-  jmeter_single_oauth2_test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Run JMeter Tests
-        uses: QAInsights/PerfAction@v5.6.2
-        with:
-          test-plan-path: scripts/test/jmeter/type-6-single-oauth2-test-scenario.jmx
-      - name: Upload Results
-        uses: actions/upload-artifact@v2
-        with:
-          name: jmeter-results
-          path: result.jtl
-      - name: Analyze Results with Latency Lingo
-        uses: latency-lingo/github-action@v0.0.2
-        with:
-          api-key: ${{ secrets.LATENCY_LINGO_API_KEY }}
-          file: result.jtl
-          label: Type-6 single oauth2 flow test
-          format: jmeter

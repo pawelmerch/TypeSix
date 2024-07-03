@@ -22,7 +22,7 @@ spec:
               cpu: "1000m"
           env:
             - name: MIN_MEMORY
-              value: "128mm"
+              value: "128m"
             - name: MAX_MEMORY
               value: "512m"
             - name: TYPE6_ENABLE_SSL
