@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: type-6
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: type-6
@@ -19,7 +19,7 @@ spec:
           resources:
             limits:
               memory: "512Mi"
-              cpu: "1000m"
+              cpu: "1"
           env:
             - name: MIN_MEMORY
               value: "128m"
