@@ -9,6 +9,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - uses: negz/create-tag@v1
+        with:
+          # Github Token
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # Version (e.g. v0.1.0)
+          version: test
+          # Tag message
+          message: biba
       - name: Run JMeter Action on a test
         uses: rbhadti94/apache-jmeter-action@v0.7.0
         with:
@@ -21,9 +29,4 @@ jobs:
           export SAMPLE_COUNT=$(cat reports/statistics.json | jq -r '.Total.sampleCount')
           export ERROR_COUNT=$(cat reports/statistics.json | jq -r '.Total.errorCount')
           echo "$TOTAL_RPS"
-      - uses: rickstaa/action-create-tag@v1
-        id: "tag_create"
-        with:
-          tag: "latest"
-          tag_exists_error: false
-          message: "Total rps: ${TOTAL_RPS}"
+
