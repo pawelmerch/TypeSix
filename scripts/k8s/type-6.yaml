@@ -16,7 +16,6 @@ spec:
         - name: type-6
           image: quay.io/timattt/type-6:latest
           imagePullPolicy: Always
-          restartPolicy: Never
           resources:
             limits:
               memory: "512Mi"
