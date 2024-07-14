@@ -7,24 +7,19 @@ jobs:
   action_test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - uses: rickstaa/action-create-tag@v1
-        id: "tag_create"
-        with:
-          tag: "jmeter"
-          tag_exists_error: false
-          message: "biba2"
-      - name: Run JMeter Action on a test
-        uses: rbhadti94/apache-jmeter-action@v0.7.0
+      - uses: actions/checkout@v4
+      - uses: rbhadti94/apache-jmeter-action@v0.7.0
         with:
           testFilePath: scripts/test/jmeter/type-6-single-oauth2-test-scenario.jmx
           outputReportsFolder: reports/
-      - name: Print the final result
-        shell: bash
+      - shell: bash
         run: |
           export TOTAL_RPS=$(cat reports/statistics.json | jq -r '.Total.throughput')
           export SAMPLE_COUNT=$(cat reports/statistics.json | jq -r '.Total.sampleCount')
           export ERROR_COUNT=$(cat reports/statistics.json | jq -r '.Total.errorCount')
-          echo "$TOTAL_RPS"
+      - uses: rickstaa/action-create-tag@v1
+        with:
+          tag: "Single oauth2 flow load testing"
+          tag_exists_error: false
+          message: "RPS: ${TOTAL_RPS}; Errors: ${ERROR_COUNT} / ${SAMPLE_COUNT}"
 
