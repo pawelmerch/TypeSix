@@ -10,22 +10,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           submodules: 'true'
-
-      - name: Build Image
-        id: build-image
-        uses: redhat-actions/buildah-build@v2
+      - uses: redhat-actions/buildah-build@v2
         with:
           image: type-6
           tags: latest
           containerfiles: ./Dockerfile
-
-      - name: Push To quay.io
-        id: push-to-quay
-        uses: redhat-actions/push-to-registry@v2
+      - uses: redhat-actions/push-to-registry@v2
         with:
           image: type-6
           tags: latest
@@ -38,13 +31,10 @@ jobs:
     container:
       image: bitnami/kubectl
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           submodules: 'true'
-
-      - name: Run k8s
-        run: |
+      - run: |
           kubectl config set-cluster k8s --server=${{ secrets.KUBERNETES_URL }} --insecure-skip-tls-verify=true
           kubectl config set-credentials admin --token=${{ secrets.KUBERNETES_SECRET }}
           kubectl config set-context default --cluster=k8s --user=admin
