@@ -26,6 +26,6 @@ jobs:
       - uses: rickstaa/action-create-tag@v1
         with:
           tag: "single_oauth2_flow_load_testing"
-          tag_exists_error: false
+          tag_exists_error: true
           message: ${{ steps.results.outputs.message }}
 
