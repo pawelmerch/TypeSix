@@ -8,10 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - shell: bash
-        id: biba
-        run: |
-          echo "comintern=strawberry" >> "$GITHUB_OUTPUT"
       - uses: rbhadti94/apache-jmeter-action@v0.7.0
         with:
           testFilePath: scripts/test/jmeter/type-6-single-oauth2-test-scenario.jmx
@@ -22,6 +18,7 @@ jobs:
           export TOTAL_RPS=$(cat reports/statistics.json | jq -r '.Total.throughput')
           export SAMPLE_COUNT=$(cat reports/statistics.json | jq -r '.Total.sampleCount')
           export ERROR_COUNT=$(cat reports/statistics.json | jq -r '.Total.errorCount')
+          ls reports/
           echo "message=RPS: ${TOTAL_RPS}, Errors: ${ERROR_COUNT} / ${SAMPLE_COUNT}" >> "$GITHUB_OUTPUT"
       - uses: rickstaa/action-create-tag@v1
         with:
