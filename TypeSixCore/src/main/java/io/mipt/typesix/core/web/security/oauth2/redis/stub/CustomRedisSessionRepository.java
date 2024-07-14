@@ -28,7 +28,7 @@ public class CustomRedisSessionRepository implements SessionRepository<CustomRed
 
     private String keyNamespace = DEFAULT_KEY_NAMESPACE + ":";
 
-    private FlushMode flushMode = FlushMode.ON_SAVE;
+    private FlushMode flushMode = FlushMode.IMMEDIATE;
 
     private SaveMode saveMode = SaveMode.ON_SET_ATTRIBUTE;
 
