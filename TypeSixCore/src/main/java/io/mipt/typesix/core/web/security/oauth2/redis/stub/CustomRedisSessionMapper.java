@@ -54,17 +54,17 @@ public final class CustomRedisSessionMapper implements BiFunction<String, Map<St
         MapSession session = new MapSession(sessionId);
         Long creationTime = (Long) map.get(CREATION_TIME_KEY);
         if (creationTime == null) {
-            handleMissingKey(CREATION_TIME_KEY);
+            return null;
         }
         session.setCreationTime(Instant.ofEpochMilli(creationTime));
         Long lastAccessedTime = (Long) map.get(LAST_ACCESSED_TIME_KEY);
         if (lastAccessedTime == null) {
-            handleMissingKey(LAST_ACCESSED_TIME_KEY);
+            return null;
         }
         session.setLastAccessedTime(Instant.ofEpochMilli(lastAccessedTime));
         Integer maxInactiveInterval = (Integer) map.get(MAX_INACTIVE_INTERVAL_KEY);
         if (maxInactiveInterval == null) {
-            handleMissingKey(MAX_INACTIVE_INTERVAL_KEY);
+            return null;
         }
         session.setMaxInactiveInterval(Duration.ofSeconds(maxInactiveInterval));
         map.forEach((name, value) -> {
