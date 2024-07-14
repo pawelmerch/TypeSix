@@ -18,7 +18,7 @@ jobs:
           export TOTAL_RPS=$(cat reports/statistics.json | jq -r '.Total.throughput')
           export SAMPLE_COUNT=$(cat reports/statistics.json | jq -r '.Total.sampleCount')
           export ERROR_COUNT=$(cat reports/statistics.json | jq -r '.Total.errorCount')
-          ls reports/content
+          ls /
           echo "message=RPS: ${TOTAL_RPS}, Errors: ${ERROR_COUNT} / ${SAMPLE_COUNT}" >> "$GITHUB_OUTPUT"
       - uses: rickstaa/action-create-tag@v1
         with:
