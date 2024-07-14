@@ -12,7 +12,7 @@ jobs:
       - uses: rickstaa/action-create-tag@v1
         id: "tag_create"
         with:
-          tag: "latest"
+          tag: "jmeter"
           tag_exists_error: false
           message: "biba2"
       - name: Run JMeter Action on a test
