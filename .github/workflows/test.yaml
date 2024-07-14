@@ -14,7 +14,7 @@ jobs:
           # Github Token
           token: ${{ secrets.GITHUB_TOKEN }}
           # Version (e.g. v0.1.0)
-          version: v0.1
+          version: v0.1.0
           # Tag message
           message: biba
       - name: Run JMeter Action on a test
