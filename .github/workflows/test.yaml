@@ -8,6 +8,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - shell: bash
+        run: |
+          export BIBA=biba
+      - uses: rickstaa/action-create-tag@v1
+        with:
+          tag: "single_oauth2_flow_load_testing"
+          tag_exists_error: false
+          message: ${{ BIBA }
       - uses: rbhadti94/apache-jmeter-action@v0.7.0
         with:
           testFilePath: scripts/test/jmeter/type-6-single-oauth2-test-scenario.jmx
@@ -17,9 +25,4 @@ jobs:
           export TOTAL_RPS=$(cat reports/statistics.json | jq -r '.Total.throughput')
           export SAMPLE_COUNT=$(cat reports/statistics.json | jq -r '.Total.sampleCount')
           export ERROR_COUNT=$(cat reports/statistics.json | jq -r '.Total.errorCount')
-      - uses: rickstaa/action-create-tag@v1
-        with:
-          tag: "Single oauth2 flow load testing"
-          tag_exists_error: false
-          message: "RPS: ${TOTAL_RPS}; Errors: ${ERROR_COUNT} / ${SAMPLE_COUNT}"
 
