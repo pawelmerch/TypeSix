@@ -15,7 +15,7 @@ jobs:
         with:
           tag: "single_oauth2_flow_load_testing"
           tag_exists_error: false
-          message: ${{ BIBA }
+          message: ${{ BIBA }}
       - uses: rbhadti94/apache-jmeter-action@v0.7.0
         with:
           testFilePath: scripts/test/jmeter/type-6-single-oauth2-test-scenario.jmx
