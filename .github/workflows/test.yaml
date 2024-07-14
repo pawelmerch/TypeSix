@@ -17,4 +17,5 @@ jobs:
       - name: Print the final result
         shell: bash
         run: |
-          cat reports/statistics.json | jq -r '.Total.throughput'
+          TOTAL_RPS=$(cat reports/statistics.json | jq -r '.Total.throughput')
+          echo "$TOTAL_RPS"
