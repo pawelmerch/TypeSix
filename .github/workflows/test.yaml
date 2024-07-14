@@ -10,7 +10,7 @@ jobs:
       - name: json
         shell: bash
         run: |
-          echo "$json" | jq -r '.access_token'
+          jq --version
       - name: Checkout
         uses: actions/checkout@v4
       - name: Run JMeter Action on a test
