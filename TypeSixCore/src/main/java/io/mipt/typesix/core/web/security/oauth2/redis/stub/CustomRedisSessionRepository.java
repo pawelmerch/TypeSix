@@ -4,7 +4,6 @@ import lombok.extern.java.Log;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.session.*;
-import org.springframework.session.data.redis.RedisSessionMapper;
 import org.springframework.session.data.redis.RedisSessionRepository;
 import org.springframework.util.Assert;
 
@@ -18,25 +17,6 @@ import java.util.function.BiFunction;
 @Log
 @Profile("!test")
 public class CustomRedisSessionRepository implements SessionRepository<CustomRedisSessionRepository.RedisSession> {
-    static final String CREATION_TIME_KEY = "creationTime";
-
-    /**
-     * The key in the hash representing {@link Session#getLastAccessedTime()}.
-     */
-    static final String LAST_ACCESSED_TIME_KEY = "lastAccessedTime";
-
-    /**
-     * The key in the hash representing {@link Session#getMaxInactiveInterval()}.
-     */
-    static final String MAX_INACTIVE_INTERVAL_KEY = "maxInactiveInterval";
-
-    /**
-     * The prefix of the key in the hash used for session attributes. For example, if the
-     * session contained an attribute named {@code attributeName}, then there would be an
-     * entry in the hash named {@code sessionAttr:attributeName} that mapped to its value.
-     */
-    static final String ATTRIBUTE_PREFIX = "sessionAttr:";
-
     /**
      * The default namespace for each key and channel in Redis used by Spring Session.
      */
@@ -54,7 +34,7 @@ public class CustomRedisSessionRepository implements SessionRepository<CustomRed
 
     private SessionIdGenerator sessionIdGenerator = UuidSessionIdGenerator.getInstance();
 
-    private BiFunction<String, Map<String, Object>, MapSession> redisSessionMapper = new RedisSessionMapper();
+    private BiFunction<String, Map<String, Object>, MapSession> redisSessionMapper = new CustomRedisSessionMapper();
 
     /**
      * Create a new {@link RedisSessionRepository} instance.
@@ -162,7 +142,7 @@ public class CustomRedisSessionRepository implements SessionRepository<CustomRed
     }
 
     private static String getAttributeKey(String attributeName) {
-        return ATTRIBUTE_PREFIX + attributeName;
+        return CustomRedisSessionMapper.ATTRIBUTE_PREFIX + attributeName;
     }
 
     /**
@@ -203,10 +183,10 @@ public class CustomRedisSessionRepository implements SessionRepository<CustomRed
             this.isNew = isNew;
             this.originalSessionId = cached.getId();
             if (this.isNew) {
-                this.delta.put(CREATION_TIME_KEY, cached.getCreationTime().toEpochMilli());
-                this.delta.put(MAX_INACTIVE_INTERVAL_KEY,
+                this.delta.put(CustomRedisSessionMapper.CREATION_TIME_KEY, cached.getCreationTime().toEpochMilli());
+                this.delta.put(CustomRedisSessionMapper.MAX_INACTIVE_INTERVAL_KEY,
                         (int) cached.getMaxInactiveInterval().getSeconds());
-                this.delta.put(LAST_ACCESSED_TIME_KEY, cached.getLastAccessedTime().toEpochMilli());
+                this.delta.put(CustomRedisSessionMapper.LAST_ACCESSED_TIME_KEY, cached.getLastAccessedTime().toEpochMilli());
             }
             if (this.isNew || (CustomRedisSessionRepository.this.saveMode == SaveMode.ALWAYS)) {
                 getAttributeNames().forEach((attributeName) -> this.delta.put(getAttributeKey(attributeName),
@@ -260,7 +240,7 @@ public class CustomRedisSessionRepository implements SessionRepository<CustomRed
         @Override
         public void setLastAccessedTime(Instant lastAccessedTime) {
             this.cached.setLastAccessedTime(lastAccessedTime);
-            this.delta.put(LAST_ACCESSED_TIME_KEY, getLastAccessedTime().toEpochMilli());
+            this.delta.put(CustomRedisSessionMapper.LAST_ACCESSED_TIME_KEY, getLastAccessedTime().toEpochMilli());
             flushIfRequired();
         }
 
@@ -272,7 +252,7 @@ public class CustomRedisSessionRepository implements SessionRepository<CustomRed
         @Override
         public void setMaxInactiveInterval(Duration interval) {
             this.cached.setMaxInactiveInterval(interval);
-            this.delta.put(MAX_INACTIVE_INTERVAL_KEY, (int) getMaxInactiveInterval().getSeconds());
+            this.delta.put(CustomRedisSessionMapper.MAX_INACTIVE_INTERVAL_KEY, (int) getMaxInactiveInterval().getSeconds());
             flushIfRequired();
         }
 
