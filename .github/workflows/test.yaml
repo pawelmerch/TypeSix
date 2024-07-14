@@ -9,13 +9,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - shell: bash
+        id: biba
         run: |
-          export BIBA=biba
+          echo "comintern=strawberry" >> "$GITHUB_OUTPUT"
       - uses: rickstaa/action-create-tag@v1
         with:
           tag: "single_oauth2_flow_load_testing"
           tag_exists_error: false
-          message: ${{ env.BIBA }}
+          message: ${{ steps.biba.outputs.comintern }}
       - uses: rbhadti94/apache-jmeter-action@v0.7.0
         with:
           testFilePath: scripts/test/jmeter/type-6-single-oauth2-test-scenario.jmx
