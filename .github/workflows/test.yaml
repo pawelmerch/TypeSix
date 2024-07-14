@@ -8,13 +8,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-      - name: Create Tag
-        uses: negz/create-tag@v1
+        uses: actions/checkout@v4
+      - uses: rickstaa/action-create-tag@v1
+        id: "tag_create"
         with:
-          version: "v0.1.1"
-          message: "biba"
-          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: "latest"
+          tag_exists_error: false
+          message: "biba2"
       - name: Run JMeter Action on a test
         uses: rbhadti94/apache-jmeter-action@v0.7.0
         with:
