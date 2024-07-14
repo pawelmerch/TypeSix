@@ -9,14 +9,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - uses: negz/create-tag@v1
+      - uses: nocnoc-th-devops/github-actions-create-tag@v0.0.4
         with:
-          # Github Token
+          # GitHub token
           token: ${{ secrets.GITHUB_TOKEN }}
-          # Version (e.g. v0.1.0)
-          version: v0.1.0
-          # Tag message
-          message: biba
+          # tag name
+          name: biba
       - name: Run JMeter Action on a test
         uses: rbhadti94/apache-jmeter-action@v0.7.0
         with:
