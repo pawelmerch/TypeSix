@@ -17,5 +17,13 @@ jobs:
       - name: Print the final result
         shell: bash
         run: |
-          TOTAL_RPS=$(cat reports/statistics.json | jq -r '.Total.throughput')
+          export TOTAL_RPS=$(cat reports/statistics.json | jq -r '.Total.throughput')
+          export SAMPLE_COUNT=$(cat reports/statistics.json | jq -r '.Total.sampleCount')
+          export ERROR_COUNT=$(cat reports/statistics.json | jq -r '.Total.errorCount')
           echo "$TOTAL_RPS"
+      - uses: rickstaa/action-create-tag@v1
+        id: "tag_create"
+        with:
+          tag: "latest"
+          tag_exists_error: false
+          message: "Total rps: ${TOTAL_RPS}"
