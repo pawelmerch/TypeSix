@@ -7,19 +7,25 @@ jobs:
   action_test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Run JMeter Action on a test
-        uses: rbhadti94/apache-jmeter-action@v0.7.0
+      - uses: actions/checkout@v4
+      - shell: bash
+        id: biba
+        run: |
+          echo "comintern=strawberry" >> "$GITHUB_OUTPUT"
+      - uses: rbhadti94/apache-jmeter-action@v0.7.0
         with:
           testFilePath: scripts/test/jmeter/type-6-single-oauth2-test-scenario.jmx
           outputReportsFolder: reports/
-      - name: Print the final result
-        shell: bash
+      - shell: bash
+        id: results
         run: |
-          ls reports
-          ls reports/content
-          cat reports/statistics.json
-          cat reports/index.html
-          nproc --all
-          free -g -h -t
+          export TOTAL_RPS=$(cat reports/statistics.json | jq -r '.Total.throughput')
+          export SAMPLE_COUNT=$(cat reports/statistics.json | jq -r '.Total.sampleCount')
+          export ERROR_COUNT=$(cat reports/statistics.json | jq -r '.Total.errorCount')
+          echo "message=RPS: ${TOTAL_RPS}, Errors: ${ERROR_COUNT} / ${SAMPLE_COUNT}" >> "$GITHUB_OUTPUT"
+      - uses: rickstaa/action-create-tag@v1
+        with:
+          tag: "single_oauth2_flow_load_testing"
+          tag_exists_error: false
+          message: ${{ steps.results.outputs.message }}
+
