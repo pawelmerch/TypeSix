@@ -6,23 +6,20 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    container:
+      image: justb4/jmeter
     steps:
       - uses: actions/checkout@v4
-      - uses: rbhadti94/apache-jmeter-action@v0.7.0
-        with:
-          testFilePath: scripts/test/jmeter/type-6-single-oauth2-test-scenario.jmx
-          outputReportsFolder: reports/
       - shell: bash
         id: results
         run: |
-          export TOTAL_RPS=$(cat reports/statistics.json | jq -r '.Total.throughput')
-          export SAMPLE_COUNT=$(cat reports/statistics.json | jq -r '.Total.sampleCount')
-          export ERROR_COUNT=$(cat reports/statistics.json | jq -r '.Total.errorCount')
-          ls reports/
-          echo "message=RPS: ${TOTAL_RPS}, Errors: ${ERROR_COUNT} / ${SAMPLE_COUNT}" >> "$GITHUB_OUTPUT"
+          apk add --no-cache python3
+          jmeter -n -t scripts/test/jmeter/type-6-single-oauth2-test-scenario.jmx -l result.csv
+          export MESSAGE=$(python3 scripts/test/python/parser_script.py result.csv)
+          echo "message=RPS: ${MESSAGE}" >> "$GITHUB_OUTPUT"
       - uses: rickstaa/action-create-tag@v1
         with:
-          tag: "single_oauth2_flow_load_testing"
+          tag: ${{ steps.results.outputs.message }}
           force_push_tag: true
           message: ${{ steps.results.outputs.message }}
 
