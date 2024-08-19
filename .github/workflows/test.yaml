@@ -19,7 +19,7 @@ jobs:
           echo "message=RPS: ${MESSAGE}" >> "$GITHUB_OUTPUT"
       - uses: rickstaa/action-create-tag@v1
         with:
-          tag: "single_oauth2_flow_load_testing"
+          tag: ${{ steps.results.outputs.message }}
           force_push_tag: true
           message: ${{ steps.results.outputs.message }}
 
