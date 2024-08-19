@@ -2,8 +2,6 @@ import csv
 import sys
 import datetime
 
-print("RAMP_TEST_ANALYSE")
-
 #
 # Говнокод для вычисления RPS.
 #
