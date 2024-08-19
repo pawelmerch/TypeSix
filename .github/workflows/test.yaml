@@ -5,7 +5,9 @@ on:
 
 jobs:
   test:
-    runs-on: justb4/jmeter
+    runs-on: ubuntu-latest
+    container:
+      image: justb4/jmeter
     steps:
       - uses: actions/checkout@v4
       - shell: bash
