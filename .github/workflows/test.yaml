@@ -19,7 +19,7 @@ jobs:
           echo "message=RPS: ${MESSAGE}" >> "$GITHUB_OUTPUT"
       - uses: rickstaa/action-create-tag@v1
         with:
-          tag: ${{ steps.results.outputs.message }}
+          tag: ${{ type-6-ramp-test }}
           force_push_tag: true
           message: ${{ steps.results.outputs.message }}
 
