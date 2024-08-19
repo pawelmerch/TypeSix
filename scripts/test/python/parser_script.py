@@ -44,6 +44,12 @@ with open(sys.argv[1], newline='') as csvfile:
     rps = total_ok_counts / len(code_2xx_3xx_per_second)
     rps = int(rps)
 
-    message = '[{}] Ramp-test. RPS = {}, Total ok requests = {}, Total bad requests = {}'.format(datetime.datetime.now(), rps, total_ok_counts, total_bad_counts)
+    message = '{} Ramp-test. RPS = {}, Total ok requests = {}, Total bad requests = {}'.format(datetime.datetime.now(), rps, total_ok_counts, total_bad_counts)
+    message = message.replace(".", "_")
+    message = message.replace(",", "_")
+    message = message.replace(":", "_")
+    message = message.replace(";", "_")
+    message = message.replace(" ", "_")
+    message = message.replace("-", "_")
     print(message)
 
