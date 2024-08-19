@@ -1,6 +1,5 @@
 import csv
 import sys
-import datetime
 
 #
 # Говнокод для вычисления RPS.
@@ -61,17 +60,9 @@ with open(sys.argv[1], newline='') as csvfile:
 
     rps = int(half_2xx_count / int(len(code_2xx) / 2))
 
-    long_message = 'RPS = {}, Total ok requests = {}, Total bad requests = {}'.format(datetime.datetime.now(), rps, total_2xx_count, total_other_count)
+    message = 'RPS = {}, Total ok requests = {}, Total bad requests = {}'.format(rps, total_2xx_count, total_other_count)
 
-    short_message = 'Ramp_test_{}'
-    short_message = long_message.replace(".", "_")
-    short_message = long_message.replace(",", "_")
-    short_message = long_message.replace(":", "_")
-    short_message = long_message.replace(";", "_")
-    short_message = long_message.replace(" ", "_")
-    short_message = long_message.replace("-", "_")
+    print(message)
 
-    os.environ["SHORT_MESSAGE"] = short_message
-    os.environ["LONG_MESSAGE"] = long_message
 
 

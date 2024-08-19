@@ -18,7 +18,8 @@ jobs:
         run: |
           apk add --no-cache python3
           jmeter -n -t scripts/test/jmeter/type-6-single-oauth2-test-scenario.jmx -l result.csv
-          export MESSAGE=$(python3 scripts/test/python/parser_script.py result.csv)
+          export LONG_MESSAGE=$(python3 scripts/test/python/parser_script.py result.csv)
+          export SHORT_MESSAGE=$(python3 scripts/test/python/tag_name_generator.py result.csv)
           echo "short_message=${SHORT_MESSAGE}" >> "$GITHUB_OUTPUT"
           echo "long_message=${LONG_MESSAGE}" >> "$GITHUB_OUTPUT"
   create_tag:
