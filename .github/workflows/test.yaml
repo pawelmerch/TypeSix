@@ -28,5 +28,4 @@ jobs:
       with:
         tag: ${{ needs.test.outputs.message }}
         force_push_tag: true
-        message: ${{ needs.test.outputs.message }}
 
