@@ -17,9 +17,13 @@ jobs:
           jmeter -n -t scripts/test/jmeter/type-6-single-oauth2-test-scenario.jmx -l result.csv
           export MESSAGE=$(python3 scripts/test/python/parser_script.py result.csv)
           echo "message=RPS: ${MESSAGE}" >> "$GITHUB_OUTPUT"
-      - uses: rickstaa/action-create-tag@v1
-        with:
-          tag: type-6-ramp-test
-          force_push_tag: true
-          message: ${{ steps.results.outputs.message }}
+  create_tag:
+    runs-on: ubuntu-latest
+    needs: [test]
+    steps:
+    - uses: rickstaa/action-create-tag@v1
+      with:
+        tag: type-6-ramp-test
+        force_push_tag: true
+        message: ${{ needs.test.results.outputs.message }}
 
