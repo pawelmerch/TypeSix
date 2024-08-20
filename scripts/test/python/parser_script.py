@@ -41,9 +41,14 @@ with open(sys.argv[1], newline='') as csvfile:
     code_2xx = []
     code_other = []
 
-    for second, count in code_2xx_3xx_per_second.items():
+    print(code_2xx_3xx_per_second)
+
+    for key in sorted(code_2xx_3xx_per_second):
+        count = code_2xx_3xx_per_second[key]
         code_2xx.append(count)
-    for second, count in code_other_per_second.items():
+
+    for key in sorted(code_other_per_second):
+        count = code_other_per_second[key]
         code_other.append(count)
 
     total_2xx_count = 0
@@ -54,11 +59,16 @@ with open(sys.argv[1], newline='') as csvfile:
     for count in code_other:
         total_other_count += count
 
-    half_2xx_count = 0
-    for count in code_2xx[int(len(code_2xx) / 2):]:
-        half_2xx_count += count
+    total_len = len(code_2xx)
+    left = int(total_len / 3)
+    right = int(total_len / 3 * 2)
+    target_slice = code_2xx[left:right]
 
-    rps = int(half_2xx_count / int(len(code_2xx) / 2))
+    target_2xx_count = 0
+    for count in target_slice:
+        target_2xx_count += count
+
+    rps = int(target_2xx_count / len(target_slice))
 
     message = 'RPS = {}, Total ok requests = {}, Total bad requests = {}'.format(rps, total_2xx_count, total_other_count)
 
