@@ -73,16 +73,6 @@ spec:
               value: "https://messenger.mipt.io/code"
             - name: TYPE6_RABBIT_HOST
               value: rabbitmq.default.svc.cluster.local
-            - name: TYPE6_REDIS_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: type-6-basic-secrets
-                  key: type_6_redis_hostname
-            - name: TYPE6_REDIS_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: type-6-basic-secrets
-                  key: type_6_redis_password
             - name: TYPE6_RABBIT_USERNAME
               value: rabbit
             - name: TYPE6_RABBIT_PASSWORD
