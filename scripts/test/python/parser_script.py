@@ -41,8 +41,6 @@ with open(sys.argv[1], newline='') as csvfile:
     code_2xx = []
     code_other = []
 
-    print(code_2xx_3xx_per_second)
-
     for key in sorted(code_2xx_3xx_per_second):
         count = code_2xx_3xx_per_second[key]
         code_2xx.append(count)
