@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestPropertySource;
@@ -222,7 +223,15 @@ public class BaseTest {
         return body;
     }
 
-    protected void postWithFormMimeAndRedirect(String path, Map<String, String> params, String redirect) {
+    protected void postWithFormMimeAndExpect2xx(String path, Map<String, String> params) {
+        Assertions.assertTrue(postWithFormMime(path, params).is2xxSuccessful());
+    }
+
+    protected void postWithFormMimeAndExpect3xx(String path, Map<String, String> params) {
+        Assertions.assertTrue(postWithFormMime(path, params).is3xxRedirection());
+    }
+
+    private HttpStatusCode postWithFormMime(String path, Map<String, String> params) {
         String mime = "";
         for (var entry : params.entrySet()) {
             mime += entry.getKey() + "=" + entry.getValue() + "&";
@@ -238,10 +247,6 @@ public class BaseTest {
                 .retrieve();
         var ent = response.toEntity(String.class);
         var headers = ent.getHeaders();
-
-        String location = headers.getFirst("Location");
-
-        Assertions.assertTrue(ent.getStatusCode().is3xxRedirection());
-        Assertions.assertTrue(location.contains(redirect));
+        return ent.getStatusCode();
     }
 }

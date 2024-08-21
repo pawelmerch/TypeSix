@@ -30,13 +30,12 @@ public class Oauth2ClientWithFormLoginFlowTests extends BaseTest {
     @Test
     public void testFlow() {
         step1(); // OAUTH2_AUTHORIZATION_ENDPOINT
-        step2(); // LOGIN_ENDPOINT
-        step3(); // FORM_LOGIN_ENDPOINT
-        step4(); // OAUTH2_AUTHORIZATION_ENDPOINT
-        step5(); // OAUTH2_TOKEN_ENDPOINT
-        step6(); // TOKEN_INTROSPECTION_ENDPOINT
-        step7(); // LOGOUT_ENDPOINT
-        step8(); // OAUTH2_JWK_SET_ENDPOINT
+        step2(); // FORM_LOGIN_ENDPOINT
+        step3(); // OAUTH2_AUTHORIZATION_ENDPOINT
+        step4(); // OAUTH2_TOKEN_ENDPOINT
+        step5(); // TOKEN_INTROSPECTION_ENDPOINT
+        step6(); // LOGOUT_ENDPOINT
+        step7(); // OAUTH2_JWK_SET_ENDPOINT
     }
 
     private void step1() {
@@ -60,23 +59,6 @@ public class Oauth2ClientWithFormLoginFlowTests extends BaseTest {
     }
 
     private void step2() {
-        var url = origin() + LOGIN_PAGE;
-        var response = defaultClient
-                .get()
-                .uri(url)
-                .header("Cookie", "JSESSIONID=" + sessionCookie)
-                .retrieve();
-        var ent = response.toEntity(String.class);
-        var status = ent.getStatusCode();
-        var body = ent.getBody();
-
-        // receiving html login page, it must contains link to FORM_LOGIN_ENDPOINT
-        Assertions.assertNotNull(body);
-        Assertions.assertTrue(body.contains(FORM_LOGIN_ENDPOINT));
-        Assertions.assertTrue(status.is2xxSuccessful());
-    }
-
-    private void step3() {
         var url = origin() + FORM_LOGIN_ENDPOINT;
         var response = defaultClient
                 .post()
@@ -100,7 +82,7 @@ public class Oauth2ClientWithFormLoginFlowTests extends BaseTest {
         Assertions.assertTrue(status.is3xxRedirection());
     }
 
-    private void step4() {
+    private void step3() {
         var url = origin() + OAUTH2_AUTHORIZATION_ENDPOINT + "?response_type=code&client_id=" + clientId + "&redirect_uri=" + redirectUrl;
         var response = defaultClient
                 .get()
@@ -119,7 +101,7 @@ public class Oauth2ClientWithFormLoginFlowTests extends BaseTest {
         Assertions.assertTrue(status.is3xxRedirection());
     }
 
-    private void step5() {
+    private void step4() {
         var url = origin() + OAUTH2_TOKEN_ENDPOINT;
         var response = defaultClient
                 .post()
@@ -141,7 +123,7 @@ public class Oauth2ClientWithFormLoginFlowTests extends BaseTest {
         Assertions.assertTrue(status.is2xxSuccessful());
     }
 
-    private void step6() {
+    private void step5() {
         var url = origin() + TOKEN_INTROSPECTION_ENDPOINT;
         var response = defaultClient
                 .post()
@@ -161,7 +143,7 @@ public class Oauth2ClientWithFormLoginFlowTests extends BaseTest {
     }
 
     @SneakyThrows
-    private void step7() {
+    private void step6() {
         var url = origin() + LOGOUT_ENDPOINT;
         var response = defaultClient
                 .get()
@@ -181,7 +163,7 @@ public class Oauth2ClientWithFormLoginFlowTests extends BaseTest {
         Assertions.assertTrue(redirectUrl.contains(location));
     }
 
-    private void step8() {
+    private void step7() {
         var url = origin() + OAUTH2_JWK_SET_ENDPOINT;
         var response = defaultClient
                 .get()

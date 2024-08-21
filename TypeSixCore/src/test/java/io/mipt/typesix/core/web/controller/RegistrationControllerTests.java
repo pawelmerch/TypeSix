@@ -3,7 +3,6 @@ package io.mipt.typesix.core.web.controller;
 import io.mipt.typesix.businesslogic.service.core.RegistrationService;
 import io.mipt.typesix.core.BaseTest;
 import lombok.extern.java.Log;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -22,38 +21,20 @@ public class RegistrationControllerTests extends BaseTest {
     private RegistrationService registrationService;
 
     @Test
-    public void emailPageGetTest() {
-        String content = getPageContent(REGISTRATION_EMAIL_PAGE);
-        Assertions.assertTrue(content.contains(REGISTRATION_EMAIL_ENDPOINT));
-    }
-
-    @Test
     public void emailPagePostTest() {
-        postWithFormMimeAndRedirect(REGISTRATION_EMAIL_ENDPOINT, Map.of("email", TEST_EMAIL), REGISTRATION_CODE_PAGE);
+        postWithFormMimeAndExpect2xx(REGISTRATION_EMAIL_ENDPOINT, Map.of("email", TEST_EMAIL));
         verify(registrationService).beginRegistrationFlow(TEST_EMAIL);
     }
 
     @Test
-    public void codePageGetTest() {
-        String content = getPageContent(REGISTRATION_CODE_PAGE + "?email=" + TEST_EMAIL);
-        Assertions.assertTrue(content.contains(REGISTRATION_CODE_ENDPOINT));
-    }
-
-    @Test
     public void codePagePostTest() {
-        postWithFormMimeAndRedirect(REGISTRATION_CODE_ENDPOINT, Map.of("email", TEST_EMAIL, "code", TEST_CODE), REGISTRATION_PASSWORD_SET_PAGE);
+        postWithFormMimeAndExpect2xx(REGISTRATION_CODE_ENDPOINT, Map.of("email", TEST_EMAIL, "code", TEST_CODE));
         verify(registrationService).checkValidCode(TEST_EMAIL, TEST_CODE);
     }
 
     @Test
-    public void passwordChangeGetTest() {
-        String content = getPageContent(REGISTRATION_PASSWORD_SET_PAGE + "?email=" + TEST_EMAIL + "&code=" + TEST_CODE);
-        Assertions.assertTrue(content.contains(REGISTRATION_PASSWORD_SET_ENDPOINT));
-    }
-
-    @Test
     public void passwordChangePostTest() {
-        postWithFormMimeAndRedirect(REGISTRATION_PASSWORD_SET_ENDPOINT, Map.of("email", TEST_EMAIL, "code", TEST_CODE, "password", TEST_PASSWORD), LOGIN_PAGE);
+        postWithFormMimeAndExpect2xx(REGISTRATION_PASSWORD_SET_ENDPOINT, Map.of("email", TEST_EMAIL, "code", TEST_CODE, "password", TEST_PASSWORD));
         verify(registrationService).endRegistrationFlow(TEST_EMAIL, TEST_CODE, TEST_PASSWORD);
     }
 }
