@@ -32,6 +32,13 @@ import static io.mipt.typesix.core.web.EndpointsList.*;
 @Configuration
 @Log
 public class SecurityConfig {
+    private static final String[] FRONTEND_RESOURCES_PATHS = {
+            "index.html",
+            "/static/**",
+            "manifest.json",
+            "favicon.ico"
+    };
+
     public SecurityConfig(@Value("${type-6.selfUrl}") String selfUrl,
                           @Autowired OAuth2ClientProperties oAuth2ClientProperties,
                           @Autowired WebEndpointProperties webEndpointProperties) {
@@ -69,44 +76,42 @@ public class SecurityConfig {
     public SecurityFilterChain basicSecurityFilterChain(HttpSecurity http) throws Exception {
         // basic security chain for most auth types
         return http
-                // TODO restore CSRF in login page
                 .csrf(AbstractHttpConfigurer::disable)
                 // indicates that this chain is used only with /login and /logout URLs
                 .securityMatcher(
-                        LOGIN_PAGE,
                         LOGOUT_ENDPOINT,
                         THIRD_PARTY_AUTHORIZATION_ENDPOINT + "/*",
                         THIRD_PARTY_CODE_ENDPOINT + "/*",
                         FORM_LOGIN_ENDPOINT,
-                        SUCCESS_LOGIN_PAGE,
-                        ERROR_PAGE,
                         REGISTRATION_EMAIL_ENDPOINT,
                         REGISTRATION_CODE_ENDPOINT,
                         REGISTRATION_PASSWORD_SET_ENDPOINT,
-                        REGISTRATION_EMAIL_PAGE,
-                        REGISTRATION_CODE_PAGE,
-                        REGISTRATION_PASSWORD_SET_PAGE
+                        PREFIX_PUBLIC_PAGE + "/*",
+                        ONLINE_DATA_ENDPOINT
                 )
                 // login, logout, registration endpoints are permitted
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(
-                                LOGIN_PAGE,
                                 LOGOUT_ENDPOINT,
                                 FORM_LOGIN_ENDPOINT,
-                                ERROR_PAGE,
                                 REGISTRATION_EMAIL_ENDPOINT,
                                 REGISTRATION_CODE_ENDPOINT,
                                 REGISTRATION_PASSWORD_SET_ENDPOINT,
-                                REGISTRATION_EMAIL_PAGE,
-                                REGISTRATION_CODE_PAGE,
-                                REGISTRATION_PASSWORD_SET_PAGE
+                                PREFIX_PUBLIC_PAGE + "/*",
+                                ONLINE_DATA_ENDPOINT
                         ).permitAll()
                         .anyRequest().authenticated())
                 // form login authentication filter is enabled
-                .formLogin(c -> c.loginPage(LOGIN_PAGE).loginProcessingUrl(FORM_LOGIN_ENDPOINT).defaultSuccessUrl(SUCCESS_LOGIN_PAGE))
+                .formLogin(c -> c
+                        .loginPage(LOGIN_PAGE)
+                        .failureUrl(LOGIN_PAGE)
+                        .loginProcessingUrl(FORM_LOGIN_ENDPOINT)
+                        .defaultSuccessUrl(SUCCESS_LOGIN_PAGE)
+                )
                 // oauth2 login authentication filter is enabled
                 .oauth2Login(c -> c
                         .loginPage(LOGIN_PAGE)
+                        .failureUrl(LOGIN_PAGE)
                         .defaultSuccessUrl(SUCCESS_LOGIN_PAGE)
                         .authorizationEndpoint(endpoint -> endpoint.baseUri(THIRD_PARTY_AUTHORIZATION_ENDPOINT))
                         .redirectionEndpoint(endpoint -> endpoint.baseUri(THIRD_PARTY_CODE_ENDPOINT + "/*"))
@@ -121,11 +126,14 @@ public class SecurityConfig {
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(authorize ->
                 // expose actuator endpoints
-                authorize.requestMatchers(
-                        ACTUATOR_BASE_PATH + "/**",
-                        SWAGGER_UI_BASE_PATH + "/**",
-                        SPRING_DOC_PATH + "/**"
-                ).permitAll().anyRequest().denyAll()
+                authorize
+                        .requestMatchers(
+                            ACTUATOR_BASE_PATH + "/**",
+                            SWAGGER_UI_BASE_PATH + "/**",
+                            SPRING_DOC_PATH + "/**"
+                        ).permitAll()
+                        .requestMatchers(FRONTEND_RESOURCES_PATHS).permitAll()
+                        .anyRequest().denyAll()
         ).build();
     }
 

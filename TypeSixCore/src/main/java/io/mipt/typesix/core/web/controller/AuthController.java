@@ -1,26 +1,27 @@
 package io.mipt.typesix.core.web.controller;
 
+import io.mipt.typesix.core.web.dto.OnlineUserDataDto;
 import io.mipt.typesix.core.web.security.oauth2.Type6Oauth2ClientProperties;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
+import java.io.IOException;
 import java.util.Optional;
 
 import static io.mipt.typesix.core.utils.Utils.retrieveEmail;
 import static io.mipt.typesix.core.web.EndpointsList.*;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class AuthController {
     private static final String DEFAULT_SAVED_REQUEST_SESSION_ATTRIBUTE = "SPRING_SECURITY_SAVED_REQUEST";
@@ -28,39 +29,23 @@ public class AuthController {
 
     private final Type6Oauth2ClientProperties clientProperties;
 
-    @GetMapping(LOGIN_PAGE)
-    public String login(HttpServletRequest request, Model model) {
-        // Default endpoints
-        Arrays.stream(Type6Oauth2ClientProperties.AuthMethod.values()).forEach(provider -> model.addAttribute(provider + "_auth_url", THIRD_PARTY_AUTHORIZATION_ENDPOINT + "/" + provider));
-        model.addAttribute("form_login_endpoint", FORM_LOGIN_ENDPOINT);
-        model.addAttribute("email_page", REGISTRATION_EMAIL_PAGE);
-        model.addAttribute("logout_endpoint", LOGOUT_ENDPOINT);
-
-        // User email
+    @GetMapping(ONLINE_DATA_ENDPOINT)
+    public OnlineUserDataDto getOnlineData(HttpServletRequest request) {
         String email = getLoggedUserEmail();
-        model.addAttribute("isLogged", email != null);
-        if (email != null) {
-            model.addAttribute("userEmail", email);
-        }
+        String lastError = getAuthError(request);
 
-        // User oauth2 client
-        Type6Oauth2ClientProperties.Type6Oauth2Client client = getOauth2Client(request);
-        if (client == null) {
-            model.addAttribute("clientMessage", "You are not bounded to any oauth2-client");
-            return "login";
-        }
-
-        model.addAttribute("clientMessage", "You came from a client: " + client.getClientId());
-
-        if (client.getAuthMethod() == Type6Oauth2ClientProperties.AuthMethod.all) {
-            return "login";
-        }
-
-        return makeRedirect(THIRD_PARTY_AUTHORIZATION_ENDPOINT + "/" + client.getAuthMethod().toString());
+        return OnlineUserDataDto.builder()
+                .email(email)
+                .lastError(lastError)
+                .build();
     }
 
     @GetMapping(LOGOUT_ENDPOINT)
-    public String logout(HttpServletRequest request, @RequestParam(required = false) String redirect) {
+    public void logout(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            @RequestParam(required = false) String redirect
+    ) throws IOException {
         Type6Oauth2ClientProperties.Type6Oauth2Client client = getOauth2Client(request);
 
         // Invalidating session
@@ -69,33 +54,20 @@ public class AuthController {
             request.getSession().invalidate();
         }
 
-        // Making redirect to parameter
+        // Making redirect to parameter if parameter exists
         if (redirect != null) {
-            return makeRedirect(redirect);
+            response.sendRedirect(redirect);
+            return;
         }
 
-        // Use client to determine redirect
+        // Use client to determine redirect if no parameter specified
         if (client == null) {
-            return makeRedirect(LOGIN_PAGE);
+            response.sendRedirect(LOGIN_PAGE);
+            return;
         }
-        return makeRedirect(client.getClientHostname());
+        response.sendRedirect(client.getClientHostname());
     }
 
-    @GetMapping(SUCCESS_LOGIN_PAGE)
-    public String success() {
-        return "success";
-    }
-
-    @ExceptionHandler
-    public String errorHandler(Exception exception) {
-        return "redirect:" + ERROR_PAGE + "?message=Unknown exception: " + exception.getMessage();
-    }
-
-    private String makeRedirect(String to) {
-        return "redirect:" + to;
-    }
-
-    @SneakyThrows
     private String getOauth2RedirectUri(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session == null) {
@@ -107,6 +79,22 @@ public class AuthController {
         }
         var uri = savedRequest.getParameterValues(SAVED_REQUEST_REDIRECT_URL_PARAMETER);
         return uri == null ? null : uri[0];
+    }
+
+    private String getAuthError(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            return null;
+        }
+
+        AuthenticationException exception = (AuthenticationException) session.getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+        if (exception != null) {
+            // Read exception once
+            session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+            return exception.getMessage();
+        }
+
+        return null;
     }
 
     private String getLoggedUserEmail() {

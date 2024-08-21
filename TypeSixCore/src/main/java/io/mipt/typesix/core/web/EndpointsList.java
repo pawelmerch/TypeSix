@@ -84,6 +84,13 @@ public class EndpointsList {
     )
     public static final String LOGOUT_ENDPOINT = PREFIX_PUBLIC + "/logout";
 
+    @Type6Endpoint(
+            description = "Здесь можно узнать информацию о текущей сессии пользователя",
+            method = GET,
+            category = PUBLIC
+    )
+    public static final String ONLINE_DATA_ENDPOINT = PREFIX_PUBLIC + "/onlinedata";
+
 
     //
     // THIRD PARTY OAUTH2 AUTHENTICATING
@@ -127,27 +134,6 @@ public class EndpointsList {
     )
     public static final String REGISTRATION_PASSWORD_SET_ENDPOINT = PREFIX_PUBLIC + "/registration/password";
 
-    @Type6Endpoint(
-            description = "Страница для первого шага конвейера",
-            method = GET,
-            category = REGISTRATION
-    )
-    public static final String REGISTRATION_EMAIL_PAGE = PREFIX_PUBLIC_PAGE + "/registration/email";
-
-    @Type6Endpoint(
-            description = "Страница для второго шага конвейера",
-            method = GET,
-            category = REGISTRATION
-    )
-    public static final String REGISTRATION_CODE_PAGE = PREFIX_PUBLIC_PAGE + "/registration/verify";
-
-    @Type6Endpoint(
-            description = "Страница для третьего шага конвейера",
-            method = GET,
-            category = REGISTRATION
-    )
-    public static final String REGISTRATION_PASSWORD_SET_PAGE = PREFIX_PUBLIC_PAGE + "/registration/password";
-
 
     //
     // PAGES
@@ -165,13 +151,6 @@ public class EndpointsList {
             category = PAGE
     )
     public static final String SUCCESS_LOGIN_PAGE = PREFIX_PUBLIC_PAGE + "/success";
-
-    @Type6Endpoint(
-            description = "Сюда перенаправляются ошибки",
-            method = GET,
-            category = PAGE
-    )
-    public static final String ERROR_PAGE = PREFIX_PUBLIC_PAGE + "/error";
 
 
     //
