@@ -21,7 +21,7 @@
 * TYPE12_CLIENT_SECRET
 * TYPE12_HOSTNAME
 
-## Провайдеры pa
+## Провайдеры
 
 #### Github
 
