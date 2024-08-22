@@ -1,6 +1,7 @@
 package io.mipt.typesix.core.web.security.config;
 
 import io.mipt.typesix.core.web.EndpointsList;
+import io.mipt.typesix.core.web.security.form.CustomAuthenticationFailureHandler;
 import io.mipt.typesix.core.web.security.oauth2.Type6Oauth2ClientProperties;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +40,13 @@ public class SecurityConfig {
             "favicon.ico"
     };
 
+    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+
     public SecurityConfig(@Value("${type-6.selfUrl}") String selfUrl,
                           @Autowired OAuth2ClientProperties oAuth2ClientProperties,
-                          @Autowired WebEndpointProperties webEndpointProperties) {
+                          @Autowired WebEndpointProperties webEndpointProperties,
+                          @Autowired CustomAuthenticationFailureHandler customAuthenticationFailureHandler) {
+        this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
         setRedirectUriToAllRegistrations(oAuth2ClientProperties, selfUrl);
         webEndpointProperties.setBasePath(ACTUATOR_BASE_PATH);
     }
@@ -104,14 +109,14 @@ public class SecurityConfig {
                 // form login authentication filter is enabled
                 .formLogin(c -> c
                         .loginPage(LOGIN_PAGE)
-                        .failureUrl(LOGIN_PAGE)
                         .loginProcessingUrl(FORM_LOGIN_ENDPOINT)
                         .defaultSuccessUrl(SUCCESS_LOGIN_PAGE)
+                        .failureHandler(customAuthenticationFailureHandler)
                 )
                 // oauth2 login authentication filter is enabled
                 .oauth2Login(c -> c
                         .loginPage(LOGIN_PAGE)
-                        .failureUrl(LOGIN_PAGE)
+                        .failureHandler(customAuthenticationFailureHandler)
                         .defaultSuccessUrl(SUCCESS_LOGIN_PAGE)
                         .authorizationEndpoint(endpoint -> endpoint.baseUri(THIRD_PARTY_AUTHORIZATION_ENDPOINT))
                         .redirectionEndpoint(endpoint -> endpoint.baseUri(THIRD_PARTY_CODE_ENDPOINT + "/*"))
