@@ -2,6 +2,7 @@ package io.mipt.typesix.core.web.security.config;
 
 import io.mipt.typesix.core.web.EndpointsList;
 import io.mipt.typesix.core.web.security.form.CustomAuthenticationFailureHandler;
+import io.mipt.typesix.core.web.security.logout.CustomLogoutSuccessHandler;
 import io.mipt.typesix.core.web.security.oauth2.Type6Oauth2ClientProperties;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -41,12 +41,15 @@ public class SecurityConfig {
     };
 
     private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+    private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
 
     public SecurityConfig(@Value("${type-6.selfUrl}") String selfUrl,
                           @Autowired OAuth2ClientProperties oAuth2ClientProperties,
                           @Autowired WebEndpointProperties webEndpointProperties,
-                          @Autowired CustomAuthenticationFailureHandler customAuthenticationFailureHandler) {
+                          @Autowired CustomAuthenticationFailureHandler customAuthenticationFailureHandler,
+                          @Autowired CustomLogoutSuccessHandler customLogoutSuccessHandler) {
         this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
+        this.customLogoutSuccessHandler = customLogoutSuccessHandler;
         setRedirectUriToAllRegistrations(oAuth2ClientProperties, selfUrl);
         webEndpointProperties.setBasePath(ACTUATOR_BASE_PATH);
     }
@@ -91,8 +94,7 @@ public class SecurityConfig {
                         REGISTRATION_EMAIL_ENDPOINT,
                         REGISTRATION_CODE_ENDPOINT,
                         REGISTRATION_PASSWORD_SET_ENDPOINT,
-                        PREFIX_PUBLIC_PAGE + "/*",
-                        ONLINE_DATA_ENDPOINT
+                        PREFIX_PUBLIC_PAGE + "/*"
                 )
                 // login, logout, registration endpoints are permitted
                 .authorizeHttpRequests(authorize -> authorize
@@ -102,8 +104,7 @@ public class SecurityConfig {
                                 REGISTRATION_EMAIL_ENDPOINT,
                                 REGISTRATION_CODE_ENDPOINT,
                                 REGISTRATION_PASSWORD_SET_ENDPOINT,
-                                PREFIX_PUBLIC_PAGE + "/*",
-                                ONLINE_DATA_ENDPOINT
+                                PREFIX_PUBLIC_PAGE + "/*"
                         ).permitAll()
                         .anyRequest().authenticated())
                 // form login authentication filter is enabled
@@ -121,8 +122,9 @@ public class SecurityConfig {
                         .authorizationEndpoint(endpoint -> endpoint.baseUri(THIRD_PARTY_AUTHORIZATION_ENDPOINT))
                         .redirectionEndpoint(endpoint -> endpoint.baseUri(THIRD_PARTY_CODE_ENDPOINT + "/*"))
                 )
-                // default logout filter is disabled
-                .logout(LogoutConfigurer::disable)
+                .logout(logoutConfig -> logoutConfig
+                        .logoutUrl(LOGOUT_ENDPOINT)
+                        .logoutSuccessHandler(customLogoutSuccessHandler))
                 .build();
     }
 

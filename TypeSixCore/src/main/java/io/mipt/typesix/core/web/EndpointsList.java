@@ -84,13 +84,6 @@ public class EndpointsList {
     )
     public static final String LOGOUT_ENDPOINT = PREFIX_PUBLIC + "/logout";
 
-    @Type6Endpoint(
-            description = "Здесь можно узнать информацию о текущей сессии пользователя",
-            method = GET,
-            category = PUBLIC
-    )
-    public static final String ONLINE_DATA_ENDPOINT = PREFIX_PUBLIC + "/onlinedata";
-
 
     //
     // THIRD PARTY OAUTH2 AUTHENTICATING
