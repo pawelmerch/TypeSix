@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class Advice {
+public class CustomControllerAdvice {
     @ExceptionHandler
     public ResponseEntity<String> errorHandler(Exception exception) {
         return ResponseEntity.internalServerError().body(exception.getMessage());
