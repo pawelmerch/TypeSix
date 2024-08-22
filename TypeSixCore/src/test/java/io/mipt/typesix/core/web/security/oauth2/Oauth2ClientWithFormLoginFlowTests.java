@@ -144,7 +144,7 @@ public class Oauth2ClientWithFormLoginFlowTests extends BaseTest {
 
     @SneakyThrows
     private void step6() {
-        var url = origin() + LOGOUT_ENDPOINT;
+        var url = origin() + LOGOUT_ENDPOINT + "?redirect=" + redirectUrl;
         var response = defaultClient
                 .get()
                 .uri(url)
