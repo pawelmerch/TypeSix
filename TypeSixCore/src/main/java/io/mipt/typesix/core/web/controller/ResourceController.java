@@ -2,42 +2,53 @@ package io.mipt.typesix.core.web.controller;
 
 import io.mipt.typesix.core.web.security.oauth2.Type6Oauth2ClientProperties;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import static io.mipt.typesix.core.web.EndpointsList.*;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
-public class StubController {
-    private static final ModelAndView RESULT = new ModelAndView("index");
-
+public class ResourceController {
+    private static final String FRONTEND_FOLDER = "frontend";
+    private static final ClassPathResource INDEX_RESOURCE = new ClassPathResource(FRONTEND_FOLDER + "/index.html");
     private static final String DEFAULT_SAVED_REQUEST_SESSION_ATTRIBUTE = "SPRING_SECURITY_SAVED_REQUEST";
     private static final String SAVED_REQUEST_REDIRECT_URL_PARAMETER = "redirect_uri";
 
     private final Type6Oauth2ClientProperties clientProperties;
 
-    @GetMapping(PREFIX_PUBLIC_PAGE + "/{resource}")
-    public ModelAndView frontendPage(@PathVariable String resource) {
-        return RESULT;
+    @GetMapping(value = PREFIX_PUBLIC_PAGE + "/**", produces = MediaType.ALL_VALUE)
+    public Resource frontendResource(HttpServletRequest request) {
+        var httpPath = request.getServletPath();
+        var localPath = httpPath.substring(PREFIX_PUBLIC_PAGE.length());
+        var resource = new ClassPathResource(FRONTEND_FOLDER + localPath);
+
+        if (resource.exists()) {
+            return resource;
+        }
+
+        return INDEX_RESOURCE;
     }
 
-    @GetMapping(LOGIN_PAGE)
-    public ModelAndView login(HttpServletRequest request) {
+    @GetMapping(value = LOGIN_PAGE, produces = MediaType.ALL_VALUE)
+    public Resource loginPage(HttpServletRequest request,
+                              HttpServletResponse response) throws IOException {
         String clientUrl = getOauthClientAuthUrl(request);
 
         if (clientUrl != null) {
-            return new ModelAndView("redirect:" + clientUrl);
+            response.sendRedirect(clientUrl);
         }
-
-        return RESULT;
+        return INDEX_RESOURCE;
     }
 
     private String getOauth2RedirectUri(HttpServletRequest request) {

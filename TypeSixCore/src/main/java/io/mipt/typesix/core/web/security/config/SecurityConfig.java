@@ -94,7 +94,7 @@ public class SecurityConfig {
                         REGISTRATION_EMAIL_ENDPOINT,
                         REGISTRATION_CODE_ENDPOINT,
                         REGISTRATION_PASSWORD_SET_ENDPOINT,
-                        PREFIX_PUBLIC_PAGE + "/*"
+                        PREFIX_PUBLIC_PAGE + "/**"
                 )
                 // login, logout, registration endpoints are permitted
                 .authorizeHttpRequests(authorize -> authorize
@@ -104,7 +104,7 @@ public class SecurityConfig {
                                 REGISTRATION_EMAIL_ENDPOINT,
                                 REGISTRATION_CODE_ENDPOINT,
                                 REGISTRATION_PASSWORD_SET_ENDPOINT,
-                                PREFIX_PUBLIC_PAGE + "/*"
+                                PREFIX_PUBLIC_PAGE + "/**"
                         ).permitAll()
                         .anyRequest().authenticated())
                 // form login authentication filter is enabled
