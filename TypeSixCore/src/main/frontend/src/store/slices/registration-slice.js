@@ -2,8 +2,7 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
 import {
     REGISTRATION_CODE_ENDPOINT,
-    REGISTRATION_EMAIL_ENDPOINT, REGISTRATION_PASSWORD_SET_ENDPOINT,
-    SESSION_DATA_ENDPOINT
+    REGISTRATION_EMAIL_ENDPOINT, REGISTRATION_PASSWORD_SET_ENDPOINT
 } from "../constants";
 
 export const sendEmail = createAsyncThunk(
@@ -41,17 +40,6 @@ export const sendPassword = createAsyncThunk(
         }
     }
 );
-
-function onError(state, action) {
-    console.log("Error happened in registration-slice " + action.type)
-}
-
-function withLog(reducer) {
-    return (state, action) => {
-        console.log("registration action: [" + action.type + "] payload: " + JSON.stringify(action.payload))
-        return reducer(state, action)
-    }
-}
 
 const registrationSlice = createSlice({
     name: 'registration',
