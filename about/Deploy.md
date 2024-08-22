@@ -21,7 +21,7 @@
 * TYPE12_CLIENT_SECRET
 * TYPE12_HOSTNAME
 
-## Провайдеры pa
+## Провайдеры
 
 #### Github
 
@@ -46,11 +46,6 @@
 * TYPE6_RABBIT_HOST
 * TYPE6_RABBIT_USERNAME
 * TYPE6_RABBIT_PASSWORD
-
-#### Redis
-
-* TYPE6_REDIS_HOST
-* TYPE6_REDIS_PASSWORD
 
 ## RSA
 
