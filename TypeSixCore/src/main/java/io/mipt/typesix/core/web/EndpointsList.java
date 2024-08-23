@@ -168,12 +168,12 @@ public class EndpointsList {
             method = GET,
             category = OTHER
     )
-    public static final String SWAGGER_UI_BASE_PATH = PREFIX_INTERNAL + "/docs/swagger-ui";
+    public static final String SWAGGER_UI_BASE_PATH = PREFIX_PUBLIC + "/docs/swagger-ui";
 
     @Type6Endpoint(
             description = "Путь для эндпоинта с документацией",
             method = GET,
             category = OTHER
     )
-    public static final String SPRING_DOC_PATH = PREFIX_INTERNAL + "/docs";
+    public static final String SPRING_DOC_PATH = PREFIX_PUBLIC + "/docs";
 }
