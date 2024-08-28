@@ -1,6 +1,6 @@
 package io.mipt.typesix.core.web.security.form;
 
-import io.mipt.typesix.businesslogic.service.core.AuthenticationException;
+import io.mipt.typesix.businesslogic.service.core.exception.AuthenticationException;
 import io.mipt.typesix.businesslogic.service.core.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
