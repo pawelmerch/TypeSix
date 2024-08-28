@@ -5,8 +5,16 @@ import SuccessfulAuthorizationPage from "./pages/success-page";
 import store from './store/store';
 import Header from "./pages/header";
 import ErrorPage from "./pages/error-page";
-import {ERROR_PAGE, LOGIN_PAGE, REGISTRATION_PAGE, SUCCESS_LOGIN_PAGE, UNAUTHORIZED_PAGE} from "./store/constants";
+import {
+  ADMIN_ROLE_SET_PAGE,
+  ERROR_PAGE,
+  LOGIN_PAGE,
+  REGISTRATION_PAGE,
+  SUCCESS_LOGIN_PAGE,
+  UNAUTHORIZED_PAGE
+} from "./store/constants";
 import RegistrationPage from "./pages/registration-page";
+import AdminPage from "./pages/admin-page";
 
 function App() {
   return <Provider store={store}>
@@ -17,6 +25,7 @@ function App() {
           <Route element={<ErrorPage/>} path={ERROR_PAGE}/>
           <Route element={<RegistrationPage/>} path={REGISTRATION_PAGE}/>
           <Route element={<SuccessfulAuthorizationPage/>} path={SUCCESS_LOGIN_PAGE}/>
+          <Route element={<AdminPage/>} path={ADMIN_ROLE_SET_PAGE}/>
         </Route>
       </Routes>
     </BrowserRouter>
