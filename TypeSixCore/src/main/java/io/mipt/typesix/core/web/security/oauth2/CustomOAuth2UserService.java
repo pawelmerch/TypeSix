@@ -35,8 +35,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             registrationCounter.increment();
         }
 
-        authenticationService.complementUserByOauth2ProviderData(email, attributes);
+        var type6User = authenticationService.complementUserByOauth2ProviderData(email, attributes);
 
-        return user;
+        return new OAuth2UserDecorator(user, type6User);
     }
 }

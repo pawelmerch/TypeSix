@@ -22,6 +22,8 @@ public class DebugUsersConfig {
     public static final String USER1_EMAIL = "a@gmail.com";
     public static final String USER2_EMAIL = "b@gmail.com";
 
+    private static final String DEFAULT_ROLE = "admin";
+
     private final UserRepository userRepository;
 
     private static final SimpleUser[] debugUsers = {
@@ -38,6 +40,7 @@ public class DebugUsersConfig {
                     .lastName(USER1)
                     .login(USER1)
                     .email(USER1_EMAIL)
+                    .role(DEFAULT_ROLE)
                     .password(USER1)
                     .status(UserStatus.active)
                     .build()
@@ -49,6 +52,7 @@ public class DebugUsersConfig {
                     .lastName(USER2)
                     .login(USER2)
                     .email(USER2_EMAIL)
+                    .role(DEFAULT_ROLE)
                     .password(USER2)
                     .status(UserStatus.active)
                     .build()

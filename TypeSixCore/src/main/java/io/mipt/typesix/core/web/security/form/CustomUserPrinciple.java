@@ -1,6 +1,7 @@
 package io.mipt.typesix.core.web.security.form;
 
 import io.mipt.typesix.businesslogic.domain.model.User;
+import io.mipt.typesix.core.web.security.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,7 +9,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.List;
 
 @RequiredArgsConstructor
 public class CustomUserPrinciple implements UserDetails, Serializable {
@@ -17,7 +17,7 @@ public class CustomUserPrinciple implements UserDetails, Serializable {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return Utils.extractRoles(user);
     }
 
     @Override
