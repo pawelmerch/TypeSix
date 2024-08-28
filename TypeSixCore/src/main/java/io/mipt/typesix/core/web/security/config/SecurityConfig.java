@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2Clien
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -30,8 +31,9 @@ import java.util.stream.Collectors;
 
 import static io.mipt.typesix.core.web.EndpointsList.*;
 
-@Configuration
 @Log
+@Configuration
+@EnableMethodSecurity
 public class SecurityConfig {
     private static final String[] FRONTEND_RESOURCES_PATHS = {
             "index.html",
@@ -131,7 +133,7 @@ public class SecurityConfig {
     @Bean
     @Order(3)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests(authorize ->
+        return http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(authorize ->
                 // expose actuator endpoints
                 authorize
                         .requestMatchers(
@@ -139,6 +141,10 @@ public class SecurityConfig {
                             SWAGGER_UI_BASE_PATH + "/**",
                             SPRING_DOC_PATH + "/**"
                         ).permitAll()
+                        .requestMatchers(
+                                IS_ADMIN_ENDPOINT,
+                                ADMIN_ALL_USERS_LIST_ENDPOINT + "/**"
+                        ).authenticated()
                         .requestMatchers(FRONTEND_RESOURCES_PATHS).permitAll()
                         .anyRequest().denyAll()
         ).build();

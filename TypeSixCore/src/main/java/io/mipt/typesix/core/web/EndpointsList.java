@@ -43,6 +43,7 @@ public class EndpointsList {
     public static final String PREFIX_PUBLIC = "/public";
     public static final String PREFIX_INTERNAL = "";
     public static final String PREFIX_PUBLIC_PAGE = PREFIX_PUBLIC + "/pages";
+    public static final String PREFIX_PUBLIC_ADMIN = PREFIX_PUBLIC + "/admin";
 
 
     //
@@ -176,4 +177,29 @@ public class EndpointsList {
             category = OTHER
     )
     public static final String SPRING_DOC_PATH = PREFIX_PUBLIC + "/docs";
+
+
+    //
+    // ADMIN
+    //
+    @Type6Endpoint(
+            description = "Позволяет узнать, есть ли у зарегистрированного пользователя роль администратора",
+            method = GET,
+            category = ADMIN
+    )
+    public static final String IS_ADMIN_ENDPOINT = PREFIX_PUBLIC_ADMIN + "/check";
+
+    @Type6Endpoint(
+            description = "Позволяет получить список пользователей и ролей к ним",
+            method = GET,
+            category = ADMIN
+    )
+    public static final String ADMIN_ALL_USERS_LIST_ENDPOINT = PREFIX_PUBLIC_ADMIN + "/users";
+
+    @Type6Endpoint(
+            description = "Устанавливает роль для пользователя",
+            method = POST,
+            category = ADMIN
+    )
+    public static final String ADMIN_SET_ROLE_ENDPOINT = PREFIX_PUBLIC_ADMIN + "/users/{id}/role";
 }
