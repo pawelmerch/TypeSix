@@ -4,6 +4,13 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.1</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
     <groupId>io.mipt.type-6</groupId>
     <artifactId>TypeSix</artifactId>
     <version>${revision}</version>
@@ -16,8 +23,10 @@
     </properties>
 
     <modules>
-        <module>TypeSixCore</module>
+        <module>TypeSixStarter</module>
+        <module>TypeSixWeb</module>
         <module>TypeSixBusinessLogic</module>
+        <module>TypeSixRabbit</module>
     </modules>
 
 </project>
