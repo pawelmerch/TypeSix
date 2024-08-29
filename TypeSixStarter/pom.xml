@@ -23,25 +23,23 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
 
+        <!-- INTERNAL -->
         <dependency>
             <groupId>io.mipt.type-6.rabbit</groupId>
             <artifactId>TypeSixRabbit</artifactId>
             <version>${revision}</version>
         </dependency>
-
         <dependency>
             <groupId>io.mipt.type-6.businessLogic</groupId>
             <artifactId>TypeSixBusinessLogic</artifactId>
             <version>${revision}</version>
         </dependency>
-
         <dependency>
             <groupId>io.mipt.type-6.web</groupId>
             <artifactId>TypeSixWeb</artifactId>

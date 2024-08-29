@@ -3,14 +3,12 @@ package io.mipt.typesix.web;
 import io.mipt.typesix.businesslogic.service.core.api.AuthenticationService;
 import io.mipt.typesix.businesslogic.service.core.api.RegistrationService;
 import io.mipt.typesix.businesslogic.service.core.api.RoleService;
+import io.mipt.typesix.web.debug.DebugUsersConfig;
 import io.mipt.typesix.web.utils.HttpRequestInput;
 import io.mipt.typesix.web.utils.HttpResponseOutput;
-import io.mipt.typesix.web.debug.DebugUsersConfig;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
-import org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -95,7 +93,7 @@ import static io.mipt.typesix.web.EndpointsList.*;
 })
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @SpringBootConfiguration
-@EnableAutoConfiguration(exclude = {RedisAutoConfiguration.class, RedisRepositoriesAutoConfiguration.class})
+@EnableAutoConfiguration
 public class BaseTest {
     @LocalServerPort
     protected int port;
