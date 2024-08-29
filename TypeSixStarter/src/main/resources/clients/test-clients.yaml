@@ -1,0 +1,14 @@
+type-6:
+  clients:
+    type-8:
+      client-id: type8-client
+      client-secret: type8-secret
+      client-redirect-uri: http://localhost:3000/code
+      client-hostname: http://localhost:3000
+      auth-method: all
+    type-12:
+      client-id: type12-client
+      client-secret: type12-secret
+      client-redirect-uri: http://localhost:3000/code
+      client-hostname: http://localhost:3000
+      auth-method: all

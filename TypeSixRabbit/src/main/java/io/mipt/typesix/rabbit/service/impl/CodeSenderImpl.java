@@ -8,11 +8,13 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
 
 @Service
+@Profile("!local-embedded")
 @RequiredArgsConstructor
 public class CodeSenderImpl implements CodeSender {
     private final AmqpTemplate rabbitTemplate;

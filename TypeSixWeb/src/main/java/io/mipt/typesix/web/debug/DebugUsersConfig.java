@@ -7,14 +7,14 @@ import jakarta.annotation.PostConstruct;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-@Configuration
-@Profile("debug || test")
-@RequiredArgsConstructor
 @Log
+@Profile("!k8s")
+@Component
+@RequiredArgsConstructor
 public class DebugUsersConfig {
     public static final String USER1 = "a";
     public static final String USER2 = "b";

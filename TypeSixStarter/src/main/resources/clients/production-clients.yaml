@@ -3,12 +3,12 @@ type-6:
     type-8:
       client-id: ${TYPE8_CLIENT_ID}
       client-secret: ${TYPE8_CLIENT_SECRET}
-      client-redirect-uri: ${TYPE8_CLIENT_REDIRECT_URI}
-      client-hostname: ${TYPE8_HOSTNAME}
+      client-redirect-uri: "https://pattern.mipt.io/code"
+      client-hostname: "https://pattern.mipt.io"
       auth-method: all
     type-12:
       client-id: ${TYPE12_CLIENT_ID}
       client-secret: ${TYPE12_CLIENT_SECRET}
-      client-redirect-uri: ${TYPE12_CLIENT_REDIRECT_URI}
-      client-hostname: ${TYPE12_HOSTNAME}
+      client-redirect-uri: "https://messenger.mipt.io/code"
+      client-hostname: "https://messenger.mipt.io"
       auth-method: all
