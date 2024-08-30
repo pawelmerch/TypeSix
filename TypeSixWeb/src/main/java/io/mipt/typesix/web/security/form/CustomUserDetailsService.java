@@ -18,7 +18,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
-            return new CustomUserPrinciple(authenticationService.loadUser(username), passwordEncoder);
+            return new CustomUserPrinciple(authenticationService.loginViaForm(username), passwordEncoder);
         } catch (AuthenticationServiceException e) {
             throw new UsernameNotFoundException("No such user", e);
         }

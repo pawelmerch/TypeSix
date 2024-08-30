@@ -62,7 +62,7 @@ public class Oauth2ClientWithFormLoginFlowTests extends BaseTest {
     }
 
     private void step2() {
-        when(authenticationService.loadUser(eq("a@gmail.com"))).thenReturn(
+        when(authenticationService.loginViaForm(eq("a@gmail.com"))).thenReturn(
                 User.builder().password("a").email("a@gmail.com").build()
         );
 

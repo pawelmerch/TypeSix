@@ -3,6 +3,7 @@ package io.mipt.typesix.web;
 import io.mipt.typesix.businesslogic.service.core.api.AuthenticationService;
 import io.mipt.typesix.businesslogic.service.core.api.RegistrationService;
 import io.mipt.typesix.businesslogic.service.core.api.RoleService;
+import io.mipt.typesix.businesslogic.service.core.spi.EventsObserver;
 import io.mipt.typesix.web.debug.DebugUsersConfig;
 import io.mipt.typesix.web.utils.HttpRequestInput;
 import io.mipt.typesix.web.utils.HttpResponseOutput;
@@ -103,6 +104,8 @@ public class BaseTest {
     protected RegistrationService registrationService;
     @MockBean
     protected RoleService roleService;
+    @MockBean
+    protected EventsObserver eventsObserver;
 
     protected final RestClient defaultClient = RestClient.create();
 
