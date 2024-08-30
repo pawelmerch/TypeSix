@@ -2,13 +2,13 @@ package io.mipt.typesix.web.security.utils;
 
 import io.mipt.typesix.businesslogic.domain.model.User;
 import io.mipt.typesix.web.security.form.CustomUserPrinciple;
+import lombok.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.util.Assert;
 
 import java.util.Collection;
 import java.util.List;
@@ -20,8 +20,7 @@ public class Utils {
     private Utils() {
     }
 
-    public static String retrieveEmailFromAuthentication(Authentication authentication) {
-        Assert.notNull(authentication, "authentication must not be null");
+    public static String retrieveEmailFromAuthentication(@NonNull Authentication authentication) {
         if (authentication instanceof OAuth2AuthenticationToken token) {
             OAuth2User user = token.getPrincipal();
             String email = user.getName();
