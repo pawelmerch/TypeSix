@@ -8,6 +8,7 @@ import io.mipt.typesix.web.debug.DebugUsersConfig;
 import io.mipt.typesix.web.utils.HttpRequestInput;
 import io.mipt.typesix.web.utils.HttpResponseOutput;
 import org.junit.jupiter.api.Assertions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +17,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.client.RestClient;
 
@@ -106,6 +108,8 @@ public class BaseTest {
     protected RoleService roleService;
     @MockBean
     protected EventsObserver eventsObserver;
+    @Autowired
+    protected PasswordEncoder passwordEncoder;
 
     protected final RestClient defaultClient = RestClient.create();
 

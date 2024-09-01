@@ -63,7 +63,7 @@ public class Oauth2ClientWithFormLoginFlowTests extends BaseTest {
 
     private void step2() {
         when(authenticationService.loginViaForm(eq("a@gmail.com"))).thenReturn(
-                User.builder().password("a").email("a@gmail.com").build()
+                User.builder().password(passwordEncoder.encode("a")).email("a@gmail.com").build()
         );
 
         var url = origin() + FORM_LOGIN_ENDPOINT;

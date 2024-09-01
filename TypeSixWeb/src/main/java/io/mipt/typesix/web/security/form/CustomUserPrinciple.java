@@ -5,7 +5,6 @@ import io.mipt.typesix.web.security.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -13,7 +12,6 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class CustomUserPrinciple implements UserDetails, Serializable {
     private final User user;
-    private transient final PasswordEncoder passwordEncoder;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -22,7 +20,7 @@ public class CustomUserPrinciple implements UserDetails, Serializable {
 
     @Override
     public String getPassword() {
-        return passwordEncoder.encode(user.getPassword());
+        return user.getPassword();
     }
 
     @Override
@@ -30,23 +28,4 @@ public class CustomUserPrinciple implements UserDetails, Serializable {
         return user.getEmail();
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }

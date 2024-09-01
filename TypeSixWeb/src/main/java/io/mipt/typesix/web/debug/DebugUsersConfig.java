@@ -4,10 +4,10 @@ import io.mipt.typesix.businesslogic.domain.model.User;
 import io.mipt.typesix.businesslogic.domain.model.UserStatus;
 import io.mipt.typesix.businesslogic.service.core.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,11 +25,7 @@ public class DebugUsersConfig {
     private static final String DEFAULT_ROLE = "admin";
 
     private final UserRepository userRepository;
-
-    private static final SimpleUser[] debugUsers = {
-            new SimpleUser(USER1),
-            new SimpleUser(USER2)
-    };
+    private final PasswordEncoder passwordEncoder;
 
     @PostConstruct
     @Transactional
@@ -41,7 +37,7 @@ public class DebugUsersConfig {
                     .login(USER1)
                     .email(USER1_EMAIL)
                     .role(DEFAULT_ROLE)
-                    .password(USER1)
+                    .password(passwordEncoder.encode(USER1))
                     .status(UserStatus.active)
                     .build()
             );
@@ -53,22 +49,10 @@ public class DebugUsersConfig {
                     .login(USER2)
                     .email(USER2_EMAIL)
                     .role(DEFAULT_ROLE)
-                    .password(USER2)
+                    .password(passwordEncoder.encode(USER2))
                     .status(UserStatus.active)
                     .build()
             );
-        }
-    }
-
-    @Data
-    private static class SimpleUser {
-        private String name;
-        private String email;
-        private String password;
-
-        public SimpleUser(String name) {
-            this.email = this.password = this.name = name;
-            this.email += "@gmail.com";
         }
     }
 }

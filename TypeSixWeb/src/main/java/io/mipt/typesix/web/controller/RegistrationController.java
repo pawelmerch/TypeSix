@@ -4,6 +4,7 @@ import io.mipt.typesix.businesslogic.service.core.api.RegistrationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +17,7 @@ import static io.mipt.typesix.web.EndpointsList.*;
 @RequiredArgsConstructor
 public class RegistrationController {
     private final RegistrationService registrationService;
+    private final PasswordEncoder passwordEncoder;
 
     @PostMapping(REGISTRATION_EMAIL_ENDPOINT)
     public ResponseEntity<?> acceptEmailEndpoint(@RequestParam("email") String email) {
@@ -31,7 +33,7 @@ public class RegistrationController {
 
     @PostMapping(REGISTRATION_PASSWORD_SET_ENDPOINT)
     public ResponseEntity<?> passwordSetupEndpoint(@RequestParam String code, @RequestParam String password, @RequestParam String email, Model model) {
-        registrationService.endRegistrationFlow(email, code, password);
+        registrationService.endRegistrationFlow(email, code, passwordEncoder.encode(password));
         return ResponseEntity.ok().build();
     }
 }
