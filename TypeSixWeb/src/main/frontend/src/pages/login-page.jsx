@@ -1,25 +1,31 @@
 import {useNavigate, useSearchParams} from "react-router-dom";
 import {Box, Button, Card, CardContent, Typography} from "@mui/material";
-import {FORM_LOGIN_ENDPOINT, LOGOUT_ENDPOINT, PROVIDERS, REGISTRATION_PAGE} from "../store/constants";
+import {
+    FORM_LOGIN_ENDPOINT,
+    LOGOUT_ENDPOINT,
+    PROVIDER_GITHUB,
+    PROVIDER_YANDEX,
+    PROVIDERS,
+    REGISTRATION_PAGE
+} from "../store/constants";
 import logo from '../assets/img/logo.png';
 import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function LoginPage() {
-		const { t, i18n } = useTranslation();
-		const changeLanguage = (lng) => {
-			i18n.changeLanguage(lng);
-			setLangDropdown(false);
-			localStorage.setItem('i18nextLng', lng);
-		};
-    const navigate = useNavigate()
+    const { t, i18n } = useTranslation();
+    const changeLanguage = (lng) => {
+        i18n.changeLanguage(lng);
+        setLangDropdown(false);
+        localStorage.setItem('i18nextLng', lng);
+    };
     const [searchParams, setSearchParams] = useSearchParams();
     const errorMessage = searchParams.get("error")
-		const [inpPassHide, setInpPassHide] = useState(true);
-		const [inpMessage, setInpMessage] = useState(false);
-    
-		const [langDropdown, setLangDropdown] = useState(false);
+    const [inpPassHide, setInpPassHide] = useState(true);
+
+    const [langDropdown, setLangDropdown] = useState(false);
     const dropdownRef = useRef(null);
+
     // Функция для обработки клика вне элемента
     useEffect(() => {
         function handleClickOutside(event) {
@@ -36,6 +42,7 @@ export default function LoginPage() {
         document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [dropdownRef]);
+
     return(
 		<div className="wrapper-def">
        <div className="sec-auth">
@@ -73,10 +80,10 @@ export default function LoginPage() {
                     <div className="block-form__title title-def">{t('signTitle')}</div>
                     <div className="block-form__el form-el">
 												<div className="form-el__wrap">
-													<input name="username" placeholder={t('loginTitle')} type="text" className="form-el__inp inp-def" onInput={()=>setInpMessage(true)} required />
+													<input name="username" placeholder={t('loginTitle')} type="text" className="form-el__inp inp-def" required />
 													<svg className="form-el__icon" width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M7 7.91427e-08C5.90188 -0.000192047 4.83134 0.349422 3.93904 0.999641C3.04674 1.64986 2.37761 2.56795 2.02581 3.6247C1.674 4.68146 1.65724 5.82368 1.97788 6.89062C2.29853 7.95755 2.94043 8.8955 3.81325 9.57244C1.58725 10.584 0 12.6293 0 15.1111C0 15.3469 0.0921874 15.573 0.256282 15.7397C0.420376 15.9064 0.642936 16 0.875 16H13.125C13.3571 16 13.5796 15.9064 13.7437 15.7397C13.9078 15.573 14 15.3469 14 15.1111C14 12.6293 12.4128 10.584 10.1868 9.57244C11.0596 8.8955 11.7015 7.95755 12.0221 6.89062C12.3428 5.82368 12.326 4.68146 11.9742 3.6247C11.6224 2.56795 10.9533 1.64986 10.061 0.999641C9.16866 0.349422 8.09812 -0.000192047 7 7.91427e-08Z" fill="#9DA7B4"/></svg>
 												</div>
-												{inpMessage && (
+												{errorMessage && (
 													<div className="form-el__message"><svg width="9" height="9" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M4.5 0.9C3.54522 0.9 2.62955 1.27928 1.95442 1.95442C1.27928 2.62955 0.9 3.54522 0.9 4.5C0.9 5.45478 1.27928 6.37045 1.95442 7.04558C2.62955 7.72072 3.54522 8.1 4.5 8.1C5.45478 8.1 6.37045 7.72072 7.04558 7.04558C7.72072 6.37045 8.1 5.45478 8.1 4.5C8.1 3.54522 7.72072 2.62955 7.04558 1.95442C6.37045 1.27928 5.45478 0.9 4.5 0.9ZM0 4.5C0 2.01465 2.01465 0 4.5 0C6.98535 0 9 2.01465 9 4.5C9 6.98535 6.98535 9 4.5 9C2.01465 9 0 6.98535 0 4.5ZM4.5 2.25C4.61935 2.25 4.73381 2.29741 4.8182 2.3818C4.90259 2.46619 4.95 2.58065 4.95 2.7V4.95C4.95 5.06935 4.90259 5.18381 4.8182 5.2682C4.73381 5.35259 4.61935 5.4 4.5 5.4C4.38065 5.4 4.26619 5.35259 4.1818 5.2682C4.09741 5.18381 4.05 5.06935 4.05 4.95V2.7C4.05 2.58065 4.09741 2.46619 4.1818 2.3818C4.26619 2.29741 4.38065 2.25 4.5 2.25ZM4.5 5.85C4.38065 5.85 4.26619 5.89741 4.1818 5.9818C4.09741 6.06619 4.05 6.18065 4.05 6.3C4.05 6.41935 4.09741 6.53381 4.1818 6.6182C4.26619 6.70259 4.38065 6.75 4.5 6.75H4.5045C4.62385 6.75 4.73831 6.70259 4.8227 6.6182C4.90709 6.53381 4.9545 6.41935 4.9545 6.3C4.9545 6.18065 4.90709 6.06619 4.8227 5.9818C4.73831 5.89741 4.62385 5.85 4.5045 5.85H4.5Z" fill="#E40000"/></svg> {t('loginError')}</div>
 												)}
                     </div>
@@ -95,11 +102,6 @@ export default function LoginPage() {
 												</div>
                     </div>
                     <a href="#" className="block-form__link link-text">{t('passForgot')}</a>
-										{errorMessage && (
-											<div className="block-form__message">
-												{errorMessage}
-											</div>
-										)}
                     <button type="submit" className="block-form__btn btn-def-2"><span>{t('signBtn')}</span></button>
                     <div className="block-form__line"><span>{t('or')} </span></div>
                     <div className="block-form__providers form-providers">
