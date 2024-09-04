@@ -1,0 +1,243 @@
+.inp-def {
+  display: block;
+  width: 100%;
+  font-family: "Inter",
+    sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  color: #323232;
+  border: 0;
+  border-bottom: 1px solid #d9e3eb;
+  padding: 0 20px;
+  padding-left: 30px;
+  height: 45px;
+  transition: .3s;
+  border-radius: 0;
+
+  &::placeholder {
+    color: #9da7b4;
+  }
+
+  &:focus {
+    border-color: #323232;
+
+    &+.form-el__icon {
+      path {
+        fill: #323232;
+      }
+    }
+  }
+}
+
+.form-el {
+  position: relative;
+
+  &__wrap {
+    position: relative;
+  }
+
+  &__message {
+    font-family: "Inter",
+      sans-serif;
+    font-weight: 400;
+    font-size: 11px;
+    color: #e40000;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 5px;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+  }
+
+  &__icon {
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    z-index: 2;
+
+    path {
+      transition: .3s;
+    }
+  }
+
+  &__btn-pass {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    user-select: none;
+    cursor: pointer;
+
+    path {
+      transition: .3s;
+    }
+
+    &:hover {
+      path {
+        fill: #323232;
+      }
+    }
+  }
+}
+
+.block-form {
+  &__title {
+    margin-bottom: 20px;
+  }
+
+  &__el {
+    margin-bottom: 22px;
+  }
+
+  &__btn {
+    margin-top: 30px;
+  }
+
+  &__line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1;
+    font-family: "Inter",
+      sans-serif;
+    font-weight: 400;
+    font-size: 13px;
+    color: #9da7b4;
+    margin-top: 42px;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      transform: translateY(-50%);
+      z-index: 1;
+      height: 1px;
+      background: #d9e3eb;
+    }
+
+    span {
+      position: relative;
+      z-index: 10;
+      background: #fff;
+      padding: 0 10px;
+    }
+  }
+
+  &__providers {
+    margin-top: 38px;
+  }
+
+  &__message {
+    margin-top: 20px;
+    font-family: "Inter",
+      sans-serif;
+    font-weight: 400;
+    color: #e40000;
+    font-size: 18px;
+  }
+}
+
+.form-provider {
+  font-size: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 60px;
+  height: 40px;
+  border-radius: 6px;
+  transition: .3s;
+
+  &_gos {
+    background: #1466ac;
+
+    &:hover {
+      background: #1e70b6;
+    }
+  }
+
+  &_git {
+    background: #000;
+
+    &:hover {
+      background: #323232;
+    }
+  }
+
+  &_vk {
+    background: #1e88e5;
+
+    &:hover {
+      background: #2892ef;
+    }
+  }
+
+  &_yand {
+    background: #f8604a;
+
+    &:hover {
+      background: #ff6a54;
+    }
+  }
+}
+
+.form-providers {
+  &__title {
+    text-align: center;
+    font-family: "Inter",
+      sans-serif;
+    font-weight: 400;
+    font-size: 13px;
+    color: #323232;
+    margin-bottom: 12px;
+
+    @media screen and (max-width: $sc-mob) {
+      margin-bottom: 27px;
+    }
+  }
+
+  &__els {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+
+    @media screen and (max-width: $sc-mob) {
+      gap: 13px;
+    }
+  }
+}
+
+/* Для Google Chrome, Edge, Safari */
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px white inset;
+  box-shadow: 0 0 0 1000px white inset;
+  -webkit-text-fill-color: black;
+}
+
+/* Для Mozilla Firefox */
+input:-moz-autofill {
+  box-shadow: 0 0 0 1000px white inset;
+  -moz-text-fill-color: black;
+}
+
+/* Для Microsoft Edge (версии на базе Chromium) */
+input:-webkit-autofill::first-line {
+  font-family: inherit;
+  font-size: inherit;
+  color: black;
+}

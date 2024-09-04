@@ -15,6 +15,7 @@ import {
 } from "./store/constants";
 import RegistrationPage from "./pages/registration-page";
 import AdminPage from "./pages/admin-page";
+import './i18n';
 
 function App() {
   return <Provider store={store}>

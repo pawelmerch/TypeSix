@@ -1,0 +1,158 @@
+body {
+	font-family: 'Inter',
+		'Arial',
+		sans-serif;
+	padding: 0;
+	margin: 0;
+	font-weight: 400;
+	font-size: 20px;
+	color: #323232;
+	line-height: 1.7;
+}
+
+a {
+	font-family: 'Inter',
+		Arial,
+		sans-serif;
+	display: inline-flex;
+}
+
+input {
+
+	&,
+	&::pleceholder {
+		font-family: 'Inter',
+			'Arial',
+			sans-serif;
+	}
+}
+
+img {}
+
+.wrapper-def {}
+
+.container-def {
+	margin: 0 auto;
+	width: 100%;
+	position: relative;
+	z-index: 10;
+	padding: 0 20px;
+	max-width: 1450px;
+}
+
+.sec-auth {
+	@media screen and (max-width: $sc-tablet-sm) {
+		background: #d9f7f6;
+		padding: 20px 20px;
+		padding-bottom: 33px;
+		min-height: 100vh;
+	}
+
+	@media screen and (max-width: $sc-mob) {
+		padding: 40px 20px;
+	}
+
+	&__content {
+		min-height: 100vh;
+		width: 100%;
+		display: flex;
+
+		@media screen and (max-width: $sc-tablet-sm) {
+			display: block;
+			min-height: 0;
+		}
+	}
+
+	&__left {
+		width: 50%;
+		background: #d9f7f6;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		flex-direction: column;
+		padding: 81px 20px;
+		padding-top: 40px;
+
+		@media screen and (max-width: $sc-tablet-sm) {
+			width: 100%;
+			padding: 0;
+			margin-bottom: 30px;
+		}
+	}
+
+	&__info {
+		margin-top: auto;
+	}
+
+	&__lang {
+		margin-top: auto;
+
+		@media screen and (max-width: $sc-tablet-sm) {
+			margin-top: 30px;
+		}
+	}
+
+	&__logo {
+		margin-bottom: 10px;
+	}
+
+	&__btn {
+		margin-top: 30px;
+		max-width: 224px;
+		width: 100%;
+
+		@media screen and (max-width: $sc-tablet-sm) {
+			display: none;
+		}
+	}
+
+	&__btn-mob {
+		display: none;
+		margin-top: 30px;
+
+		@media screen and (max-width: $sc-tablet-sm) {
+			display: flex;
+		}
+	}
+
+	&__right {
+		width: 50%;
+		padding: 51px 80px;
+		align-self: center;
+		background: #fff;
+
+		@media screen and (max-width: $sc-desctop) {
+			padding: 30px 30px;
+		}
+
+		@media screen and (max-width: $sc-tablet-sm) {
+			width: 100%;
+			padding: 48px 20px;
+		}
+	}
+}
+
+.sec-success {
+	width: 100%;
+	min-height: 100vh;
+	background: #d9f7f6;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	padding: 20px;
+
+	&__icon {
+		font-size: 0;
+	}
+
+	&__title {
+		margin: 35px 0;
+
+		@media screen and (max-width: $sc-mob) {
+			font-size: 18px;
+		}
+	}
+}

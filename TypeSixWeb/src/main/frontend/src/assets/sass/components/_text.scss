@@ -1,0 +1,75 @@
+.title-main {
+  font-family: "Inter",
+    sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  color: #099;
+  line-height: 1.2;
+}
+
+.title-def {
+  font-family: "Inter",
+    sans-serif;
+  font-weight: 500;
+  font-size: 25px;
+  color: #323232;
+}
+
+.btn-def {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1;
+  font-family: "Inter",
+    sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  color: #099;
+  border: 1px solid #099;
+  border-radius: 67px;
+  padding: 16px 35px;
+  transition: .3s;
+
+  &:hover {
+    background: #099;
+    color: #fff;
+  }
+}
+
+.link-text {
+  font-family: "Inter",
+    sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  text-decoration: underline;
+  text-decoration-skip-ink: none;
+  color: #323232;
+  transition: .3s;
+
+  &:hover {
+    color: #099;
+  }
+}
+
+.btn-def-2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1;
+  font-family: "Inter",
+    sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  color: #fff;
+  background: #099;
+  border-radius: 67px;
+  padding: 17px 36px;
+  width: 100%;
+  transition: .3s;
+
+  &:hover {
+    background: #0aa3a3;
+  }
+}

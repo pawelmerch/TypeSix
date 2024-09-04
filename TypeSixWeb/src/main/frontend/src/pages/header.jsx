@@ -18,14 +18,6 @@ export default () => {
     return <div>
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
-                <Toolbar>
-                    <Button color="inherit" onClick={() => navigate(LOGIN_PAGE)}>Type-6-SSO</Button>
-                    {
-                        isAdmin ?
-                            <Button color="inherit" onClick={() => navigate(ADMIN_ROLE_SET_PAGE)}>Roles</Button>
-                            : <div/>
-                    }
-                </Toolbar>
             </AppBar>
         </Box>
         <Outlet/>

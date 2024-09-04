@@ -1,0 +1,9 @@
+$sc-desctop: 920px;
+$sc-tablet-sm: 768px;
+$sc-mob: 600px;
+
+@media screen and (max-width: $sc-desctop) {}
+
+@media screen and (max-width: $sc-tablet-sm) {}
+
+@media screen and (max-width: $sc-mob) {}

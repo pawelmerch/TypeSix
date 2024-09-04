@@ -1,0 +1,108 @@
+button {
+	border: 0;
+	box-shadow: none;
+	padding: 0;
+	background: transparent;
+	line-height: 1;
+	text-align: left;
+}
+
+img {
+	object-fit: contain;
+}
+
+.logo-def {
+	font-size: 0;
+	display: block;
+	flex: none;
+
+	&__img {
+		width: 57px;
+		height: 60px;
+	}
+}
+
+.lang-choose {
+	position: relative;
+
+	&__top {
+		display: flex;
+		align-items: center;
+		cursor: pointer;
+	}
+
+	&__icon {
+		flex: none;
+		margin-right: 15px;
+
+		@media screen and (max-width: $sc-tablet-sm) {
+			width: 41px;
+			height: auto;
+			margin-right: 25px;
+		}
+	}
+
+	&__text {
+		font-family: "Inter",
+			sans-serif;
+		font-weight: 300;
+		font-size: 15px;
+		color: #323232;
+		line-height: 1;
+
+		@media screen and (max-width: $sc-tablet-sm) {
+			font-size: 25px;
+		}
+	}
+
+	&__arr {
+		flex: none;
+		margin-left: 8px;
+
+		@media screen and (max-width: $sc-tablet-sm) {
+			width: 13px;
+			height: auto;
+			margin-left: 18px;
+		}
+	}
+
+	&__dropdown {
+		position: absolute;
+		top: 100%;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 100%;
+		background: #fff;
+		width: 52px;
+		margin-top: 13px;
+
+		@media screen and (max-width: $sc-tablet-sm) {
+			width: 91px;
+			box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.15);
+			background: #fff;
+			margin-top: 15px;
+		}
+
+		&-link {
+			display: block;
+			font-family: "Inter",
+				sans-serif;
+			font-weight: 300;
+			font-size: 15px;
+			color: #323232;
+			transition: .3s;
+			width: 100%;
+			text-align: center;
+			padding: 5px 0;
+
+			@media screen and (max-width: $sc-tablet-sm) {
+				font-size: 25px;
+				padding: 4px 0;
+			}
+
+			&:hover {
+				color: #099;
+			}
+		}
+	}
+}
