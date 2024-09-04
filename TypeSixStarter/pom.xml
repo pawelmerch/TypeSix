@@ -31,8 +31,8 @@
 
         <!-- INTERNAL -->
         <dependency>
-            <groupId>io.mipt.type-6.rabbit</groupId>
-            <artifactId>TypeSixRabbit</artifactId>
+            <groupId>io.mipt.type-6.kafka</groupId>
+            <artifactId>TypeSixKafka</artifactId>
             <version>${revision}</version>
         </dependency>
         <dependency>
