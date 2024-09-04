@@ -13,7 +13,7 @@ RUN wget "https://storage.yandexcloud.net/cloud-certs/CA.pem" --output-document 
 RUN chmod 777 /root/.postgresql/root.crt
 
 # KAFKA IN YC
-RUN apk update && apk install kafkacat
+RUN apk update && apk add kafkacat
 
 ENV MIN_MEMORY=512m
 ENV MAX_MEMORY=1024m
