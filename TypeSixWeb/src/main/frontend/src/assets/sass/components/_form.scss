@@ -51,6 +51,10 @@
     top: 100%;
     left: 0;
     width: 100%;
+
+    svg {
+      flex: none;
+    }
   }
 
   &__icon {
@@ -240,4 +244,45 @@ input:-webkit-autofill::first-line {
   font-family: inherit;
   font-size: inherit;
   color: black;
+}
+
+.form-reg {
+  background: #fff;
+  padding: 54px 80px;
+  padding-bottom: 65px;
+
+  @media screen and (max-width: $sc-mob) {
+    padding: 52px 20px;
+  }
+
+  &__el {
+    margin-bottom: 22px;
+  }
+
+  &__top {
+    margin-bottom: 30px;
+  }
+
+  &__title {}
+
+  &__text {
+    margin-top: 7px;
+
+    @media screen and (max-width: $sc-mob) {
+      margin-top: 15px;
+    }
+  }
+
+  &__btns {
+    margin-top: 36px;
+  }
+
+  &__back {
+    width: 100%;
+    margin-top: 15px;
+
+    @media screen and (max-width: $sc-mob) {
+      margin-top: 25px;
+    }
+  }
 }
